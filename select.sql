@@ -114,3 +114,58 @@ ORDER BY
   albumid ASC,
   milliseconds DESC
 LIMIT 5;
+/*
+Instead of specifying the names of columns, you can use the column’s position in the ORDER BY clause.
+
+For example, the following statement sorts the tracks by both AlbumId (3rd column) and Milliseconds (2nd column) in ascending order.
+*/
+SELECT
+  name,
+  milliseconds,
+  albumid
+FROM
+  tracks
+ORDER BY
+  3,
+  2
+LIMIT 5;
+/*
+In the database world, NULL is special. It denotes that the information is missing or the data is not applicable.
+
+Suppose you want to store the birthday of an artist in a table. At the time of saving the artist’s record, you don’t have the birthday information.
+
+To represent the unknown birthday information in the database, you may use a special date like 01.01.1900 or an '' empty string. However, these values do not clearly show that the birthday is unknown.
+
+NULL was invented to resolve this issue. Instead of using a special value to indicate that the information is missing, NULL is used.
+
+NULL is special because you cannot compare it with another value. Simply put, if the two pieces of information are unknown, you cannot compare them.
+
+NULL is even cannot be compared with itself; NULL is not equal to itself so NULL = NULL always results in false.
+
+When it comes to sorting, SQLite considers NULL to be smaller than any other value.
+
+It means that NULLs will appear at the beginning of the result set if you use ASC or at the end of the result set when you use DESC.
+
+SQLite 3.30.0 added the NULLS FIRST and NULLS LAST options to the ORDER BY clause. The NULLS FIRST option specifies that the NULLs will appear at the beginning of the result set while the NULLS LAST option places NULLs at the end of the result set.
+*/
+SELECT 
+    TrackId, 
+    Name, 
+    Composer 
+FROM 
+   tracks
+ORDER BY 
+   Composer
+LIMIT 10;
+/*
+The following example uses the NULLS LAST option to place NULLs after other values:
+*/
+SELECT 
+    TrackId, 
+    Name, 
+    Composer 
+FROM 
+    tracks
+ORDER BY 
+    Composer NULLS LAST
+LIMIT 10 OFFSET (Select COUNT(*)  from tracks) - 10;
