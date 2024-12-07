@@ -378,3 +378,59 @@ FROM
 	tracks
 WHERE
 	mediatypeid IN (2, 3);
+
+/*
+In SQLite, the AND operator allows you to combine two conditions in a WHERE clause to filter rows if all conditions are true.
+
+Here’s the syntax of the AND operator:
+
+A AND B
+Code language: SQL (Structured Query Language) (sql)
+In this syntax:
+
+A and B are boolean expressions that evaluate a value of true, false, and null.
+The AND operator returns true only if A and B are true.
+
+The following table illustrates the result of the AND operator when combining two conditions A and B:
+
+A	B	A AND B
+false	false	false
+false	true	false
+true	false	false
+true	true	true
+false	NULL	false
+true	NULL	NULL
+NULL	false	false
+NULL	true	NULL
+NULL	NULL	NULL
+*/
+/*
+The following statement uses the AND operator in the WHERE clause to get the invoices whose billing city is New York and Total is greater than 5:
+*/
+SELECT
+  BillingAddress,
+  BillingCity,
+  Total
+FROM
+  invoices
+WHERE
+  BillingCity = 'New York'
+  AND Total > 5
+ORDER BY
+  Total;
+
+/*
+The following example uses the AND operator with the OR operator to retrieve the invoices with the billing city as either New York or Chicago and the Total greater than 5.
+*/
+
+SELECT
+  BillingAddress,
+  BillingCity,
+  Total
+FROM
+  invoices
+WHERE
+  Total > 5 AND
+  (BillingCity = 'New York' OR BillingCity = 'Chicago')
+ORDER BY
+  Total;
