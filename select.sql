@@ -434,3 +434,60 @@ WHERE
   (BillingCity = 'New York' OR BillingCity = 'Chicago')
 ORDER BY
   Total;
+/*
+In SQLite, the OR operator allows you to combine multiple conditions in a WHERE clause to filter rows based on at least one condition being true.
+
+Here’s the syntax of the OR operator:
+
+A OR B
+
+In this syntax:
+
+A and B are boolean expressions that evaluate to a value of true, false, or null.
+If A and B are non-null, the OR operator returns true if either A or B is true.
+
+The following table illustrates the result of the OR operator when combining two conditions A and B:
+
+A	B	A OR B
+false	false	false
+false	true	true
+true	false	true
+true	true	true
+false	NULL	NULL
+true	NULL	true
+NULL	false	NULL
+NULL	true	true
+NULL	NULL	NULL
+*/
+
+/*
+The following example uses the OR operator to retrieve the invoices with the billing city is New York or Chicago:
+*/
+
+SELECT
+  BillingAddress,
+  BillingCity,
+  Total
+FROM
+  invoices
+WHERE
+  BillingCity = 'New York'
+  OR BillingCity = 'Chicago'
+ORDER BY 
+  BillingCity;
+
+/*
+The following statement uses the OR operator with the AND operator to retrieve the invoices with the billing city is either New York or Chicago and the Total is greater than 10:
+*/
+
+SELECT
+  BillingAddress,
+  BillingCity,
+  Total
+FROM
+  invoices
+WHERE
+  (BillingCity = 'New York' OR BillingCity = 'Chicago') AND
+  Total > 10
+ORDER BY
+  Total;
