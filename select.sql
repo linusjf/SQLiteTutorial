@@ -170,6 +170,7 @@ ORDER BY
     Composer NULLS LAST
 LIMIT 10 OFFSET (Select COUNT(*)  from tracks) - 10;
 
+
 SELECT 
     TrackId, 
     Name, 
@@ -710,3 +711,15 @@ WHERE
     InvoiceDate NOT BETWEEN '2009-01-03' AND '2013-12-01'
 ORDER BY
     InvoiceDate;
+
+WITH Count as (
+	Select COUNT(*) as cnt from tracks )
+SELECT 
+    TrackId, 
+    Name, 
+    Composer 
+FROM 
+    tracks
+ORDER BY 
+    Composer NULLS LAST
+LIMIT 10 OFFSET (select cnt from count) - 10;
