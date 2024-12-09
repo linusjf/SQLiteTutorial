@@ -1183,3 +1183,68 @@ INNER JOIN albums ON albums.albumid = tracks.albumid
 INNER JOIN artists ON artists.artistid = albums.artistid
 WHERE
 	artists.artistid = 10;
+
+/*
+Similar to the INNER JOIN clause, the LEFT JOIN clause is an optional clause of the SELECT statement. You use the LEFT JOIN clause to query data from multiple related tables.
+
+Suppose we have two tables: A and B.
+
+A has m and f columns.
+B has n and f columns.
+To perform join between A and B using LEFT JOIN clause, you use the following statement:
+
+SELECT
+	a,
+	b
+FROM
+	A
+LEFT JOIN B ON A.f = B.f
+WHERE search_condition;
+*/
+/*
+The expression A.f = B.f is a conditional expression. Besides the equality (=) operator, you can use other comparison operators such as greater than (>), less than (<), etc.
+
+The statement returns a result set that includes:
+
+Rows in table A (left table) that have corresponding rows in table B.
+Rows in the table A table and the rows in the table B filled with NULL values in case the row from table A does not have any corresponding rows in table B.
+In other words, all rows in table A are included in the result set whether there are matching rows in table B or not.
+
+In case you have a WHERE clause in the statement, the search_condition in the WHERE clause is applied after the matching of the LEFT JOIN clause completes.
+
+It is noted that LEFT OUTER JOIN is the same as LEFT JOIN.
+ */
+
+/*
+
+One album belongs to one artist. However, one artist may have zero or more albums.
+
+To find artists who do not have any albums by using the LEFT JOIN clause, we select artists and their corresponding albums. If an artist does not have any albums, the value of the AlbumId column is NULL.
+
+To display the artists who do not have any albums first, we have two choices:
+
+First, use ORDER BY clause to list the rows whose AlbumId is NULL values first.
+Second, use WHERE clause and IS NULL operator to list only artists who do not have any albums.
+The following statement uses the LEFT JOIN clause with the ORDER BY clause.
+*/
+SELECT
+   artists.ArtistId, 
+   AlbumId
+FROM
+   artists
+LEFT JOIN albums ON
+   albums.ArtistId = artists.ArtistId
+ORDER BY
+   AlbumId;
+/*
+The following statement uses the LEFT JOIN clause with the WHERE clause.
+*/
+SELECT
+   artists.ArtistId
+   , AlbumId
+FROM
+   artists
+LEFT JOIN albums ON
+   albums.ArtistId = artists.ArtistId
+WHERE
+   AlbumId IS NULL;
