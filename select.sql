@@ -1248,3 +1248,104 @@ LEFT JOIN albums ON
    albums.ArtistId = artists.ArtistId
 WHERE
    AlbumId IS NULL;
+
+/*
+In SQLite, the RIGHT JOIN clause allows you to combine rows from two tables based on a related column between them.
+
+The RIGHT JOIN clause returns all rows from the right table and matching rows from the left table. For non-matching rows in the left table, it uses NULL values.
+
+Here’s the syntax of the RIGHT JOIN clause:
+
+SELECT
+  select_list
+FROM
+  table1
+  RIGHT JOIN table2 ON table1.column_name1 = table2.column_name2;
+Code language: SQL (Structured Query Language) (sql)
+In this syntax:
+
+table1 and table2 are the left and right tables respectively.
+column_name1 and column_name2 are the related column that links the two tables. Note that they may have the same name.
+The RIGHT JOIN clause will return all rows from the right table (table2) and matching rows from the left table (table1).
+
+For rows from the right table (table2) that do not have matching rows from the left table( table1), it uses NULL values for columns of the left table (table1).
+
+If table1 and table2 have the same column_name, you can use the USING syntax:
+
+SELECT
+  select_list
+FROM
+  table1
+  RIGHT JOIN table2 USING (column_name);
+Code language: SQL (Structured Query Language) (sql)
+Notice that USING (column_name) and ON table1.column_name = table2.column_name are the equivalent.
+
+To find rows from the right table (table2) that does not have matching rows in the left table (table1), you can check if the column_name IS NULL in a WHERE clause as follows:
+
+SELECT
+  select_list
+FROM
+  table1
+  RIGHT JOIN table2 USING (column_name)
+WHERE
+  column_name IS NULL;
+ */
+
+/*
+
+Let’s take an example of using the RIGHT JOIN clause.
+
+First, create new tables called departments and employees:
+*/
+
+drop table if exists emps;
+drop table if exists departments;
+CREATE TABLE departments (
+    department_id INTEGER PRIMARY KEY,
+    department_name TEXT NOT NULL
+);
+
+CREATE TABLE emps (
+    employee_id INTEGER PRIMARY KEY,
+    employee_name TEXT NOT NULL,
+    department_id INTEGER,
+    FOREIGN KEY(department_id) 
+        REFERENCES departments(department_id) ON DELETE CASCADE
+);
+/*
+In these tables, the emps table has the department_id column that references the department_id column of the departments table. This relationship is established via a foreign key constraint.
+
+Second, insert rows into the departments and emps tables:
+*/
+INSERT INTO departments (department_name ) 
+VALUES ('HR'),
+       ('IT');
+
+INSERT INTO emps (employee_name , department_id ) 
+VALUES 
+   ('John', 1),
+   ('Jane', 2),
+   ('Alice', NULL);
+/*
+Since both emps and departments tables
+ have the department_id column, you can use the USING clause:
+*/
+SELECT
+  employee_name,
+  department_name
+FROM
+  departments
+  RIGHT JOIN emps USING (department_id);
+/*
+It should return the same result set of the query that uses the ON clause.
+
+Finally, find all employees who do not have a department using the IS NULL condition in a WHERE clause:
+*/
+SELECT
+  employee_name,
+  department_name
+FROM
+  departments
+  RIGHT JOIN emps ON emps.department_id = departments.department_id
+WHERE
+  department_name IS NULL;
