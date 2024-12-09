@@ -1098,3 +1098,88 @@ WHERE
     Composer IS NOT NULL
 ORDER BY 
     Name;
+
+/*
+In relational databases, data is often distributed in many related tables. A table is associated with another table using foreign keys.
+
+To query data from multiple tables, you use INNER JOIN clause. The INNER JOIN clause combines columns from correlated tables.
+
+Suppose you have two tables: A and B.
+
+A has a1, a2, and f columns. B has b1, b2, and f column. The A table links to the B table using a foreign key column named f.
+
+The following illustrates the syntax of the inner join clause:
+	
+SELECT a1, a2, b1, b2
+FROM A
+INNER JOIN B on B.f = A.f;
+For each row in the A table, the INNER JOIN clause compares the value of the f column with the value of the f column in the B table. If the value of the f column in the A table equals the value of the f column in the B table, it combines data from a1, a2, b1, b2, columns and includes this row in the result set.
+
+In other words, the INNER JOIN clause returns rows from the A table that have the corresponding row in B table.
+
+This logic is applied if you join more than 2 tables
+*/
+
+/*
+
+In the tracks table, the AlbumId column is a foreign key. And in the albums table, the AlbumId is the primary key.
+
+To query data from both tracks and albums tables, you use the following statement:
+*/
+SELECT
+	trackid,
+	name,
+	title
+FROM
+	tracks
+INNER JOIN albums ON albums.albumid = tracks.albumid;
+
+/*
+For each row in the tracks table, SQLite uses the value in the albumid column of the tracks table to compare with the value in the albumid of the albums table. If SQLite finds a match, it combines data of rows in both tables in the result set.
+
+You can include the AlbumId columns from both tables in the final result set to see the effect.
+*/
+SELECT
+    trackid,
+    name,
+    tracks.albumid AS album_id_tracks,
+    albums.albumid AS album_id_albums,
+    title
+FROM
+    tracks
+    INNER JOIN albums ON albums.albumid = tracks.albumid;
+
+/*
+See the following tables:tracks albums and artists
+
+
+One track belongs to one album and one album has many tracks. The tracks table associated with the albums table via albumid column.
+
+One album belongs to one artist and one artist has one or many albums. The albums table links to the artists table via artistid column.
+
+To query data from these tables, you need to use two inner join clauses in the SELECT statement as follows:
+*/
+SELECT
+    trackid,
+    tracks.name AS track,
+    albums.title AS album,
+    artists.name AS artist
+FROM
+    tracks
+    INNER JOIN albums ON albums.albumid = tracks.albumid
+    INNER JOIN artists ON artists.artistid = albums.artistid;
+/*
+You can use a WHERE clause to get the tracks and albums of the artist with id 10 as the following statement:
+*/
+SELECT
+        albums.artistid as artistid,
+	trackid,
+	tracks.name AS Track,
+	albums.title AS Album,
+	artists.name AS Artist
+FROM
+	tracks
+INNER JOIN albums ON albums.albumid = tracks.albumid
+INNER JOIN artists ON artists.artistid = albums.artistid
+WHERE
+	artists.artistid = 10;
