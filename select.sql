@@ -1349,3 +1349,82 @@ FROM
   RIGHT JOIN emps ON emps.department_id = departments.department_id
 WHERE
   department_name IS NULL;
+
+/*
+If you use a LEFT JOIN, INNER JOIN, or CROSS JOIN without the ON or USING clause, SQLite produces a cartesian product of the involved tables. The number of rows in the cartesian product is the product of the number of rows in each table.
+
+Suppose, we have two tables A and B. The following statements perform the cross join and produce a cartesian product of the rows from the A and B tables.
+
+SELECT *
+FROM A JOIN B;
+SELECT *
+FROM A
+INNER JOIN B;
+SELECT *
+FROM A
+CROSS JOIN B;
+SELECT * 
+FROM A, B;
+
+Suppose, the A table has n rows and B table has m rows, the CROSS JOIN of these two tables will produce a result set that includes nxm rows.
+
+Imagine that if you have the third table C with k rows, the result of the CROSS JOIN clause of these three tables will contain nxmxk rows, which may be very huge. Therefore, you should be very careful when using the CROSS JOIN clause.
+
+You use the INNER JOIN and LEFT JOIN clauses more often than the CROSS JOIN clause. However, you will find the CROSS JOIN clause very useful in some cases.
+
+For example, when you want to have a matrix that has two dimensions filled with data like members and date data in a membership database. You want to check the member attendance for all relevant dates. In this case, you may use the CROSS JOIN clause as the following statement:
+
+SELECT
+  name,
+  date
+FROM
+  members
+  CROSS JOIN dates;
+ */	
+
+ /*
+The following statements create the ranks and suits tables that store the ranks and suits for a deck of cards and insert data into these two tables.
+*/
+drop table if exists ranks;
+drop table if exists suits;	
+CREATE TABLE
+  ranks (RANK TEXT NOT NULL);
+
+CREATE TABLE
+  suits (suit TEXT NOT NULL);
+
+INSERT INTO
+  ranks (RANK)
+VALUES
+  ('2'),
+  ('3'),
+  ('4'),
+  ('5'),
+  ('6'),
+  ('7'),
+  ('8'),
+  ('9'),
+  ('10'),
+  ('J'),
+  ('Q'),
+  ('K'),
+  ('A');
+
+INSERT INTO
+  suits (suit)
+VALUES
+  ('Clubs'),
+  ('Diamonds'),
+  ('Hearts'),
+  ('Spades');
+/*
+The following statement uses the CROSS JOIN clause to return a complete deck of cards data:
+*/
+SELECT
+  RANK,
+  suit
+FROM
+  ranks
+  CROSS JOIN suits
+ORDER BY
+  suit;
