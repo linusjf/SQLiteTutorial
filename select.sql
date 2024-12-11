@@ -1428,3 +1428,149 @@ FROM
   CROSS JOIN suits
 ORDER BY
   suit;
+
+/*
+In SQLite, a FULL OUTER JOIN clause allows you to combine rows from two tables based on a related column.
+
+The FULL OUTER JOIN clause returns all rows from the first and second tables. If there are no matching rows in one of the tables, it uses NULL to represent the missing values.
+
+Notice that the result of a FULL OUTER JOIN is a combination of  the results of a LEFT JOIN and a RIGHT JOIN.
+
+Here’s the syntax of the FULL OUTER JOIN clause:
+
+SELECT select_list
+FROM table1
+FULL OUTER JOIN table2 ON table2.column2 = table2.column1;
+In this syntax:
+
+table1 and table2 are the names of the related tables that you want to combine rows.
+column1 and column2 are the related columns that link the two tables. Typically, these columns have the same.
+If the related columns (column1 and column2) have the same name (column_name), you can use the USING syntax:
+
+SELECT select_list
+FROM table1
+FULL OUTER JOIN table2 USING (column_name);
+
+Please note that FULL OUTER JOIN and FULL JOIN are the same because the OUTER keyword is optional.
+
+If you want to find rows from the table1 that do not have matching rows in the table2, you can use the following statement:
+
+SELECT
+  select_list
+FROM
+  table1
+  FULL OUTER JOIN table2 USING (column_name)
+WHERE
+  table2.column_name IS NULL;
+Similarly, you can find rows from the table2 that do not have matching rows in the table1 using the following query:
+
+SELECT
+  select_list
+FROM
+  table1
+  FULL OUTER JOIN table2 USING (column_name)
+WHERE
+  table1.column_name IS NULL;
+  */
+/*
+  First, create three tables called students, courses, and enrollments:
+*/
+DROP TABLE IF EXISTS enrollments;
+DROP TABLE IF EXISTS courses;
+DROP TABLE IF EXISTS students;
+
+CREATE TABLE students (
+    student_id INTEGER PRIMARY KEY,
+    student_name TEXT NOT NULL
+);
+
+CREATE TABLE courses (
+    course_id INTEGER PRIMARY KEY,
+    course_name TEXT NOT NULL
+);
+
+CREATE TABLE enrollments (
+    enrollment_id INTEGER PRIMARY KEY,
+    student_id INTEGER,
+    course_id INTEGER,
+    FOREIGN KEY(student_id) REFERENCES students(student_id),
+    FOREIGN KEY(course_id) REFERENCES courses(course_id)
+);
+/*
+Second, insert rows into these tables:
+*/
+INSERT INTO
+  students (student_name)
+VALUES
+  ('John'),
+  ('Jane'),
+  ('Doe'),
+  ('Alice'),
+  ('Bob');
+
+INSERT INTO
+  courses (course_name)
+VALUES
+  ('Math'),
+  ('Science'),
+  ('History');
+
+INSERT INTO
+  enrollments (student_id, course_id)
+VALUES
+  (1, 1),
+  (2, 2),
+  (3, 3),
+  (4, NULL),
+  (NULL, 3);
+
+/*
+Third, use the FULL OUTER JOIN clause to find student enrollments:
+*/
+
+SELECT
+  s.student_name,
+  c.course_name
+FROM
+  students s
+  FULL OUTER JOIN enrollments e ON s.student_id = e.student_id
+  FULL OUTER JOIN courses c ON e.course_id = c.course_id;
+/*
+The output shows that Alice and Bob do not enroll in any courses and no student is enrolled in the History course.
+
+Since the tables share the same column names, you can use the USING syntax:
+*/
+SELECT
+  student_name,
+  course_name
+FROM
+  students
+  FULL OUTER JOIN enrollments USING(student_id)
+  FULL OUTER JOIN courses USING (course_id);
+/*
+It should return the same result set as the query above.
+*/
+/*
+Fourth, find students who have not enrolled in any courses:
+*/
+SELECT
+  student_name,
+  course_name
+FROM
+  students
+  FULL OUTER JOIN enrollments USING (student_id)
+  FULL OUTER JOIN courses USING (course_id)
+WHERE
+  course_name IS NULL;
+/*
+Finally, identify the courses that have not been enrolled in by any students:
+*/
+SELECT
+  student_name,
+  course_name
+FROM
+  students
+  FULL OUTER JOIN enrollments USING (student_id)
+  FULL OUTER JOIN courses USING (course_id)
+WHERE
+  student_name IS NULL;
