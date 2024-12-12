@@ -1574,3 +1574,154 @@ FROM
   FULL OUTER JOIN courses USING (course_id)
 WHERE
   student_name IS NULL;
+
+/*
+An artist can have zero or many albums while an album belongs to one artist.
+
+To query data from both artists and albums tables, you can use an INNER JOIN, LEFT JOIN, or CROSS JOIN clause. Each join clause determines how SQLite uses data from one table to match with rows in another table.
+
+The following statement returns the album titles and the corresponding artist names:
+*/
+
+SELECT
+  Title,
+  Name
+FROM
+  albums
+  INNER JOIN artists ON artists.ArtistId = albums.ArtistId;
+
+/*
+In this example, the INNER JOIN clause matches each row from the albums table with every row from the artists table based on the join condition (artists.ArtistId = albums.ArtistId) specified after the ON keyword.
+
+If the join condition evaluates to true (or 1), the columns of rows from both albums and artists tables are included in the result set.
+
+This query uses table aliases (l for the albums table and r for artists table) to shorten the query:
+*/
+SELECT
+  l.Title,
+  r.Name
+FROM
+  albums l
+  INNER JOIN artists r ON r.ArtistId = l.ArtistId;
+
+/*
+In case the column names of joined tables are
+same e.g., ArtistId, you can use the USING syntax as follows:
+*/
+SELECT
+  Title,
+  Name
+FROM
+  albums
+  INNER JOIN artists USING (ArtistId);
+
+/*
+The clause USING(ArtistId) is equivalent to the clause ON artists.ArtistId = albums.ArtistId.
+
+
+This statement uses the SELECT statement with the LEFT JOIN clause to retrieve the artist names and album titles from the artists and albums tables:
+*/
+SELECT
+  Name,
+  Title
+FROM
+  artists
+  LEFT JOIN albums ON artists.ArtistId = albums.ArtistId
+ORDER BY
+  Name;
+
+/*
+The LEFT JOIN clause selects data starting from the left table (artists) and matching rows in the right table (albums) based on the join condition (artists.ArtistId = albums.ArtistId) .
+
+The left join returns all rows from the artists table (or left table) and the matching rows from the albums table (or right table).
+
+If a row from the left table doesn’t have a matching row in the right table, SQLite includes columns of the rows in the left table and NULL for the columns of the right table.
+
+Similar to the INNER JOIN clause, you can use the USING syntax for the join condition as follows:
+*/
+SELECT
+  Name,
+  Title
+FROM
+  artists
+  LEFT JOIN albums USING (ArtistId)
+ORDER BY
+  Name;
+/*
+If you want to find artists who don’t have any albums, you can add a WHERE clause as shown in the following query:
+*/
+SELECT
+  Name,
+  Title
+FROM
+  artists
+  LEFT JOIN albums ON artists.ArtistId = albums.ArtistId
+WHERE
+  Title IS NULL
+ORDER BY
+  Name;
+
+/*
+Generally, this type of query allows you to find rows that are available in the left table but don’t have corresponding rows in the right table.
+
+Note that LEFT JOIN and LEFT OUTER JOIN are synonyms.
+
+SQLite CROSS JOIN
+The CROSS JOIN clause creates a Cartesian product of rows from the joined tables.
+
+Unlike the INNER JOIN and LEFT JOIN clauses, a CROSS JOIN doesn’t have a join condition. Here is the basic syntax of the CROSS JOIN clause:
+
+SELECT
+  select_list
+FROM
+  table1
+  CROSS JOIN table2;
+
+The CROSS JOIN combines every row from the first table (table1) with every row from the second table (table2) to form the result set.
+
+If the first table has n rows, the second table has m rows, the final result will have nxm rows.
+
+A practical example of the CROSS JOIN clause is to combine two sets of data to form an initial data set for further processing. For example, you have a list of products and months, and you want to make a plan for when you can sell which products.
+
+The following script creates the products and calendars tables:
+*/
+DROP TABLE IF EXISTS calendars;
+DROP TABLE IF EXISTS products;
+CREATE TABLE products (
+   product text NOT NULL
+);
+
+INSERT INTO
+  products (product)
+VALUES
+  ('P1'),
+  ('P2'),
+  ('P3');
+
+CREATE TABLE
+  calendars (y INT NOT NULL, m INT NOT NULL);
+
+INSERT INTO
+  calendars (y, m)
+VALUES
+  (2019, 1),
+  (2019, 2),
+  (2019, 3),
+  (2019, 4),
+  (2019, 5),
+  (2019, 6),
+  (2019, 7),
+  (2019, 8),
+  (2019, 9),
+  (2019, 10),
+  (2019, 11),
+  (2019, 12);
+
+/*
+This query uses the CROSS JOIN clause to combine the products with the months:
+*/
+SELECT
+  *
+FROM
+  products
+  CROSS JOIN calendars;
