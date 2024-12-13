@@ -2046,3 +2046,107 @@ HAVING
 
 select count(*) from tracks;
 select count(*) from albums;
+
+/*
+Sometimes, you need to combine the results of multiple queries into a single result set. To achieve this, you can use the UNION operator.
+
+Here’s the syntax of the UNION operator:
+
+query1
+UNION [ALL]
+query2;
+
+In this syntax:
+
+First, specify the first query.
+Second, use the UNION operator to indicate that you want to combine the result set of the first query with the next one.
+Third, specify the second query.
+The UNION operator eliminates duplicate rows in the final result set. If you want to retain the duplicate rows, you can use the UNION ALL operator.
+
+Here are the rules for the queries when using the UNION operator:
+
+The queries (query1 and query2) have the same number of columns.
+The corresponding columns must have compatible data types.
+The column names of the first query determine the column names of the combined result set.
+If you use the GROUP BY and HAVING clauses, they will be applied to each query, not the final result set.
+If you use the ORDER BY clause, it will be applied to the combined result set, not the individual result set.
+Note that the difference between UNION and JOIN e.g., INNER JOIN or LEFT JOIN is that the JOIN clause combines columns from multiple related tables, whereas the UNION operator combines rows from multiple result sets.
+
+Suppose you have two tables t1 and t2 with the following structures:
+*/
+DROP TABLE IF EXISTS t1;
+CREATE TABLE  t1 (c1 INT);
+
+INSERT INTO
+  t1 (c1)
+VALUES
+  (1),
+  (2),
+  (3);
+
+DROP TABLE IF EXISTS t2;
+CREATE TABLE t2 (c2 INT);
+
+INSERT INTO
+  t2 (c2)
+VALUES
+  (2),
+  (3),
+  (4);
+
+/*
+The following statement combines the result sets of the t1 and t2 tables using the UNION operator:
+*/
+SELECT c1 FROM t1
+UNION
+SELECT c2 FROM t2;
+
+/*
+The following statement combines the result sets of t1 and t2 tables using the  UNION ALL operator:
+*/
+SELECT
+  c1
+FROM
+  t1
+UNION ALL
+SELECT
+  c2
+FROM
+  t2;
+
+/*
+This statement uses the UNION operator to combine the names of employees and customers into a single list:
+*/
+SELECT
+  FirstName,
+  LastName,
+  'Employee' AS Type
+FROM
+  employees
+UNION
+SELECT
+  FirstName,
+  LastName,
+  'Customer'
+FROM
+  customers;
+
+/*
+This example uses the UNION operator to combine the names of the employees and customers into a single list. In addition, it uses the ORDER BY clause to sort the name list by first name and last name.
+*/
+SELECT
+  FirstName,
+  LastName,
+  'Employee' AS Type
+FROM
+  employees
+UNION
+SELECT
+  FirstName,
+  LastName,
+  'Customer'
+FROM
+  customers
+ORDER BY
+  FirstName,
+  LastName;
