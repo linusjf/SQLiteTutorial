@@ -1945,3 +1945,104 @@ The function STRFTIME('%Y', InvoiceDate) returns a year from a date string.
 The GROUP BY clause groups the invoices by years.
 The function COUNT() returns the number of invoice in each year (or group).
 */
+
+/*
+
+SQLite HAVING clause is an optional clause of the SELECT statement. The HAVING clause specifies a search condition for a group.
+
+You often use the HAVING clause with the GROUP BY clause. The GROUP BY clause groups a set of rows into a set of summary rows or groups. Then the HAVING clause filters groups based on a specified condition.
+
+If you use the HAVING clause, you must include the GROUP BY clause; otherwise, you will get the following error:
+
+Error: a GROUP BY clause is required before HAVING
+
+Note that the HAVING clause is applied after GROUP BY clause, whereas the WHERE clause is applied before the GROUP BY clause.
+
+The following illustrates the syntax of the HAVING clause:
+
+SELECT
+	column_1, 
+        column_2,
+	aggregate_function (column_3)
+FROM
+	table
+GROUP BY
+	column_1,
+        column_2
+HAVING
+	search_condition;
+
+In this syntax, the HAVING clause evaluates the search_condition for each group as a Boolean expression. It only includes a group in the final result set if the evaluation is true.
+
+*/
+
+/*
+To find the number of tracks for each album, you use GROUP BY clause as follows:
+*/
+SELECT
+	albumid,
+	COUNT(trackid) no_of_tracks
+FROM
+	tracks
+GROUP BY
+	albumid;
+
+/*
+
+SQLite HAVING clause with COUNT function
+To find the numbers of tracks for the album with id 1, we add a HAVING clause to the following statement:
+*/
+SELECT
+	albumid,
+	COUNT(trackid) no_of_tracks
+FROM
+	tracks
+GROUP BY
+	albumid
+HAVING albumid = 1;
+
+/*
+We have referred to the AlbumId column in the HAVING clause.
+
+To find albums that have the number of tracks between 18 and 20, you use the aggregate function in the HAVING clause as shown in the following statement:
+*/
+SELECT
+   albumid,
+   COUNT(trackid) as no_of_tracks
+FROM
+   tracks
+GROUP BY
+   albumid
+HAVING 
+   no_of_tracks BETWEEN 18 AND 20
+ORDER BY albumid;
+
+SELECT
+   albumid,
+   COUNT(trackid) as no_of_tracks
+FROM
+   tracks
+GROUP BY
+   albumid
+HAVING 
+   COUNT(albumid) BETWEEN 18 AND 20
+ORDER BY albumid;
+
+/*
+The following statement queries data from tracks and albums tables using inner join to find albums that have the total length greater than 60,000,000 milliseconds.
+*/
+
+SELECT
+	tracks.AlbumId as AlbumId,
+	title,
+	SUM(Milliseconds) AS length
+FROM
+	tracks
+INNER JOIN albums Using(AlbumId)
+GROUP BY
+	AlbumId 
+HAVING
+	length > 60000000;
+
+select count(*) from tracks;
+select count(*) from albums;
