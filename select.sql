@@ -2241,3 +2241,43 @@ The first query selects all books from the books table.
 The second query retrieves books that have orders by joining the books table with the orders table.
 The EXCEPT operator returns a list of distinct books that have not been ordered by any customer.
 */
+
+/*
+SQLite INTERSECT operator allows you to combine the result sets of two queries and returns distinct rows that appear in both result sets of the queries.
+
+The following illustrates the syntax of the INTERSECT operator:
+
+SELECT select_list1
+FROM table1
+INTERSECT
+SELECT select_list2
+FROM table2;
+The basic rules for combining the result sets of two queries are as follows:
+
+First, the number and the order of the columns in all queries must be the same.
+Second, the data types must be comparable.
+For the demonstration, we will create two tables t1 and t2 and insert some data into both tables:
+
+The following statement illustrates how to use the INTERSECT operator to compare result sets of two queries:
+*/
+SELECT c1 FROM t1
+INTERSECT
+SELECT c2 FROM t2;
+
+/*
+The following statement uses the INTERSECT operator to find customers who have invoices:
+*/
+SELECT CustomerId, FirstName, LastName
+FROM customers
+INTERSECT
+SELECT CustomerId, FirstName, LastName
+FROM invoices
+INNER JOIN customers USING (CustomerId)
+ORDER BY CustomerId;
+/*
+How it works.
+
+The first query returns all customers from the customers table.
+The second query returns customers who have invoices by joining the customers table with the invoices table.
+The INTERSECT operator returns customers who have invoices.*/
+
