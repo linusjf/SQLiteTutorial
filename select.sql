@@ -1028,7 +1028,7 @@ SELECT
 FROM
 	tracks
 WHERE
-	name GLOB ' Man * ';
+	name GLOB ' Man \* ';
 
 /*
 The following statement gets the tracks whose names end with Man. The pattern *Man matches any string that ends with Man.
