@@ -1026,7 +1026,7 @@ SELECT
 FROM
 	tracks
 WHERE
-	name GLOB "Man*";
+	name GLOB 'Man*';
 
 /*
 The following statement gets the tracks whose names end with Man. The pattern *Man matches any string that ends with Man.
@@ -1038,7 +1038,7 @@ SELECT
 FROM
 	tracks
 WHERE
-	name GLOB "*Man";
+	name GLOB '*Man';
 
 /*
 The following query finds the tracks whose names start with any single character (?), followed by the string ere and then any number of character (*).
@@ -1050,7 +1050,7 @@ SELECT
 FROM
 	tracks
 WHERE
-	name GLOB "?ere*";
+	name GLOB '?ere*';
 
 /*
 To find the tracks whose names contain numbers, you can use the list wildcard [0-9] as follows:
@@ -1061,7 +1061,7 @@ SELECT
 FROM
 	tracks
 WHERE
-	name GLOB "*[1-9]*";
+	name GLOB '*[1-9]*';
 
 /*
 Or to find the tracks whose name does not contain any number, you place the character ^ at the beginning of the list:
@@ -1073,7 +1073,7 @@ SELECT
 FROM
 	tracks
 WHERE
-	name GLOB "*[^1-9]*";
+	name GLOB '*[^1-9]*';
 
 /*
 The following statement finds the tracks whose names end with a number.
@@ -1084,7 +1084,7 @@ SELECT
 FROM
 	tracks
 WHERE
-	name GLOB "*[1-9]";
+	name GLOB '*[1-9]';
 
 /*
 NULL is special. It indicates that a piece of information is unknown or not applicable.
