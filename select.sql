@@ -1012,7 +1012,7 @@ Unlike the LIKE operator, the GLOB operator is case sensitive and uses the UNIX 
 
 The following shows the wildcards used with the GLOB  operator:
 
-The asterisk (*) wildcard matches any number of characters.
+The asterisk (\*) wildcard matches any number of characters.
 The question mark (?) wildcard matches exactly one character.
 On top of these wildcards, you can use the list wildcard [] to match one character from a list of characters. For example [xyz] match any single x, y, or z character.
 
@@ -1020,7 +1020,7 @@ The list wildcard also allows a range of characters e.g., [a-z] matches any sing
 
 Besides, you can use the character ^ at the beginning of the list to match any character except for any character in the list. For example, the [^0-9] pattern matches any single character except a numeric character.
 
-The following statement finds tracks whose names start with the string Man. The pattern Man* matches any string that starts with Man.
+The following statement finds tracks whose names start with the string Man. The pattern Man\* matches any string that starts with Man.
 */
 SELECT
 	trackid,
