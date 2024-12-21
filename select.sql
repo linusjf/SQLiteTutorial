@@ -694,8 +694,7 @@ SELECT
 FROM
     invoices
 WHERE
-    Total BETWEEN 14.91
-    AND 18.86
+    Total BETWEEN 14.91 AND 18.86
 ORDER BY
     Total;
 
@@ -709,8 +708,7 @@ SELECT
 FROM
     invoices
 WHERE
-    Total NOT BETWEEN 1
-    AND 20
+    Total NOT BETWEEN 1 AND 20
 ORDER BY
     Total;
 
@@ -969,7 +967,7 @@ Next, insert some rows into the table t:
 INSERT INTO
     t(c)
 VALUES
-('10% increase'),
+    ('10% increase'),
     ('10 times decrease'),
     ('100% vs. last year'),
     ('20% increase next year');
@@ -1012,7 +1010,7 @@ Unlike the LIKE operator, the GLOB operator is case sensitive and uses the UNIX 
 
 The following shows the wildcards used with the GLOB  operator:
 
-The asterisk (\*) wildcard matches any number of characters.
+The asterisk (*) wildcard matches any number of characters.
 The question mark (?) wildcard matches exactly one character.
 On top of these wildcards, you can use the list wildcard [] to match one character from a list of characters. For example [xyz] match any single x, y, or z character.
 
@@ -1020,7 +1018,7 @@ The list wildcard also allows a range of characters e.g., [a-z] matches any sing
 
 Besides, you can use the character ^ at the beginning of the list to match any character except for any character in the list. For example, the [^0-9] pattern matches any single character except a numeric character.
 
-The following statement finds tracks whose names start with the string Man. The pattern Man\* matches any string that starts with Man.
+The following statement finds tracks whose names start with the string Man. The pattern Man* matches any string that starts with Man.
 */
 SELECT
 	trackid,
@@ -1028,7 +1026,7 @@ SELECT
 FROM
 	tracks
 WHERE
-	name GLOB ' Man \* ';
+	name GLOB "Man*";
 
 /*
 The following statement gets the tracks whose names end with Man. The pattern *Man matches any string that ends with Man.
@@ -1040,7 +1038,7 @@ SELECT
 FROM
 	tracks
 WHERE
-	name GLOB ' * Man ';
+	name GLOB "*Man";
 
 /*
 The following query finds the tracks whose names start with any single character (?), followed by the string ere and then any number of character (*).
@@ -1052,7 +1050,7 @@ SELECT
 FROM
 	tracks
 WHERE
-	name GLOB ' ? ere * ';
+	name GLOB "?ere*";
 
 /*
 To find the tracks whose names contain numbers, you can use the list wildcard [0-9] as follows:
@@ -1063,7 +1061,7 @@ SELECT
 FROM
 	tracks
 WHERE
-	name GLOB ' * [1-9] * ';
+	name GLOB "*[1-9]*";
 
 /*
 Or to find the tracks whose name does not contain any number, you place the character ^ at the beginning of the list:
@@ -1075,7 +1073,7 @@ SELECT
 FROM
 	tracks
 WHERE
-	name GLOB ' * [^1-9] * ';
+	name GLOB "*[^1-9]*";
 
 /*
 The following statement finds the tracks whose names end with a number.
@@ -1086,7 +1084,7 @@ SELECT
 FROM
 	tracks
 WHERE
-	name GLOB ' * [1-9] ';
+	name GLOB "*[1-9]";
 
 /*
 NULL is special. It indicates that a piece of information is unknown or not applicable.
