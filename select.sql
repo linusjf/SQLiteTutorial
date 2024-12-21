@@ -2407,3 +2407,107 @@ SELECT albumid,
        tracks_count
   FROM albums
  ORDER BY tracks_count DESC;
+
+/*
+The EXISTS operator is a logical operator that checks whether a subquery returns any row.
+
+Here is the basic syntax of the EXISTS operator:
+
+EXISTS(subquery)
+In this syntax, the subquery is a SELECT statement that returns zero or more rows.
+
+If the subquery returns one or more row, the EXISTS operator return true. Otherwise, the EXISTS operator returns false or NULL.
+
+Note that if the subquery returns one row with NULL, the result of the EXISTS operator is still true because the result set contains one row with NULL.
+
+To negate the EXISTS operator, you use the NOT EXISTS operator as follows:
+
+NOT EXISTS (subquery)
+The NOT EXISTS operator returns true if the subquery returns no row.
+*/
+
+SELECT
+    CustomerId,
+    FirstName,
+    LastName,
+    Company
+FROM
+    Customers c
+WHERE
+    EXISTS (
+        SELECT 
+            1 
+        FROM 
+            Invoices
+        WHERE 
+            CustomerId = c.CustomerId
+    )
+ORDER BY
+    FirstName,
+    LastName;
+
+SELECT
+    CustomerId,
+    FirstName,
+    LastName,
+    Company
+FROM
+    Customers c
+WHERE
+    EXISTS (
+        SELECT 
+            * 
+        FROM 
+            Invoices
+        WHERE 
+            CustomerId = c.CustomerId
+    )
+ORDER BY
+    FirstName,
+    LastName;
+
+/*
+In this example, for each customer, the EXISTS operator checks if the customer id exists in the invoices table.
+
+If yes, the subquery returns one row with value 1 that causes the EXISTS operator evaluate to true. Therefore, the query includes the curstomer in the result set.
+In case the customer id does not exist in the Invoices table, the subquery returns no rows which causes the EXISTS operator to evaluate to false, hence the query does not include the customer in the result set.
+Notice that you can use the IN operator instead of EXISTS operator in this case to achieve the same result:
+*/
+SELECT
+   CustomerId, 
+   FirstName, 
+   LastName, 
+   Company
+FROM
+   Customers c
+WHERE
+   CustomerId IN (
+      SELECT
+         CustomerId
+      FROM
+         Invoices
+   )
+ORDER BY
+   FirstName, 
+   LastName;
+/*
+Once the subquery returns the first row, the EXISTS operator stops searching because it can determine the result. On the other hand, the IN operator must scan all rows returned by the subquery to determine the result.
+
+Generally speaking, the EXISTS operator is faster than IN operator if the result set returned by the subquery is large. By contrast, the IN operator is faster than the EXISTS operator if the result set returned by the subquery is small.*/
+/*
+This query find all artists who do not have any album in the Albums table:
+*/
+SELECT
+   *
+FROM
+   Artists a
+WHERE
+   NOT EXISTS(
+      SELECT
+         1
+      FROM
+         Albums
+      WHERE
+         ArtistId = a.ArtistId
+   )
+ORDER BY Name;
