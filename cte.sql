@@ -8,7 +8,7 @@ In practice, you can use CTEs to replace the subqueries to make them more readab
 Here’s the syntax for defining a CTE in SQLite:
 
 WITH cte_name AS (
- -- cte query definion
+-- cte query definion
 
 )
 -- main query using the cte
@@ -23,9 +23,9 @@ Third, write the main query that references the CTE.
 Here’s an example to illustrate the CTE syntax:
 
 WITH cte_example AS (
- SELECT column1, column2
- FROM table_name
- WHERE condition
+SELECT column1, column2
+FROM table_name
+WHERE condition
 )
 SELECT * FROM cte_example;
 */
@@ -39,44 +39,47 @@ The main query selects all columns from the CTE cte_example.
 /*
 The following example uses a CTE to retrieve the top 5 tracks from the tracks table:
 */
-WITH top_tracks AS (
+WITH
+  top_tracks AS (
     SELECT
-        trackid,
-        name
+      trackid,
+      name
     FROM
-        tracks
+      tracks
     ORDER BY
-        trackid
+      trackid
     LIMIT
-        5
-)
+      5
+  )
 SELECT
-    *
+  *
 FROM
-    top_tracks;
+  top_tracks;
+
 
 /*
 The following example uses a CTE to find the top 5 customers by total sales from the invoices and invoice_items tables:
 */
-WITH customer_sales AS (
+WITH
+  customer_sales AS (
     SELECT
-        c.customerid,
-        c.firstname || ' ' || c.lastname AS customer_name,
-        ROUND(SUM(ii.unitprice * ii.quantity), 2) AS total_sales
+      c.customerid,
+      c.firstname || ' ' || c.lastname AS customer_name,
+      ROUND(SUM(ii.unitprice * ii.quantity), 2) AS total_sales
     FROM
-        customers c
-        INNER JOIN invoices i ON c.customerid = i.customerid
-        INNER JOIN invoice_items ii ON i.invoiceid = ii.invoiceid
+      customers c
+      INNER JOIN invoices i ON c.customerid = i.customerid
+      INNER JOIN invoice_items ii ON i.invoiceid = ii.invoiceid
     GROUP BY
-        c.customerid
-)
+      c.customerid
+  )
 SELECT
-    customer_name,
-    total_sales
+  customer_name,
+  total_sales
 FROM
-    customer_sales
+  customer_sales
 ORDER BY
-    total_sales DESC,
-    customer_name
+  total_sales DESC,
+  customer_name
 LIMIT
-    5;
+  5;
