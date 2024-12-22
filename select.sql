@@ -2912,20 +2912,31 @@ SELECT
 FROM
   top_tracks;
 
+
 /*
 
 The following example uses a CTE to find the top 5 customers by total sales from the invoices and invoice_items tables:
 */
-WITH customer_sales AS (
-    SELECT c.customerid,
-           c.firstname || ' ' || c.lastname AS customer_name,
-           ROUND(SUM(ii.unitprice * ii.quantity),2) AS total_sales
-    FROM customers c
-    INNER JOIN invoices i ON c.customerid = i.customerid
-    INNER JOIN invoice_items ii ON i.invoiceid = ii.invoiceid
-    GROUP BY c.customerid
-)
-SELECT customer_name, total_sales 
-FROM customer_sales
-ORDER BY total_sales DESC, customer_name
-LIMIT 5;
+WITH
+  customer_sales AS (
+    SELECT
+      c.customerid,
+      c.firstname || ' ' || c.lastname AS customer_name,
+      ROUND(SUM(ii.unitprice * ii.quantity), 2) AS total_sales
+    FROM
+      customers c
+      INNER JOIN invoices i ON c.customerid = i.customerid
+      INNER JOIN invoice_items ii ON i.invoiceid = ii.invoiceid
+    GROUP BY
+      c.customerid
+  )
+SELECT
+  customer_name,
+  total_sales
+FROM
+  customer_sales
+ORDER BY
+  total_sales DESC,
+  customer_name
+LIMIT
+  5;
