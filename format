@@ -1,2 +1,12 @@
 #!/usr/bin/env bash
-sql-formatter -l sqlite --fix "$@"
+if [[ -z "$*" ]]; then
+  echo "Usage: "
+  echo "$0 <list of files>"
+  exit 1
+fi
+declare -i exitcode=0
+for file in "$@"; do
+  sql-formatter -l sqlite --fix "$file"
+  exitcode=$(("$exitcode" + "$?"))
+done
+exit "$exitcode"
