@@ -56,7 +56,6 @@ SELECT
 FROM
   top_tracks;
 
-
 /*
 The following example uses a CTE to find the top 5 customers by total sales from the invoices and invoice_items tables:
 */

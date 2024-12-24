@@ -15,13 +15,14 @@ Second, add a comma-separated list of columns after the table name. The column l
 Third, add a comma-separated list of values after the VALUES keyword. If you omit the column list, you have to specify values for all columns in the value list. The number of values in the value list must be the same as the number of columns in the column list.
 
 */
-
 /*
 /*
 The following statement insert a new row into the artists table:
 */
-INSERT INTO artists (name)
-VALUES('Bud Powell');
+INSERT INTO
+  artists (name)
+VALUES
+  ('Bud Powell');
 
 /*
 Because the ArtistId column is an auto-increment column, you can ignore it in the statement. SQLite automatically geneate a sequential integer number to insert into the ArtistId column.
@@ -29,28 +30,34 @@ Because the ArtistId column is an auto-increment column, you can ignore it in th
 You can verify the insert operation by using the following SELECT statement:
 */
 SELECT
-	ArtistId,
-	Name
+  ArtistId,
+  Name
 FROM
-	Artists
+  Artists
 ORDER BY
-	ArtistId DESC
-LIMIT 1;
+  ArtistId DESC
+LIMIT
+  1;
 
 /*
 
 INSERT INTO table1 (column1,column2 ,..)
 VALUES 
-   (value1,value2 ,...),
-   (value1,value2 ,...),
-    ...
-   (value1,value2 ,...);
+(value1,value2 ,...),
+(value1,value2 ,...),
+...
+(value1,value2 ,...);
 Each value list following the VALUES clause is a row that will be inserted into the table.
 
 The following example inserts three rows into the artists table:
 */
-INSERT INTO artists (name)
-VALUES	('Buddy Rich'),('Candido'),('Charlie Byrd');
+INSERT INTO
+  artists (name)
+VALUES
+  ('Buddy Rich'),
+  ('Candido'),
+  ('Charlie Byrd');
+
 /*
 SQLite issued a message:
 
@@ -58,13 +65,14 @@ Row Affected: 3
 You can verify the result using the following statement:
 */
 SELECT
-	ArtistId,
-	Name
+  ArtistId,
+  Name
 FROM
-	artists
+  artists
 ORDER BY
-	ArtistId DESC
-LIMIT 3;
+  ArtistId DESC
+LIMIT
+  3;
 
 /*
 When you create a new table using the CREATE TABLE statement, you can specify default values for columns, or a NULL if a default value is not specified.
@@ -73,17 +81,20 @@ The third form of the INSERT statement is INSERT DEFAULT VALUES, which inserts a
 
 For example, the following statement inserts a new row into the artists table using INSERT DEFAULT VALUES:
 */
-INSERT INTO artists DEFAULT VALUES;
+INSERT INTO
+  artists DEFAULT
+VALUES;
+
 /*
 To verify the insert, you use the following statement:
 */
 SELECT
-	ArtistId,
-	Name
+  ArtistId,
+  Name
 FROM
-	artists
+  artists
 ORDER BY
-	ArtistId DESC;
+  ArtistId DESC;
 
 /*
 
@@ -95,19 +106,28 @@ Suppose you want to backup the artists table, you can follow these steps:
 First, create a new table named artists_backup as follows:
 */
 DROP TABLE IF EXISTS artists_backup;
-CREATE TABLE artists_backup(
-   ArtistId INTEGER PRIMARY KEY AUTOINCREMENT,
-   Name NVARCHAR
+
+CREATE TABLE artists_backup (
+  ArtistId INTEGER PRIMARY KEY AUTOINCREMENT,
+  Name NVARCHAR
 );
+
 /*
 To insert data into the artists_backup table with the data from the artists table, you use the INSERT INTO SELECT statement as follows:
 */
-INSERT INTO artists_backup 
-SELECT ArtistId, Name
-FROM artists;
+INSERT INTO
+  artists_backup
+SELECT
+  ArtistId,
+  Name
+FROM
+  artists;
 
 /*
 
 If you query data from the artists_backup table, you will see all data in the artists table.
 */
-SELECT * FROM artists_backup;
+SELECT
+  *
+FROM
+  artists_backup;
