@@ -1,12 +1,14 @@
 #!/usr/bin/env bash
+require() {
+  hash "$@" || exit 127
+}
+require sql-formatter parallel
 if [[ -z "$*" ]]; then
   echo "Usage: "
   echo "$0 <list of files>"
   exit 1
 fi
 declare -i exitcode=0
-for file in "$@"; do
-  sql-formatter -l sqlite --fix "$file"
-  exitcode=$(("$exitcode" + "$?"))
-done
-exit "$exitcode"
+declare -a files=("$@")
+parallel sql-formatter --fix --language sqlite ::: "${files[@]}"
+exit $(("$exitcode" + $?))
