@@ -84,4 +84,65 @@ FROM
 WHERE
   employeeid = 4;
 
+/*
+Let’s check the email addresses of employees in the employees table:
+*/
+SELECT
+  employeeid,
+  firstname,
+  lastname,
+  email
+FROM
+  employees;
+
+/*
+To update one row in the employees table, you use LIMIT 1 clause. To make sure that you update the first row of employees sorted by the first name, you add the ORDER BY firstname clause.
+
+So the following statement updates email of Andrew Adams:
+*/
+/*
+UPDATE employees
+SET
+email = LOWER(
+firstname || '.' || lastname || '@chinookcorp.com'
+)
+ORDER BY
+firstname
+LIMIT
+1;
+*/
+UPDATE employees
+SET
+  email = LOWER(
+    firstname || '.' || lastname || '@chinookcorp.com'
+  )
+WHERE
+  firstname = 'Andrew'
+  AND lastname = 'Adams';
+
+SELECT
+  employeeid,
+  firstname,
+  lastname,
+  email
+FROM
+  employees;
+
+/*
+To update all rows in the  employees table, you skip the WHERE clause. For example, the following UPDATE statement changes all email addresses of all employees to lowercase:
+*/
+UPDATE employees
+SET
+  email = LOWER(
+    firstname || '.' || lastname || '@chinookcorp.com'
+  );
+
+SELECT
+  employeeid,
+  firstname,
+  lastname,
+  email
+FROM
+  employees;
+
 ROLLBACK;

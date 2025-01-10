@@ -769,8 +769,8 @@ OFFSET
     FROM
       count
   ) - 10;
---noqa: enable=RF02
 
+--noqa: enable=RF02
 /*
 The SQLite IN operator determines whether a value matches any value in a list or a subquery. The syntax of the IN operator is as follows:
 
@@ -843,8 +843,8 @@ WHERE
     WHERE
       artistid = 12
   );
---noqa: enable=RF02
 
+--noqa: enable=RF02
 /*
 First, the subquery returns a list of album ids that belong to the artist id 12.
 Then, the outer query return all tracks whose album id matches with the album id list returned by the subquery.
@@ -1408,8 +1408,8 @@ FROM
   RIGHT JOIN emps ON departments.department_id = emps.department_id
 WHERE
   departments.department_name IS NULL;
---noqa:enable=CV08
 
+--noqa:enable=CV08
 /*
 If you use a LEFT JOIN, INNER JOIN, or CROSS JOIN without the ON or USING clause, SQLite produces a cartesian product of the involved tables. The number of rows in the cartesian product is the product of the number of rows in each table.
 
@@ -1640,8 +1640,8 @@ FROM
   FULL OUTER JOIN courses USING (course_id)
 WHERE
   students.student_name IS NULL;
---noqa: enable=ST11
 
+--noqa: enable=ST11
 /*
 An artist can have zero or many albums while an album belongs to one artist.
 
@@ -1792,8 +1792,8 @@ SELECT
 FROM
   products
   CROSS JOIN calendars;
---noqa: enable=RF02
 
+--noqa: enable=RF02
 /*
 The self-join is a special kind of joins that allow you to join a table to itself using either LEFT JOIN or INNER JOIN clause. You use self-join to create a result set that joins the rows with the other rows within the same table.
 
@@ -1845,8 +1845,8 @@ FROM
   RIGHT JOIN employees AS mgrs ON emps.employeeid = mgrs.reportsto
 ORDER BY
   employee;
---noqa: enable=CV08
 
+--noqa: enable=CV08
 /*
 Andrew Adams is the CEO because he does not report anyone.
 
@@ -2496,8 +2496,8 @@ WHERE
     WHERE
       country = ' Canada '
   );
---noqa: enable=RF02
 
+--noqa: enable=RF02
 /*
 The subquery returns a list of ids of the employees who locate in Canada. The outer query uses the IN operator to find the customers who have the sales representative id in the list.
 */
@@ -2654,8 +2654,8 @@ WHERE
 ORDER BY
   firstname,
   lastname;
---noqa: enable=RF02
 
+--noqa: enable=RF02
 /*
 Once the subquery returns the first row, the EXISTS operator stops searching because it can determine the result. On the other hand, the IN operator must scan all rows returned by the subquery to determine the result.
 
@@ -2677,8 +2677,8 @@ WHERE
   )
 ORDER BY
   artists.name;
---noqa: enable=RF02
 
+--noqa: enable=RF02
 /*
 Common table expressions (CTE) are temporary result sets defined within the scope of a query. CTEs allow you to make your query more readable.
 
@@ -2745,7 +2745,10 @@ WITH
     SELECT
       customers.customerid,
       customers.firstname || ' ' || customers.lastname AS customer_name,
-      ROUND(SUM(invoice_items.unitprice * invoice_items.quantity), 2) AS total_sales
+      ROUND(
+        SUM(invoice_items.unitprice * invoice_items.quantity),
+        2
+      ) AS total_sales
     FROM
       customers
       INNER JOIN invoices ON customers.customerid = invoices.customerid

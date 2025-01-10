@@ -64,7 +64,10 @@ WITH
     SELECT
       customers.customerid,
       customers.firstname || ' ' || customers.lastname AS customer_name,
-      ROUND(SUM(invoice_items.unitprice * invoice_items.quantity), 2) AS total_sales
+      ROUND(
+        SUM(invoice_items.unitprice * invoice_items.quantity),
+        2
+      ) AS total_sales
     FROM
       customers
       INNER JOIN invoices ON customers.customerid = invoices.customerid
