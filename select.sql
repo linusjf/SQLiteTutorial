@@ -2616,7 +2616,7 @@ SELECT
   lastname,
   company
 FROM
-  customers AS c
+  customers
 WHERE
   EXISTS (
     SELECT
@@ -2624,7 +2624,7 @@ WHERE
     FROM
       invoices
     WHERE
-      customerid = c.customerid
+      customerid = customers.customerid
   )
 ORDER BY
   firstname,
@@ -2637,6 +2637,7 @@ If yes, the subquery returns one row with value 1 that causes the EXISTS operato
 In case the customer id does not exist in the Invoices table, the subquery returns no rows which causes the EXISTS operator to evaluate to false, hence the query does not include the customer in the result set.
 Notice that you can use the IN operator instead of EXISTS operator in this case to achieve the same result:
 */
+--noqa: disable=RF02
 SELECT
   customerid,
   firstname,
@@ -2653,6 +2654,7 @@ WHERE
 ORDER BY
   firstname,
   lastname;
+--noqa: enable=RF02
 
 /*
 Once the subquery returns the first row, the EXISTS operator stops searching because it can determine the result. On the other hand, the IN operator must scan all rows returned by the subquery to determine the result.
@@ -2675,6 +2677,7 @@ WHERE
   )
 ORDER BY
   name;
+--noqa: enable=RF02
 
 /*
 Common table expressions (CTE) are temporary result sets defined within the scope of a query. CTEs allow you to make your query more readable.
