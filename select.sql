@@ -1194,11 +1194,11 @@ For each row in the tracks table, SQLite uses the value in the albumid column of
 You can include the AlbumId columns from both tables in the final result set to see the effect.
 */
 SELECT
-  trackid,
-  name,
+  tracks.trackid,
+  tracks.name,
   tracks.albumid AS album_id_tracks,
   albums.albumid AS album_id_albums,
-  title
+  albums.title
 FROM
   tracks
   INNER JOIN albums ON tracks.albumid = albums.albumid;
@@ -1214,7 +1214,7 @@ One album belongs to one artist and one artist has one or many albums. The album
 To query data from these tables, you need to use two inner join clauses in the SELECT statement as follows:
 */
 SELECT
-  trackid,
+  tracks.trackid,
   tracks.name AS track,
   albums.title AS album,
   artists.name AS artist
@@ -1228,7 +1228,7 @@ You can use a WHERE clause to get the tracks and albums of the artist with id 10
 */
 SELECT
   albums.artistid,
-  trackid,
+  tracks.trackid,
   tracks.name AS track,
   albums.title AS album,
   artists.name AS artist
@@ -1283,24 +1283,24 @@ The following statement uses the LEFT JOIN clause with the ORDER BY clause.
 */
 SELECT
   artists.artistid,
-  albumid
+  albums.albumid
 FROM
   artists
   LEFT JOIN albums ON artists.artistid = albums.artistid
 ORDER BY
-  albumid;
+  albums.albumid;
 
 /*
 The following statement uses the LEFT JOIN clause with the WHERE clause.
 */
 SELECT
   artists.artistid,
-  albumid
+  albums.albumid
 FROM
   artists
   LEFT JOIN albums ON artists.artistid = albums.artistid
 WHERE
-  albumid IS NULL;
+  albums.albumid IS NULL;
 
 /*
 In SQLite, the RIGHT JOIN clause allows you to combine rows from two tables based on a related column between them.
@@ -1387,9 +1387,10 @@ VALUES
 Since both emps and departments tables
 have the department_id column, you can use the USING clause:
 */
+--noqa: disable=CV08
 SELECT
-  employee_name,
-  department_name
+  emps.employee_name,
+  departments.department_name
 FROM
   departments
   RIGHT JOIN emps USING (department_id);
@@ -1400,13 +1401,14 @@ It should return the same result set of the query that uses the ON clause.
 Finally, find all employees who do not have a department using the IS NULL condition in a WHERE clause:
 */
 SELECT
-  employee_name,
-  department_name
+  emps.employee_name,
+  departments.department_name
 FROM
   departments
   RIGHT JOIN emps ON departments.department_id = emps.department_id
 WHERE
-  department_name IS NULL;
+  departments.department_name IS NULL;
+--noqa: enable=CV08
 
 /*
 If you use a LEFT JOIN, INNER JOIN, or CROSS JOIN without the ON or USING clause, SQLite produces a cartesian product of the involved tables. The number of rows in the cartesian product is the product of the number of rows in each table.
