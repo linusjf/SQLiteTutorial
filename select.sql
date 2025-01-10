@@ -2563,7 +2563,7 @@ SELECT
   albumid,
   title,
   (
-    SELECT COUNT(trackid)
+    SELECT COUNT(tracks.trackid)
     FROM
       tracks
     WHERE
