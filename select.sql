@@ -1937,7 +1937,7 @@ For example, the following statement joins the tracks table with the albums tabl
 SELECT
   tracks.albumid,
   albums.title,
-  COUNT(trackid) AS no_of_tracks
+  COUNT(tracks.trackid) AS no_of_tracks
 FROM
   tracks
   INNER JOIN albums USING (albumid)
@@ -1952,7 +1952,7 @@ To filter groups, you use the GROUP BY with HAVING clause. For example, to get t
 SELECT
   tracks.albumid,
   albums.title,
-  COUNT(trackid) AS no_of_tracks
+  COUNT(tracks.trackid) AS no_of_tracks
 FROM
   tracks
   INNER JOIN albums ON tracks.albumid = albums.albumid
@@ -1979,9 +1979,9 @@ The following statement returns the album id, album title, maximum length, minim
 SELECT
   tracks.albumid,
   albums.title,
-  MIN(milliseconds) AS min_length,
-  MAX(milliseconds) AS max_length,
-  ROUND(AVG(milliseconds), 2) AS avg_length
+  MIN(tracks.milliseconds) AS min_length,
+  MAX(tracks.milliseconds) AS max_length,
+  ROUND(AVG(tracks.milliseconds), 2) AS avg_length
 FROM
   tracks
   INNER JOIN albums USING (albumid)
@@ -2113,13 +2113,13 @@ The following statement queries data from tracks and albums tables using inner j
 */
 SELECT
   tracks.albumid,
-  title,
-  SUM(milliseconds) AS length
+  albums.title,
+  SUM(tracks.milliseconds) AS length
 FROM
   tracks
   INNER JOIN albums USING (albumid)
 GROUP BY
-  albumid
+  albums.albumid
 HAVING
   length > 60000000;
 
@@ -2215,7 +2215,7 @@ UNION
 SELECT
   firstname,
   lastname,
-  ' Customer '
+  ' Customer ' AS type
 FROM
   customers;
 
@@ -2232,7 +2232,7 @@ UNION
 SELECT
   firstname,
   lastname,
-  ' Customer '
+  ' Customer ' AS type
 FROM
   customers
 ORDER BY
