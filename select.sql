@@ -2597,14 +2597,14 @@ SELECT
   lastname,
   company
 FROM
-  customers AS c
+  customers
 WHERE
   EXISTS (
     SELECT 1
     FROM
       invoices
     WHERE
-      customerid = c.customerid
+      invoices.customerid = customers.customerid
   )
 ORDER BY
   firstname,
@@ -2620,11 +2620,11 @@ FROM
 WHERE
   EXISTS (
     SELECT
-      *
+      invoices.*
     FROM
       invoices
     WHERE
-      customerid = customers.customerid
+      invoices.customerid = customers.customerid
   )
 ORDER BY
   firstname,
@@ -2664,19 +2664,19 @@ Generally speaking, the EXISTS operator is faster than IN operator if the result
 This query find all artists who do not have any album in the Albums table:
 */
 SELECT
-  *
+  artists.*
 FROM
-  artists AS a
+  artists
 WHERE
   NOT EXISTS (
     SELECT 1
     FROM
       albums
     WHERE
-      artistid = a.artistid
+      albums.artistid = artists.artistid
   )
 ORDER BY
-  name;
+  artists.name;
 --noqa: enable=RF02
 
 /*
@@ -2743,15 +2743,15 @@ The following example uses a CTE to find the top 5 customers by total sales from
 WITH
   customer_sales AS (
     SELECT
-      c.customerid,
-      c.firstname || ' ' || c.lastname AS customer_name,
-      ROUND(SUM(ii.unitprice * ii.quantity), 2) AS total_sales
+      customers.customerid,
+      customers.firstname || ' ' || customers.lastname AS customer_name,
+      ROUND(SUM(invoice_items.unitprice * invoice_items.quantity), 2) AS total_sales
     FROM
-      customers AS c
-      INNER JOIN invoices AS i ON c.customerid = i.customerid
-      INNER JOIN invoice_items AS ii ON i.invoiceid = ii.invoiceid
+      customers
+      INNER JOIN invoices ON customers.customerid = invoices.customerid
+      INNER JOIN invoice_items ON invoices.invoiceid = invoice_items.invoiceid
     GROUP BY
-      c.customerid
+      customers.customerid
   )
 SELECT
   customer_name,
