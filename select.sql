@@ -2362,10 +2362,10 @@ FROM
   books
 EXCEPT
 SELECT
-  title,
-  author,
-  genre,
-  price
+  books.title,
+  books.author,
+  books.genre,
+  books.price
 FROM
   books
   INNER JOIN orders USING (book_id);
@@ -2414,9 +2414,9 @@ FROM
   customers
 INTERSECT
 SELECT
-  customerid,
-  firstname,
-  lastname
+  customers.customerid,
+  customers.firstname,
+  customers.lastname
 FROM
   invoices
   INNER JOIN customers USING (customerid)
@@ -2458,6 +2458,7 @@ You can use a subquery in the SELECT, FROM, WHERE, and JOIN clauses.
 
 You can use a simple subquery as a search condition. For example, the following statement returns all the tracks in the album with the title  Let There Be Rock
 */
+--noqa: disable=RF02
 SELECT
   trackid,
   name,
@@ -2495,6 +2496,7 @@ WHERE
     WHERE
       country = ' Canada '
   );
+--noqa: enable=RF02
 
 /*
 The subquery returns a list of ids of the employees who locate in Canada. The outer query uses the IN operator to find the customers who have the sales representative id in the list.
@@ -2539,7 +2541,7 @@ FROM
   albums
 WHERE
   10000000 > (
-    SELECT SUM(bytes)
+    SELECT SUM(tracks.bytes)
     FROM
       tracks
     WHERE
