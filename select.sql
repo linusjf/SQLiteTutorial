@@ -1836,6 +1836,7 @@ FROM
 ORDER BY
   manager;
 
+--noqa: disable=CV08
 SELECT
   mgrs.firstname || ' ' || mgrs.lastname AS employee,
   emps.firstname || ' ' || emps.lastname AS manager
@@ -1844,6 +1845,7 @@ FROM
   RIGHT JOIN employees AS mgrs ON emps.employeeid = mgrs.reportsto
 ORDER BY
   employee;
+--noqa: enable=CV08
 
 /*
 Andrew Adams is the CEO because he does not report anyone.
@@ -1851,33 +1853,33 @@ Andrew Adams is the CEO because he does not report anyone.
 You can use the self-join technique to find the employees located in the same city as the following query:
 */
 SELECT DISTINCT
-  e1.city,
-  e1.firstname || ' ' || e1.lastname AS fullname
+  emps_1.city,
+  emps_1.firstname || ' ' || emps_1.lastname AS fullname
 FROM
-  employees AS e1
-  INNER JOIN employees AS e2 ON e1.city = e2.city
+  employees AS emps_1
+  INNER JOIN employees AS emps_2 ON emps_1.city = emps_2.city
   AND (
-    e1.firstname != e2.firstname
-    AND e1.lastname != e2.lastname
+    emps_1.firstname != emps_2.firstname
+    AND emps_1.lastname != emps_2.lastname
   )
 ORDER BY
-  e1.city;
+  emps_1.city;
 
 /*
 The join condition has two expressions:
 
-e1.city = e2.city to make sure that both employees located in the same city
-e.firstname <> e2.firstname AND e1.lastname <> e2.lastname to ensure that e1 and e2 are not the same employee with the assumption that there aren’t employees who have the same first name and last name.
+emps_1.city = emps_2.city to make sure that both employees located in the same city
+e.firstname <> emps_2.firstname AND emps_1.lastname <> emps_2.lastname to ensure that e1 and e2 are not the same employee with the assumption that there aren’t employees who have the same first name and last name.
 */
 SELECT DISTINCT
-  e1.city,
-  e1.firstname || ' ' || e1.lastname AS fullname
+  emps_1.city,
+  emps_1.firstname || ' ' || emps_1.lastname AS fullname
 FROM
-  employees AS e1
-  INNER JOIN employees AS e2 ON e1.city = e2.city
-  AND e1.employeeid != e2.employeeid
+  employees AS emps_1
+  INNER JOIN employees AS emps_2 ON emps_1.city = emps_2.city
+  AND emps_1.employeeid != emps_2.employeeid
 ORDER BY
-  e1.city;
+  emps_1.city;
 
 /*
 You could simply use employeeid instead.
@@ -1934,13 +1936,13 @@ For example, the following statement joins the tracks table with the albums tabl
 */
 SELECT
   tracks.albumid,
-  title,
+  albums.title,
   COUNT(trackid) AS no_of_tracks
 FROM
   tracks
   INNER JOIN albums USING (albumid)
 GROUP BY
-  albumid
+  albums.albumid
 ORDER BY
   no_of_tracks;
 
@@ -1949,7 +1951,7 @@ To filter groups, you use the GROUP BY with HAVING clause. For example, to get t
 */
 SELECT
   tracks.albumid,
-  title,
+  albums.title,
   COUNT(trackid) AS no_of_tracks
 FROM
   tracks
@@ -1976,7 +1978,7 @@ The following statement returns the album id, album title, maximum length, minim
 */
 SELECT
   tracks.albumid,
-  title,
+  albums.title,
   MIN(milliseconds) AS min_length,
   MAX(milliseconds) AS max_length,
   ROUND(AVG(milliseconds), 2) AS avg_length
@@ -1984,7 +1986,7 @@ FROM
   tracks
   INNER JOIN albums USING (albumid)
 GROUP BY
-  albumid;
+  tracks.albumid;
 
 /*
 SQLite allows you to group rows by multiple columns.
