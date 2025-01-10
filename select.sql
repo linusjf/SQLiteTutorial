@@ -1387,7 +1387,7 @@ VALUES
 Since both emps and departments tables
 have the department_id column, you can use the USING clause:
 */
---noqa: disable=CV08
+--noqa:disable=CV08
 SELECT
   emps.employee_name,
   departments.department_name
@@ -1408,7 +1408,7 @@ FROM
   RIGHT JOIN emps ON departments.department_id = emps.department_id
 WHERE
   departments.department_name IS NULL;
---noqa: enable=CV08
+--noqa:enable=CV08
 
 /*
 If you use a LEFT JOIN, INNER JOIN, or CROSS JOIN without the ON or USING clause, SQLite produces a cartesian product of the involved tables. The number of rows in the cartesian product is the product of the number of rows in each table.
@@ -1481,13 +1481,13 @@ VALUES
 The following statement uses the CROSS JOIN clause to return a complete deck of cards data:
 */
 SELECT
-  rank,
-  suit
+  ranks.rank,
+  suits.suit
 FROM
   ranks
   CROSS JOIN suits
 ORDER BY
-  suit;
+  suits.suit;
 
 /*
 In SQLite, a FULL OUTER JOIN clause allows you to combine rows from two tables based on a related column.
@@ -1591,21 +1591,22 @@ VALUES
 Third, use the FULL OUTER JOIN clause to find student enrollments:
 */
 SELECT
-  s.student_name,
-  c.course_name
+  studs.student_name,
+  courses.course_name
 FROM
-  students AS s
-  FULL OUTER JOIN enrollments AS e ON s.student_id = e.student_id
-  FULL OUTER JOIN courses AS c ON e.course_id = c.course_id;
+  students AS studs
+  FULL OUTER JOIN enrollments ON studs.student_id = enrollments.student_id
+  FULL OUTER JOIN courses ON enrollments.course_id = courses.course_id;
 
 /*
 The output shows that Alice and Bob do not enroll in any courses and no student is enrolled in the History course.
 
 Since the tables share the same column names, you can use the USING syntax:
 */
+--noqa: disable=ST11
 SELECT
-  student_name,
-  course_name
+  students.student_name,
+  courses.course_name
 FROM
   students
   FULL OUTER JOIN enrollments USING (student_id)
@@ -1618,27 +1619,28 @@ It should return the same result set as the query above.
 Fourth, find students who have not enrolled in any courses:
 */
 SELECT
-  student_name,
-  course_name
+  students.student_name,
+  courses.course_name
 FROM
   students
   FULL OUTER JOIN enrollments USING (student_id)
   FULL OUTER JOIN courses USING (course_id)
 WHERE
-  course_name IS NULL;
+  courses.course_name IS NULL;
 
 /*
 Finally, identify the courses that have not been enrolled in by any students:
 */
 SELECT
-  student_name,
-  course_name
+  students.student_name,
+  courses.course_name
 FROM
   students
   FULL OUTER JOIN enrollments USING (student_id)
   FULL OUTER JOIN courses USING (course_id)
 WHERE
-  student_name IS NULL;
+  students.student_name IS NULL;
+--noqa: enable=ST11
 
 /*
 An artist can have zero or many albums while an album belongs to one artist.
@@ -1648,8 +1650,8 @@ To query data from both artists and albums tables, you can use an INNER JOIN, LE
 The following statement returns the album titles and the corresponding artist names:
 */
 SELECT
-  title,
-  name
+  albums.title,
+  artists.name
 FROM
   albums
   INNER JOIN artists ON albums.artistid = artists.artistid;
@@ -1662,19 +1664,19 @@ If the join condition evaluates to true (or 1), the columns of rows from both al
 This query uses table aliases (l for the albums table and r for artists table) to shorten the query:
 */
 SELECT
-  l.title,
-  r.name
+  albums.title,
+  artists.name
 FROM
-  albums AS l
-  INNER JOIN artists AS r ON l.artistid = r.artistid;
+  albums
+  INNER JOIN artists ON albums.artistid = artists.artistid;
 
 /*
 In case the column names of joined tables are
 same e.g., ArtistId, you can use the USING syntax as follows:
 */
 SELECT
-  title,
-  name
+  albums.title,
+  artists.name
 FROM
   albums
   INNER JOIN artists USING (artistid);
@@ -1686,13 +1688,13 @@ The clause USING(ArtistId) is equivalent to the clause ON artists.ArtistId = alb
 This statement uses the SELECT statement with the LEFT JOIN clause to retrieve the artist names and album titles from the artists and albums tables:
 */
 SELECT
-  name,
-  title
+  artists.name,
+  albums.title
 FROM
   artists
   LEFT JOIN albums ON artists.artistid = albums.artistid
 ORDER BY
-  name;
+  artists.name;
 
 /*
 The LEFT JOIN clause selects data starting from the left table (artists) and matching rows in the right table (albums) based on the join condition (artists.ArtistId = albums.ArtistId) .
@@ -1704,27 +1706,27 @@ If a row from the left table doesn’t have a matching row in the right table, S
 Similar to the INNER JOIN clause, you can use the USING syntax for the join condition as follows:
 */
 SELECT
-  name,
-  title
+  artists.name,
+  albums.title
 FROM
   artists
   LEFT JOIN albums USING (artistid)
 ORDER BY
-  name;
+  artists.name;
 
 /*
 If you want to find artists who don’t have any albums, you can add a WHERE clause as shown in the following query:
 */
 SELECT
-  name,
-  title
+  artists.name,
+  albums.title
 FROM
   artists
   LEFT JOIN albums ON artists.artistid = albums.artistid
 WHERE
-  title IS NULL
+  albums.title IS NULL
 ORDER BY
-  name;
+  artists.name;
 
 /*
 Generally, this type of query allows you to find rows that are available in the left table but don’t have corresponding rows in the right table.
@@ -1784,11 +1786,13 @@ VALUES
 /*
 This query uses the CROSS JOIN clause to combine the products with the months:
 */
+--noqa: disable=RF02
 SELECT
   *
 FROM
   products
   CROSS JOIN calendars;
+--noqa: enable=RF02
 
 /*
 The self-join is a special kind of joins that allow you to join a table to itself using either LEFT JOIN or INNER JOIN clause. You use self-join to create a result set that joins the rows with the other rows within the same table.
