@@ -30,19 +30,19 @@ Because the ArtistId column is an auto-increment column, you can ignore it in th
 You can verify the insert operation by using the following SELECT statement:
 */
 SELECT
-  ArtistId,
-  Name
+  artistid,
+  name
 FROM
-  Artists
+  artists
 ORDER BY
-  ArtistId DESC
+  artistid DESC
 LIMIT
   1;
 
 /*
 
 INSERT INTO table1 (column1,column2 ,..)
-VALUES 
+VALUES
 (value1,value2 ,...),
 (value1,value2 ,...),
 ...
@@ -65,12 +65,12 @@ Row Affected: 3
 You can verify the result using the following statement:
 */
 SELECT
-  ArtistId,
-  Name
+  artistid,
+  name
 FROM
   artists
 ORDER BY
-  ArtistId DESC
+  artistid DESC
 LIMIT
   3;
 
@@ -89,12 +89,12 @@ VALUES;
 To verify the insert, you use the following statement:
 */
 SELECT
-  ArtistId,
-  Name
+  artistid,
+  name
 FROM
   artists
 ORDER BY
-  ArtistId DESC;
+  artistid DESC;
 
 /*
 
@@ -108,8 +108,8 @@ First, create a new table named artists_backup as follows:
 DROP TABLE IF EXISTS artists_backup;
 
 CREATE TABLE artists_backup (
-  ArtistId INTEGER PRIMARY KEY AUTOINCREMENT,
-  Name NVARCHAR
+  artistid INTEGER PRIMARY KEY AUTOINCREMENT,
+  name NVARCHAR
 );
 
 /*
@@ -118,8 +118,8 @@ To insert data into the artists_backup table with the data from the artists tabl
 INSERT INTO
   artists_backup
 SELECT
-  ArtistId,
-  Name
+  artistid,
+  name
 FROM
   artists;
 

@@ -62,15 +62,15 @@ The following example uses a CTE to find the top 5 customers by total sales from
 WITH
   customer_sales AS (
     SELECT
-      c.customerid,
-      c.firstname || ' ' || c.lastname AS customer_name,
-      ROUND(SUM(ii.unitprice * ii.quantity), 2) AS total_sales
+      customers.customerid,
+      customers.firstname || ' ' || customers.lastname AS customer_name,
+      ROUND(SUM(invoice_items.unitprice * invoice_items.quantity), 2) AS total_sales
     FROM
-      customers c
-      INNER JOIN invoices i ON c.customerid = i.customerid
-      INNER JOIN invoice_items ii ON i.invoiceid = ii.invoiceid
+      customers
+      INNER JOIN invoices ON customers.customerid = invoices.customerid
+      INNER JOIN invoice_items ON invoices.invoiceid = invoice_items.invoiceid
     GROUP BY
-      c.customerid
+      customers.customerid
   )
 SELECT
   customer_name,
@@ -79,6 +79,6 @@ FROM
   customer_sales
 ORDER BY
   total_sales DESC,
-  customer_name
+  customer_name ASC
 LIMIT
   5;
