@@ -1811,11 +1811,11 @@ If an employee reports to a manager, the value of the ReportsTo column of the em
 To get the information on who is the direct report of whom, you use the following statement:
 */
 SELECT
-  m.firstname || ' ' || m.lastname AS "Manager",
-  e.firstname || ' ' || e.lastname AS "Direct report"
+  mgrs.firstname || ' ' || mgrs.lastname AS manager,
+  emps.firstname || ' ' || emps.lastname AS direct_report
 FROM
-  employees AS e
-  INNER JOIN employees AS m ON e.reportsto = m.employeeid
+  employees AS emps
+  INNER JOIN employees AS mgrs ON emps.reportsto = mgrs.employeeid
 ORDER BY
   manager;
 
@@ -1828,20 +1828,20 @@ Note that the concatenation operator || concatenates multiple strings into a sin
 
 In case you want to query the CEO who does not report to anyone, you need to change the INNER JOIN clause to LEFT JOIN clause in the query above. */
 SELECT
-  m.firstname || ' ' || m.lastname AS "Manager",
-  e.firstname || ' ' || e.lastname AS "Direct report"
+  mgrs.firstname || ' ' || mgrs.lastname AS manager,
+  emps.firstname || ' ' || emps.lastname AS direct_report
 FROM
-  employees AS e
-  LEFT JOIN employees AS m ON e.reportsto = m.employeeid
+  employees AS emps
+  LEFT JOIN employees AS mgrs ON emps.reportsto = mgrs.employeeid
 ORDER BY
   manager;
 
 SELECT
-  m.firstname || ' ' || m.lastname AS "Employee",
-  e.firstname || ' ' || e.lastname AS "Manager"
+  mgrs.firstname || ' ' || mgrs.lastname AS employee,
+  emps.firstname || ' ' || emps.lastname AS manager
 FROM
-  employees AS e
-  RIGHT JOIN employees AS m ON e.employeeid = m.reportsto
+  employees AS emps
+  RIGHT JOIN employees AS mgrs ON emps.employeeid = mgrs.reportsto
 ORDER BY
   employee;
 
