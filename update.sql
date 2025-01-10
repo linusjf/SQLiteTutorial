@@ -58,4 +58,30 @@ FROM
 WHERE
   employeeid = 3;
 
+/*
+Suppose Park Margaret locates in Toronto and you want to change his address, city, and state information. You can use the UPDATE statement to update multiple columns as follows:
+*/
+UPDATE employees
+SET
+  city = 'Toronto',
+  state = 'ON',
+  postalcode = 'M5P 2N7'
+WHERE
+  employeeid = 4;
+
+/*
+To verify the UPDATE, you use the following statement:
+*/
+SELECT
+  employeeid,
+  firstname,
+  lastname,
+  state,
+  city,
+  postalcode
+FROM
+  employees
+WHERE
+  employeeid = 4;
+
 ROLLBACK;
