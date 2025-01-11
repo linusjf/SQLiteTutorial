@@ -84,3 +84,75 @@ SELECT
   *
 FROM
   sales_employees;
+
+/*
+First, create a table called inventory that stores the inventory:
+*/
+DROP TABLE IF EXISTS sales;
+
+DROP TABLE IF EXISTS inventory;
+
+CREATE TABLE inventory (
+  item_id INTEGER PRIMARY KEY,
+  item_name TEXT NOT NULL,
+  quantity INTEGER NOT NULL
+);
+
+/*
+Second, create a table called sales that stores the daily sales data:
+*/
+CREATE TABLE sales (
+  sales_id INTEGER PRIMARY KEY,
+  item_id INTEGER,
+  quantity_sold INTEGER,
+  sales_at timestamp DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (item_id) REFERENCES inventory (item_id)
+);
+
+/*
+Third, insert rows into the inventory table:
+*/
+INSERT INTO
+  inventory (item_id, item_name, quantity)
+VALUES
+  (1, 'Item A', 100),
+  (2, 'Item B', 150),
+  (3, 'Item C', 200);
+
+/*
+Fourth, insert rows into the sales table:
+*/
+INSERT INTO
+  sales (item_id, quantity_sold)
+VALUES
+  (1, 20),
+  (1, 30),
+  (2, 25),
+  (3, 50);
+
+/*
+Fifth, update the inventory table based on the aggregated daily sales from the sales table:
+*/
+UPDATE inventory
+SET
+  quantity = quantity - daily.qty
+FROM
+  (
+    SELECT
+      SUM(quantity_sold) AS qty,
+      item_id
+    FROM
+      sales
+    GROUP BY
+      item_id
+  ) AS daily
+WHERE
+  inventory.item_id = daily.item_id;
+
+/*
+Finally, verify the update by querying data from the inventory table:
+*/
+SELECT
+  *
+FROM
+  inventory;
