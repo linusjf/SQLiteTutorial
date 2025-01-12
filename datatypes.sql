@@ -52,3 +52,81 @@ SELECT
   TYPEOF('100') AS text_type,
   TYPEOF(X'1000') AS blob_type, --noqa
   TYPEOF(NULL) AS null_type;
+
+/*
+First, create a new table named test_datatypes for testing.
+*/
+DROP TABLE IF EXISTS test_datatypes;
+
+CREATE TABLE test_datatypes (id INTEGER PRIMARY KEY, val);
+
+--noqa
+/*
+Second, insert data into the test_datatypes table.
+*/
+INSERT INTO
+  test_datatypes (val)
+VALUES
+  (1),
+  (2),
+  (10.1),
+  (20.5),
+  ('A'),
+  ('B'),
+  (NULL),
+  (x'0010'), --noqa
+  (x'0011');
+
+--noqa
+/*
+Third, use the typeof() function to get the data type of each value stored in the val column.
+*/
+SELECT
+  id,
+  val,
+  TYPEOF(val)
+FROM
+  test_datatypes;
+
+/*
+You may ask how SQLite sorts data in a column with different storage classes like val column above.
+
+To resolve this, SQLite provides the following set of rules when it comes to sorting:
+
+NULL storage class has the lowest value. It is lower than any other value. Between NULLs, there is no order.
+The next higher storage classes are INTEGER and REAL. SQLite compares INTEGER and REAL numerically.
+The next higher storage class is TEXT. SQLite uses the collation of TEXT values when comparing the TEXT values.
+The highest storage class is the BLOB. SQLite uses the C function memcmp() to compare BLOB values.
+*/
+/*
+You may ask how SQLite sorts data in a column with different storage classes like val column above.
+
+To resolve this, SQLite provides the following set of rules when it comes to sorting:
+
+NULL storage class has the lowest value. It is lower than any other value. Between NULLs, there is no order.
+The next higher storage classes are INTEGER and REAL. SQLite compares INTEGER and REAL numerically.
+The next higher storage class is TEXT. SQLite uses the collation of TEXT values when comparing the TEXT values.
+The highest storage class is the BLOB. SQLite uses the C function memcmp() to compare BLOB values.
+When you use the ORDER BY clause to sort the data in a column with different storage classes, SQLite performs the following steps:
+
+First, group values based on storage class: NULL, INTEGER, and REAL, TEXT, and BLOB.
+Second, sort the values in each group.
+The following statement sorts the mixed data in the val column of the test_datatypes table:
+*/
+SELECT
+  id,
+  val,
+  TYPEOF(val)
+FROM
+  test_datatypes
+ORDER BY
+  val;
+
+/*
+
+Other important concepts related to SQLite data types are manifest typing and type affinity:
+
+Manifest typing means that a data type is a property of a value stored in a column, rather than a property of the column itself. SQLite uses manifest typing to store values of any type in a column.
+Type affinity of a column refers to the recommended type for data stored in that column. Please note that this is a recommendation rather than an enforcement. Therefore, a column can store values of any type.
+
+*/
