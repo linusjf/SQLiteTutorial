@@ -1,6 +1,6 @@
 #!/usr/bin/env python
+# First, import the sqlite3 module
 import sqlite3
-
 # Connect to an sqlite database
 conn = sqlite3.connect('my.db')
 cursor = conn.cursor()
@@ -20,7 +20,7 @@ with open('image.jpg', 'rb') as file:
 # Retrieve binary data
 cursor.execute("SELECT data FROM documents WHERE id = 1")
 data = cursor.fetchone()[0]
-
+# Sixth, write the BLOB data into an image file with the name stored_image.jpg:
 with open('stored_image.jpg', 'wb') as file:
     file.write(data)
 
