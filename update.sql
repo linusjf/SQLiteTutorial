@@ -100,7 +100,7 @@ To update one row in the employees table, you use LIMIT 1 clause. To make sure t
 
 So the following statement updates email of Andrew Adams:
 */
-/*
+
 UPDATE employees
 SET
 email = LOWER(
@@ -110,7 +110,7 @@ ORDER BY
 firstname
 LIMIT
 1;
-*/
+/*
 UPDATE employees
 SET
   email = LOWER(
@@ -119,7 +119,7 @@ SET
 WHERE
   firstname = 'Andrew'
   AND lastname = 'Adams';
-
+*/
 SELECT
   employeeid,
   firstname,
