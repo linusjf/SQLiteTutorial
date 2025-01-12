@@ -72,3 +72,66 @@ SELECT
   *
 FROM
   search_stats;
+
+/*
+Selective Update on Conflict
+First, create a new table called contacts to store the contact information:
+*/
+DROP TABLE IF EXISTS contacts;
+
+CREATE TABLE IF NOT EXISTS contacts (
+  id INTEGER PRIMARY KEY,
+  name TEXT NOT NULL,
+  email TEXT UNIQUE NOT NULL,
+  phone TEXT NOT NULL,
+  effective_date DATE NOT NULL
+);
+
+/*
+Next, insert a new row into the contacts table:
+*/
+INSERT INTO
+  contacts (name, email, phone, effective_date)
+VALUES
+  (
+    'Jane Doe',
+    'jane@test.com',
+    '(408)-111-2222',
+    '2024-04-05'
+  );
+
+/*
+Then, verify the insert:
+*/
+SELECT
+  *
+FROM
+  contacts;
+
+/*
+After that, update the name, phone, and effective date if the email already exists and only update when the new effective date is later than the current effective date:
+*/
+INSERT INTO
+  contacts (name, email, phone, effective_date)
+VALUES
+  (
+    'Jane Smith',
+    'jane@test.com',
+    '(408)-111-3333',
+    '2024-05-05'
+  )
+ON CONFLICT (email) DO UPDATE
+SET
+  name = excluded.name,
+  phone = excluded.phone,
+  effective_date = excluded.effective_date
+WHERE
+  excluded.effective_date > contacts.effective_date;
+
+/*
+Finally, verify the update:
+*/
+SELECT
+  *
+FROM
+  contacts;

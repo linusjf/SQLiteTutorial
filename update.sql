@@ -110,8 +110,8 @@ ORDER BY
   firstname
 LIMIT
   1;
---noqa: enable=all
 
+--noqa: enable=all
 /*
 UPDATE employees
 SET
