@@ -58,9 +58,9 @@ First, create a new table named test_datatypes for testing.
 */
 DROP TABLE IF EXISTS test_datatypes;
 
+--noqa:disable=all
 CREATE TABLE test_datatypes (id INTEGER PRIMARY KEY, val);
 
---noqa
 /*
 Second, insert data into the test_datatypes table.
 */
@@ -78,6 +78,7 @@ VALUES
   (x'0011');
 
 --noqa
+--noqa:enable=all
 /*
 Third, use the typeof() function to get the data type of each value stored in the val column.
 */
