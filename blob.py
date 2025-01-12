@@ -6,6 +6,8 @@ conn = sqlite3.connect('my.db')
 cursor = conn.cursor()
 
 # Create the documents table
+cursor.execute('''DROP TABLE IF EXISTS documents;''')
+# Create the documents table
 cursor.execute('''CREATE TABLE IF NOT EXISTS documents(
                     id INTEGER PRIMARY KEY,
                     title VARCHAR(255) NOT NULL,
