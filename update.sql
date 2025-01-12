@@ -100,25 +100,27 @@ To update one row in the employees table, you use LIMIT 1 clause. To make sure t
 
 So the following statement updates email of Andrew Adams:
 */
-
-UPDATE employees
-SET
-email = LOWER(
-firstname || '.' || lastname || '@chinookcorp.com'
-)
-ORDER BY
-firstname
-LIMIT
-1;
-/*
+--noqa: disable=all
 UPDATE employees
 SET
   email = LOWER(
     firstname || '.' || lastname || '@chinookcorp.com'
   )
+ORDER BY
+  firstname
+LIMIT
+  1;
+--noqa: enable=all
+
+/*
+UPDATE employees
+SET
+email = LOWER(
+firstname || '.' || lastname || '@chinookcorp.com'
+)
 WHERE
-  firstname = 'Andrew'
-  AND lastname = 'Adams';
+firstname = 'Andrew'
+AND lastname = 'Adams';
 */
 SELECT
   employeeid,
