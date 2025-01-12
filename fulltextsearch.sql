@@ -89,6 +89,7 @@ WHERE
   posts MATCH 'text'
 ORDER BY
   rank;
+
 /*
 A full-text search query is made up of phrases, where each phrase is an ordered list of one or more tokens. You can use the “+” operator to concatenate two phrases as the following example:
 
@@ -98,7 +99,99 @@ FTS5 determines whether a document matches a phrase if the document contains at 
 
 The following query returns all documents that match the search term Learn SQLite:
 */
-SELECT * 
-FROM posts 
-WHERE posts MATCH 'learn SQLite';
+SELECT
+  *
+FROM
+  posts
+WHERE
+  posts MATCH 'learn SQLite';
 
+/*
+Prefix searches
+You can use the asterisk (*) as a prefix token. When a phrase contains the asterisk (*), it will match any document that contains the token that begins with the phrase. For example, search* matches with search, searching, searches, etc. See the following example:
+*/
+SELECT
+  *
+FROM
+  posts
+WHERE
+  posts = 'search*';
+
+/*
+Boolean operators
+You can use the Boolean operator e.g., NOT, OR, or AND to combine queries.
+
+q1 AND q2: matches if both q1 and q2 queries match.
+q1 OR q2: matches if either query q1 or q2 matches.
+q1 NOT q2: matches if query q1 matches and q2 doesn’t match.
+For example, to get the documents that match the learn phrase but doesn’t match the FTS5 phrase, you use the NOT operator as follows:
+*/
+SELECT
+  *
+FROM
+  posts
+WHERE
+  posts MATCH 'learn NOT text';
+
+/*
+SQLite full-text search - NOT operator
+To search for documents that match either phrase learn or text, you use the OR operator as the following example:
+*/
+SELECT
+  *
+FROM
+  posts
+WHERE
+  posts MATCH 'learn OR text';
+
+/*
+SQLite full-text search - OR operator
+To find the documents that match both SQLite and searching, you use the AND operator as shown below:
+*/
+SELECT
+  *
+FROM
+  posts
+WHERE
+  posts MATCH 'sqlite AND searching';
+
+/*
+SQLite full-text search - AND operator
+To change the operator precedence, you use parenthesis to group expressions. For example:
+*/
+SELECT
+  *
+FROM
+  posts
+WHERE
+  posts MATCH 'search AND sqlite OR help';
+
+/*
+SQLite full-text search - Combine Logical Operators
+The statement returns documents that match search and sqlite or help. To find the documents that match search and either sqlite or help, you use parenthesis as follows:
+*/
+SELECT
+  *
+FROM
+  posts
+WHERE
+  posts MATCH 'search AND (sqlite OR help)';
+
+/*
+Built-in auxiliary functions
+SQLite provides three built-in auxiliary functions that can be used within full-text queries on the FTS5 table.
+
+The bm25() returns a value that represents the accuracy of the current match, the lower value means a better match.
+The highlight() auxiliary function returns a copy of the text with search terms surrounded by a specified markup e.g.,<b>search term </b>
+The snippet() selects a short fragment of text in order to maximize the number of search terms it contains.
+For example, the following query uses the highlight() function to decorate the search terms using the <b>tag</b>:
+*/
+SELECT
+  HIGHLIGHT(posts, 0, '<b>', '</b>') AS title,
+  HIGHLIGHT(posts, 1, '<b>', '</b>') AS body
+FROM
+  posts
+WHERE
+  posts MATCH 'SQLite'
+ORDER BY
+  rank;
