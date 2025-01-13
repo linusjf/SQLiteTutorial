@@ -2,15 +2,19 @@
 require() {
   hash "$@" || exit 127
 }
-require sqlfluff
+require sqlfluff parallel
+if [[ -z "$*" ]]; then
+  echo "Usage: "
+  echo "$0 <list of files>"
+  exit 1
+fi
 rm -f lint.out
-sqlfluff fix --dialect sqlite -- *.sql
-declare -i exitcode=$?
+declare -i exitcode=0
+declare -a files=("$@")
+parallel sqlfluff fix --dialect sqlite ::: "${files[@]}"
+exitcode=$(("$exitcode" + $?))
 if [[ $exitcode != 0 ]]; then
-  sqlfluff lint --dialect sqlite -- *.sql &> lint.out
-  exitcode=$?
-  if [[ $exitcode != 0 ]]; then
-    echo "Errors found. Check lint.out"
-  fi
+  parallel sqlfluff lint --dialect sqlite ::: "${files[@]}" &> lint.out
+  exitcode=$(("$exitcode" + $?))
 fi
 exit "$exitcode"
