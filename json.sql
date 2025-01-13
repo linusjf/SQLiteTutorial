@@ -93,3 +93,28 @@ FROM
   products
 WHERE
   JSON_EXTRACT(details, '$.category') = 'Electronics';
+
+/*
+Inserting a JSON value
+To insert a value into a JSON document, you use the json_insert() function:
+
+json_insert(json, path, value)
+The json_insert() function inserts the value into the json using the specified path. If the path does not exist, the function creates the element. If the json element already exists, the function does not overwrite.
+
+For example, the following statement inserts the stock attribute with the value 10 into the JSON document with id 1:
+*/
+UPDATE products
+SET
+  details = JSON_INSERT(details, '$.stock', 10)
+WHERE
+  id = 1;
+
+/*
+Verify the insert:
+*/
+SELECT
+  *
+FROM
+  products
+WHERE
+  id = 1;
