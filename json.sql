@@ -118,3 +118,76 @@ FROM
   products
 WHERE
   id = 1;
+
+/*
+Updating a JSON value
+To update an existing JSON value, you can use the json_replace() function:
+
+json_replace(json, path, value)
+Code language: SQL (Structured Query Language) (sql)
+The json_replace() function replaces the value specified by a path in the json data. If the value does not exist, it does not create the value.
+
+For example:
+*/
+UPDATE products
+SET
+  details = JSON_REPLACE(details, '$.stock', 0)
+WHERE
+  id = 1;
+
+/*
+Verify the update:
+*/
+SELECT
+  *
+FROM
+  products
+WHERE
+  id = 1;
+
+/*
+Deleting a JSON value
+To remove a json value, you use the json_remove() function:
+
+json_remove(json, path)
+Code language: SQL (Structured Query Language) (sql)
+For example:
+*/
+UPDATE products
+SET
+  details = JSON_REMOVE(details, '$.stock')
+WHERE
+  id = 1;
+
+/*
+Verify the delete:
+*/
+SELECT
+  *
+FROM
+  products
+WHERE
+  id = 1;
+
+/*
+Aggregating data into a JSON array
+To aggregate values into a JSON array, you use the json_group_array() function. For example, the following statement aggregates the product names with the shoe category into a JSON array:
+*/
+SELECT JSON_GROUP_ARRAY(name)
+FROM
+  products
+WHERE
+  JSON_EXTRACT(details, '$.category') = 'Shoes';
+
+/*
+Aggregating data into a JSON object
+To aggregate values into a JSON object, you use the json_group_object() function:
+
+json_group_object(name, value)
+For example, the following statement uses the json_group_object to aggregate product names and their ids in the Shoes category into a JSON object:
+*/
+SELECT JSON_GROUP_OBJECT(name, id)
+FROM
+  products
+WHERE
+  JSON_EXTRACT(details, '$.category') = 'Shoes';
