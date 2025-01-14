@@ -158,3 +158,42 @@ FROM
   t1
 ORDER BY
   a;
+
+-- The following SELECT statement returns:
+--
+--   a | b | c | group_concat
+-----------------------------
+--   1 | A | one   | A.D.G
+--   2 | B | two   | A.D.G.C.F.B.E
+--   3 | C | three | A.D.G.C.F
+--   4 | D | one   | A.D.G
+--   5 | E | two   | A.D.G.C.F.B.E
+--   6 | F | three | A.D.G.C.F
+--   7 | G | one   | A.D.G
+--
+SELECT
+  a,
+  b,
+  c,
+  GROUP_CONCAT(b, '.') OVER (
+    ORDER BY
+      c
+  ) AS group_concat
+FROM
+  t1
+ORDER BY
+  a;
+
+SELECT
+  a,
+  b,
+  c,
+  GROUP_CONCAT(b, '.') OVER (
+    ORDER BY
+      c GROUPS BETWEEN UNBOUNDED PRECEDING
+      AND UNBOUNDED FOLLOWING EXCLUDE GROUP
+  ) AS group_concat
+FROM
+  t1
+ORDER BY
+  a;
