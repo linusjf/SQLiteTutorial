@@ -88,7 +88,8 @@ FROM
 Using the json_extract() function in the WHERE clause
 The following statement retrieves the products with the category 'Electronics'. It compares the value extracted from the JSON data in the details column and compares it with the string 'Electronics':
 */
-SELECT name
+SELECT
+  name
 FROM
   products
 WHERE
@@ -173,7 +174,8 @@ WHERE
 Aggregating data into a JSON array
 To aggregate values into a JSON array, you use the json_group_array() function. For example, the following statement aggregates the product names with the shoe category into a JSON array:
 */
-SELECT JSON_GROUP_ARRAY(name)
+SELECT
+  JSON_GROUP_ARRAY(name)
 FROM
   products
 WHERE
@@ -186,7 +188,8 @@ To aggregate values into a JSON object, you use the json_group_object() function
 json_group_object(name, value)
 For example, the following statement uses the json_group_object to aggregate product names and their ids in the Shoes category into a JSON object:
 */
-SELECT JSON_GROUP_OBJECT(name, id)
+SELECT
+  JSON_GROUP_OBJECT(name, id)
 FROM
   products
 WHERE

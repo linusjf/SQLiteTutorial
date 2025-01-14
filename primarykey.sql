@@ -120,7 +120,7 @@ VALUES
 /*
 In order to add the primary key to the cities table, you perform the following steps:
 */
-PRAGMA foreign_keys = OFF;
+PRAGMA foreign_keys = off;
 
 BEGIN TRANSACTION;
 

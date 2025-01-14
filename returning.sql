@@ -55,7 +55,7 @@ CREATE TABLE books (
   id INTEGER PRIMARY KEY,
   title TEXT NOT NULL,
   isbn TEXT NOT NULL,
-  release_date DATE
+  release_date date
 );
 
 /*

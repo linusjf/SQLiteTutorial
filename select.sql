@@ -9,7 +9,8 @@ GROUP BY column
 HAVING group_filter; */
 PRAGMA foreign_keys = ON;
 
-SELECT 1 + 1;
+SELECT
+  1 + 1;
 
 SELECT
   10 / 5 AS div,
@@ -191,7 +192,8 @@ LIMIT
   10
 OFFSET
   (
-    SELECT COUNT(*)
+    SELECT
+      COUNT(*)
     FROM
       tracks
   ) - 10;
@@ -228,7 +230,8 @@ For example, if a customer has a phone number with a NULL value, it means we don
 /*
 Suppose you want to know the cities where the customers are located, you can use the SELECT statement to get data from the city column of the customers table as follows:
 */
-SELECT city
+SELECT
+  city
 FROM
   customers
 ORDER BY
@@ -237,7 +240,8 @@ ORDER BY
 /*
 It returns 59 rows. There are a few duplicate rows such as Berlin London, and Mountain View To remove these duplicate rows, you use the DISTINCT clause as follows:
 */
-SELECT DISTINCT city
+SELECT DISTINCT
+  city
 FROM
   customers
 ORDER BY
@@ -270,7 +274,8 @@ ORDER BY
 /*
 This statement returns the names of companies of customers from the customers table.
 */
-SELECT company
+SELECT
+  company
 FROM
   customers;
 
@@ -282,7 +287,8 @@ Now, if you apply the DISTINCT clause to the statement, it will keep only one ro
 /*
 See the following statement:
 */
-SELECT DISTINCT company
+SELECT DISTINCT
+  company
 FROM
   customers;
 
@@ -391,7 +397,7 @@ SELECT
 FROM
   tracks
 WHERE
-  composer LIKE '%Smith%'
+  composer like '%Smith%'
 ORDER BY
   albumid;
 
@@ -751,7 +757,8 @@ ORDER BY
 --noqa: disable=RF02
 WITH
   count AS (
-    SELECT COUNT(*) AS cnt
+    SELECT
+      COUNT(*) AS cnt
     FROM
       tracks
   )
@@ -767,7 +774,8 @@ LIMIT
   10
 OFFSET
   (
-    SELECT cnt
+    SELECT
+      cnt
     FROM
       count
   ) - 10;
@@ -821,7 +829,8 @@ If you have a query that uses many OR operators, you can consider using the IN o
 /*
 The following query returns a list of album id of the artist id 12:
 */
-SELECT albumid
+SELECT
+  albumid
 FROM
   albums
 WHERE
@@ -839,7 +848,8 @@ FROM
   tracks
 WHERE
   albumid IN (
-    SELECT albumid
+    SELECT
+      albumid
     FROM
       albums
     WHERE
@@ -896,7 +906,7 @@ Note that SQLite LIKE operator is case-insensitive. It means "A" LIKE "a" is tru
 However, for Unicode characters that are not in the ASCII ranges, the LIKE operator is case sensitive e.g., "Ä" LIKE "ä" is false.
 In case you want to make LIKE operator works case-sensitively, you need to use the following PRAGMA:
 */
-PRAGMA case_sensitive_like = TRUE;
+PRAGMA case_sensitive_like = true;
 
 /*
 
@@ -908,7 +918,7 @@ SELECT
 FROM
   tracks
 WHERE
-  name LIKE 'Wild%';
+  name like 'Wild%';
 
 /*
 
@@ -920,7 +930,7 @@ SELECT
 FROM
   tracks
 WHERE
-  name LIKE '%Wild';
+  name like '%Wild';
 
 /*
 To find the tracks whose names contain the Wild literal string, you use % wildcard at the beginning and end of the pattern:
@@ -931,7 +941,7 @@ SELECT
 FROM
   tracks
 WHERE
-  name LIKE '%Wild%';
+  name like '%Wild%';
 
 /*
 The following statement finds the tracks whose names contain: zero or more characters (%), followed by Br, followed by a character ( _), followed by wn, and followed by zero or more characters ( %).
@@ -942,7 +952,7 @@ SELECT
 FROM
   tracks
 WHERE
-  name LIKE '%Br_wn%';
+  name like '%Br_wn%';
 
 /*
 If the pattern that you want to match contains % or _, you must use an escape character in an optional ESCAPE clause as follows:
@@ -989,11 +999,12 @@ FROM
 /*
 Fourth, attempt to find the row whose value in the c column contains the 10% literal string:
 */
-SELECT c
+SELECT
+  c
 FROM
   t
 WHERE
-  c LIKE '%10%%';
+  c like '%10%%';
 
 /*
 However, it returns rows whose values in the c column contains 10:
@@ -1002,11 +1013,12 @@ However, it returns rows whose values in the c column contains 10:
 /*
 Fifth, to get the correct result, you use the ESCAPE clause as shown in the following query:
 */
-SELECT c
+SELECT
+  c
 FROM
   t
 WHERE
-  c LIKE '%10\%%' ESCAPE '\';
+  c like '%10\%%' ESCAPE '\';
 
 /*
 The GLOB operator is similar to the LIKE operator. The GLOB operator determines whether a string matches a specific pattern.
@@ -1031,7 +1043,7 @@ SELECT
 FROM
   tracks
 WHERE
-  name GLOB 'Man*';
+  name glob 'Man*';
 
 /*
 The following statement gets the tracks whose names end with Man. The pattern *Man matches any string that ends with Man.
@@ -1042,7 +1054,7 @@ SELECT
 FROM
   tracks
 WHERE
-  name GLOB '*Man';
+  name glob '*Man';
 
 /*
 The following query finds the tracks whose names start with any single character (?), followed by the string ere and then any number of character (*).
@@ -1053,7 +1065,7 @@ SELECT
 FROM
   tracks
 WHERE
-  name GLOB '?ere*';
+  name glob '?ere*';
 
 /*
 To find the tracks whose names contain numbers, you can use the list wildcard [0-9] as follows:
@@ -1064,7 +1076,7 @@ SELECT
 FROM
   tracks
 WHERE
-  name GLOB '*[1-9]*';
+  name glob '*[1-9]*';
 
 /*
 Or to find the tracks whose name does not contain any number, you place the character ^ at the beginning of the list:
@@ -1075,7 +1087,7 @@ SELECT
 FROM
   tracks
 WHERE
-  name GLOB '*[^1-9]*';
+  name glob '*[^1-9]*';
 
 /*
 The following statement finds the tracks whose names end with a number.
@@ -1086,7 +1098,7 @@ SELECT
 FROM
   tracks
 WHERE
-  name GLOB '*[1-9]';
+  name glob '*[1-9]';
 
 /*
 NULL is special. It indicates that a piece of information is unknown or not applicable.
@@ -2125,11 +2137,13 @@ GROUP BY
 HAVING
   length > 60000000;
 
-SELECT COUNT(*)
+SELECT
+  COUNT(*)
 FROM
   tracks;
 
-SELECT COUNT(*)
+SELECT
+  COUNT(*)
 FROM
   albums;
 
@@ -2185,22 +2199,26 @@ VALUES
 /*
 The following statement combines the result sets of the t1 and t2 tables using the UNION operator:
 */
-SELECT c1
+SELECT
+  c1
 FROM
   t1
 UNION
-SELECT c2
+SELECT
+  c2
 FROM
   t2;
 
 /*
 The following statement combines the result sets of t1 and t2 tables using the  UNION ALL operator:
 */
-SELECT c1
+SELECT
+  c1
 FROM
   t1
 UNION ALL
-SELECT c2
+SELECT
+  c2
 FROM
   t2;
 
@@ -2259,11 +2277,13 @@ The following statements create two tables t1 and t2 and insert some data into b
 
 The following statement illustrates how to use the EXCEPT operator to compare result sets of two queries:
 */
-SELECT c1
+SELECT
+  c1
 FROM
   t1
 EXCEPT
-SELECT c2
+SELECT
+  c2
 FROM
   t2;
 
@@ -2294,7 +2314,7 @@ CREATE TABLE orders (
   order_id INTEGER PRIMARY KEY,
   customer_id INTEGER,
   book_id INTEGER,
-  order_date DATE,
+  order_date date,
   FOREIGN KEY (customer_id) REFERENCES custs (customer_id),
   FOREIGN KEY (book_id) REFERENCES books (book_id)
 );
@@ -2397,11 +2417,13 @@ For the demonstration, we will create two tables t1 and t2 and insert some data 
 
 The following statement illustrates how to use the INTERSECT operator to compare result sets of two queries:
 */
-SELECT c1
+SELECT
+  c1
 FROM
   t1
 INTERSECT
-SELECT c2
+SELECT
+  c2
 FROM
   t2;
 
@@ -2469,7 +2491,8 @@ FROM
   tracks
 WHERE
   albumid = (
-    SELECT albumid
+    SELECT
+      albumid
     FROM
       albums
     WHERE
@@ -2492,7 +2515,8 @@ FROM
   customers
 WHERE
   supportrepid IN (
-    SELECT employeeid
+    SELECT
+      employeeid
     FROM
       employees
     WHERE
@@ -2514,10 +2538,12 @@ This query is not valid.
 
 To fix it, you can use a subquery in the FROM clause as follows:
 */
-SELECT AVG(album.size)
+SELECT
+  AVG(album.size)
 FROM
   (
-    SELECT SUM(bytes) AS size
+    SELECT
+      SUM(bytes) AS size
     FROM
       tracks
     GROUP BY
@@ -2543,7 +2569,8 @@ FROM
   albums
 WHERE
   10000000 > (
-    SELECT SUM(tracks.bytes)
+    SELECT
+      SUM(tracks.bytes)
     FROM
       tracks
     WHERE
@@ -2565,7 +2592,8 @@ SELECT
   albumid,
   title,
   (
-    SELECT COUNT(tracks.trackid)
+    SELECT
+      COUNT(tracks.trackid)
     FROM
       tracks
     WHERE
@@ -2602,7 +2630,8 @@ FROM
   customers
 WHERE
   EXISTS (
-    SELECT 1
+    SELECT
+      1
     FROM
       invoices
     WHERE
@@ -2649,7 +2678,8 @@ FROM
   customers
 WHERE
   customerid IN (
-    SELECT customerid
+    SELECT
+      customerid
     FROM
       invoices
   )
@@ -2671,7 +2701,8 @@ FROM
   artists
 WHERE
   NOT EXISTS (
-    SELECT 1
+    SELECT
+      1
     FROM
       albums
     WHERE

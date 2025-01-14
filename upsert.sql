@@ -84,7 +84,7 @@ CREATE TABLE IF NOT EXISTS contacts (
   name TEXT NOT NULL,
   email TEXT UNIQUE NOT NULL,
   phone TEXT NOT NULL,
-  effective_date DATE NOT NULL
+  effective_date date NOT NULL
 );
 
 /*

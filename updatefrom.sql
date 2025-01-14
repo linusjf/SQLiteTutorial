@@ -105,7 +105,7 @@ CREATE TABLE sales (
   sales_id INTEGER PRIMARY KEY,
   item_id INTEGER,
   quantity_sold INTEGER,
-  sales_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  sales_at timestamp DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (item_id) REFERENCES inventory (item_id)
 );
 

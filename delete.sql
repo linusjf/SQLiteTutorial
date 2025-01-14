@@ -66,7 +66,7 @@ Suppose you want to delete artists whose names contain the word Santana:
 */
 DELETE FROM artists_backup
 WHERE
-  name LIKE '%Santana%';
+  name like '%Santana%';
 
 /*
 There are 9 rows whose values in the name column contain the word Santana therefore, these 9 rows were deleted.

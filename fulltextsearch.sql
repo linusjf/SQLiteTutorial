@@ -73,7 +73,7 @@ Third, use a tabled-value function syntax. In this way, you use the search term 
 SELECT
   *
 FROM
-  POSTS('fts5');
+  posts ('fts5');
 
 /*
 By default, FTS5 is case-independent. It treats the
@@ -187,8 +187,8 @@ The snippet() selects a short fragment of text in order to maximize the number o
 For example, the following query uses the highlight() function to decorate the search terms using the <b>tag</b>:
 */
 SELECT
-  HIGHLIGHT(posts, 0, '<b>', '</b>') AS title,
-  HIGHLIGHT(posts, 1, '<b>', '</b>') AS body
+  highlight (posts, 0, '<b>', '</b>') AS title,
+  highlight (posts, 1, '<b>', '</b>') AS body
 FROM
   posts
 WHERE
