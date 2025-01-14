@@ -90,6 +90,7 @@ SELECT
   ) AS group_concat
 FROM
   t1;
+
 SELECT
   a,
   c,
@@ -100,3 +101,60 @@ SELECT
   ) AS group_concat
 FROM
   t1;
+
+-- The following SELECT statement returns:
+--
+--   c     | a | b | group_concat
+---------------------------------
+--   one   | 1 | A | A.D.G
+--   one   | 4 | D | D.G
+--   one   | 7 | G | G
+--   three | 3 | C | C.F
+--   three | 6 | F | F
+--   two   | 2 | B | B.E
+--   two   | 5 | E | E
+--
+SELECT
+  c,
+  a,
+  b,
+  GROUP_CONCAT(b, '.') OVER (
+    PARTITION BY
+      c
+    ORDER BY
+      a RANGE BETWEEN CURRENT ROW
+      AND UNBOUNDED FOLLOWING
+  ) AS group_concat
+FROM
+  t1
+ORDER BY
+  c,
+  a;
+
+-- The following SELECT statement returns:
+--
+--   c     | a | b | group_concat
+---------------------------------
+--   one   | 1 | A | A.D.G
+--   two   | 2 | B | B.E
+--   three | 3 | C | C.F
+--   one   | 4 | D | D.G
+--   two   | 5 | E | E
+--   three | 6 | F | F
+--   one   | 7 | G | G
+--
+SELECT
+  c,
+  a,
+  b,
+  GROUP_CONCAT(b, '.') OVER (
+    PARTITION BY
+      c
+    ORDER BY
+      a RANGE BETWEEN CURRENT ROW
+      AND UNBOUNDED FOLLOWING
+  ) AS group_concat
+FROM
+  t1
+ORDER BY
+  a;
