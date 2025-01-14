@@ -45,9 +45,8 @@ DROP TABLE IF EXISTS contacts_groups;
 
 DROP TABLE IF EXISTS contacts;
 
-/* sql-formatter-disable */
-DROP TABLE IF EXISTS groups; --noqa
-/* sql-formatter-enable */
+DROP TABLE IF EXISTS `groups`;
+
 CREATE TABLE contacts (
   contact_id INTEGER PRIMARY KEY,
   first_name TEXT NOT NULL,
@@ -67,23 +66,21 @@ The email and phone are unique therefore we use the UNIQUE constraint for each c
 
 The following statement creates the groups table:
 */
-/* sql-formatter-disable */
-CREATE TABLE groups (group_id INTEGER PRIMARY KEY, name TEXT NOT NULL);
-/* sql-formatter-enable */
+CREATE TABLE `groups` (group_id INTEGER PRIMARY KEY, name TEXT NOT NULL);
+
 /*
 The groups table is quite simple with two columns: group_id and name. The group_id column is the primary key column.
 
 The following statement creates contact_groups table:
 */
-/* sql-formatter-disable */
 CREATE TABLE contacts_groups (
-contact_id INTEGER,
-group_id INTEGER,
-PRIMARY KEY (contact_id, group_id),
-FOREIGN KEY (contact_id) REFERENCES contacts (contact_id) ON DELETE CASCADE ON UPDATE NO ACTION,
-FOREIGN KEY (group_id) REFERENCES groups (group_id) ON DELETE CASCADE ON UPDATE NO ACTION
+  contact_id INTEGER,
+  group_id INTEGER,
+  PRIMARY KEY (contact_id, group_id),
+  FOREIGN KEY (contact_id) REFERENCES contacts (contact_id) ON DELETE CASCADE ON UPDATE NO ACTION,
+  FOREIGN KEY (group_id) REFERENCES `groups` (group_id) ON DELETE CASCADE ON UPDATE NO ACTION
 );
-/* sql-formatter-enable */
+
 /*
 The contact_groups table has a primary key that consists of two columns: contact_id and group_id.
 
