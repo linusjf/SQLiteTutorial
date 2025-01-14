@@ -7,6 +7,8 @@ ORDER BY column
 LIMIT count OFFSET offset
 GROUP BY column
 HAVING group_filter; */
+PRAGMA foreign_keys = ON;
+
 SELECT 1 + 1;
 
 SELECT

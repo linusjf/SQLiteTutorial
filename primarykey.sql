@@ -108,6 +108,8 @@ The COMMIT statement commits all the statements.
 
 Let’s create a table name cities without a primary key.
 */
+DROP TABLE IF EXISTS cities;
+
 CREATE TABLE IF NOT EXISTS cities (id INTEGER NOT NULL, name TEXT NOT NULL);
 
 INSERT INTO

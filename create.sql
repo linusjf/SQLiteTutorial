@@ -39,6 +39,8 @@ The following database diagram illustrates tables: contacts groups, and contact_
 SQLite Create Table
 The following statement creates the contacts table.
 */
+PRAGMA foreign_keys = ON;
+
 DROP TABLE IF EXISTS contacts_groups;
 
 DROP TABLE IF EXISTS contacts;
