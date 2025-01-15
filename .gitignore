@@ -2,3 +2,4 @@
 lint.out
 stored_image.jpg
 my.db
+node_modules/**

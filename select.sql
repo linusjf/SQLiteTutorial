@@ -20,8 +20,7 @@ SELECT
   name,
   composer,
   unitprice
-FROM
-  tracks;
+FROM tracks;
 
 SELECT
   trackid,
@@ -33,8 +32,7 @@ SELECT
   milliseconds,
   bytes,
   unitprice
-FROM
-  tracks;
+FROM tracks;
 
 -- use select * only for testing purposes
 /*
@@ -48,8 +46,7 @@ So try to avoid using the asterisk (*) as a good habit when you use the SELECT s
 */
 SELECT
   *
-FROM
-  albums;
+FROM albums;
 
 /*
 To sort the rows in a result set, you add the ORDER BY clause to the  SELECT statement as follows:
@@ -83,10 +80,8 @@ SELECT
   name,
   milliseconds,
   albumid
-FROM
-  tracks
-ORDER BY
-  albumid ASC;
+FROM tracks
+ORDER BY albumid ASC;
 
 /*
 SQLite uses ASC by default so you can omit it in the above statement as follows:
@@ -95,10 +90,8 @@ SELECT
   name,
   milliseconds,
   albumid
-FROM
-  tracks
-ORDER BY
-  albumid;
+FROM tracks
+ORDER BY albumid;
 
 /*
 Suppose you want to sort the sorted result (by AlbumId) above by the Milliseconds column in descending order. In this case, you need to add the Milliseconds column to the ORDER BY clause as follows:
@@ -107,11 +100,8 @@ SELECT
   name,
   milliseconds,
   albumid
-FROM
-  tracks
-ORDER BY
-  albumid ASC,
-  milliseconds DESC;
+FROM tracks
+ORDER BY albumid ASC, milliseconds DESC;
 
 /*
 SQLite sorts rows by AlbumId column in ascending order first. Then, it sorts the sorted result set by the Milliseconds column in descending order.
@@ -121,13 +111,9 @@ SELECT
   name,
   milliseconds,
   albumid
-FROM
-  tracks
-ORDER BY
-  albumid ASC,
-  milliseconds DESC
-LIMIT
-  5;
+FROM tracks
+ORDER BY albumid ASC, milliseconds DESC
+LIMIT 5;
 
 /*
 Instead of specifying the names of columns, you can use the column’s position in the ORDER BY clause.
@@ -138,13 +124,9 @@ SELECT
   name,
   milliseconds,
   albumid
-FROM
-  tracks
-ORDER BY
-  3,
-  2
-LIMIT
-  5;
+FROM tracks
+ORDER BY 3, 2
+LIMIT 5;
 
 /*
 In the database world, NULL is special. It denotes that the information is missing or the data is not applicable.
@@ -169,12 +151,9 @@ SELECT
   trackid,
   name,
   composer
-FROM
-  tracks
-ORDER BY
-  composer
-LIMIT
-  10;
+FROM tracks
+ORDER BY composer
+LIMIT 10;
 
 /*
 The following example uses the NULLS LAST option to place NULLs after other values:
@@ -183,29 +162,21 @@ SELECT
   trackid,
   name,
   composer
-FROM
-  tracks
-ORDER BY
-  composer NULLS LAST
+FROM tracks
+ORDER BY composer NULLS LAST
 LIMIT
-  10
-OFFSET
-  (
+  10 OFFSET (
     SELECT COUNT(*)
-    FROM
-      tracks
+    FROM tracks
   ) - 10;
 
 SELECT
   trackid,
   name,
   composer
-FROM
-  tracks
-ORDER BY
-  composer DESC NULLS FIRST
-LIMIT
-  10;
+FROM tracks
+ORDER BY composer DESC NULLS FIRST
+LIMIT 10;
 
 /*
 The DISTINCT clause is an optional clause of the  SELECT statement. The DISTINCT clause allows you to remove the duplicate rows in the result set.
@@ -229,19 +200,15 @@ For example, if a customer has a phone number with a NULL value, it means we don
 Suppose you want to know the cities where the customers are located, you can use the SELECT statement to get data from the city column of the customers table as follows:
 */
 SELECT city
-FROM
-  customers
-ORDER BY
-  city;
+FROM customers
+ORDER BY city;
 
 /*
 It returns 59 rows. There are a few duplicate rows such as Berlin London, and Mountain View To remove these duplicate rows, you use the DISTINCT clause as follows:
 */
 SELECT DISTINCT city
-FROM
-  customers
-ORDER BY
-  city;
+FROM customers
+ORDER BY city;
 
 /*
 The following statement finds cities and countries of all customers.
@@ -249,10 +216,8 @@ The following statement finds cities and countries of all customers.
 SELECT
   city,
   country
-FROM
-  customers
-ORDER BY
-  country;
+FROM customers
+ORDER BY country;
 
 /*
 The result set contains duplicate cities and countries e.g., Sao Paulo in Brazil as shown in the screenshot above.
@@ -262,17 +227,14 @@ To remove duplicate the city and country, you apply the DISTINCT clause to both 
 SELECT DISTINCT
   city,
   country
-FROM
-  customers
-ORDER BY
-  country;
+FROM customers
+ORDER BY country;
 
 /*
 This statement returns the names of companies of customers from the customers table.
 */
 SELECT company
-FROM
-  customers;
+FROM customers;
 
 /*
 It returns 59 rows with many NULL values.
@@ -283,8 +245,7 @@ Now, if you apply the DISTINCT clause to the statement, it will keep only one ro
 See the following statement:
 */
 SELECT DISTINCT company
-FROM
-  customers;
+FROM customers;
 
 /*
 The WHERE clause is an optional clause of the SELECT statement. It appears after the FROM clause as the following statement:
@@ -353,10 +314,8 @@ SELECT
   milliseconds,
   bytes,
   albumid
-FROM
-  tracks
-WHERE
-  albumid = 1;
+FROM tracks
+WHERE albumid = 1;
 
 /*
 SQLite compares the values stored in the AlbumId column with a literal value 1 to test if they are equal. Only the rows that satisfy the condition are returned.
@@ -372,11 +331,8 @@ SELECT
   milliseconds,
   bytes,
   albumid
-FROM
-  tracks
-WHERE
-  albumid = 1
-  AND milliseconds > 250000;
+FROM tracks
+WHERE albumid = 1 AND milliseconds > 250000;
 
 /*
 Using WHERE clause with LIKE operator example
@@ -388,12 +344,9 @@ SELECT
   name,
   albumid,
   composer
-FROM
-  tracks
-WHERE
-  composer LIKE '%Smith%'
-ORDER BY
-  albumid;
+FROM tracks
+WHERE composer LIKE '%Smith%'
+ORDER BY albumid;
 
 /*
 Using SQLite WHERE clause with the IN operator example
@@ -403,10 +356,8 @@ SELECT
   name,
   albumid,
   mediatypeid
-FROM
-  tracks
-WHERE
-  mediatypeid IN (2, 3);
+FROM tracks
+WHERE mediatypeid IN (2, 3);
 
 /*
 In SQLite, the AND operator allows you to combine two conditions in a WHERE clause to filter rows if all conditions are true.
@@ -440,13 +391,9 @@ SELECT
   billingaddress,
   billingcity,
   total
-FROM
-  invoices
-WHERE
-  billingcity = 'New York'
-  AND total > 5
-ORDER BY
-  total;
+FROM invoices
+WHERE billingcity = 'New York' AND total > 5
+ORDER BY total;
 
 /*
 The following example uses the AND operator with the OR operator to retrieve the invoices with the billing city as either New York or Chicago and the Total greater than 5.
@@ -455,16 +402,9 @@ SELECT
   billingaddress,
   billingcity,
   total
-FROM
-  invoices
-WHERE
-  total > 5
-  AND (
-    billingcity = 'New York'
-    OR billingcity = 'Chicago'
-  )
-ORDER BY
-  total;
+FROM invoices
+WHERE total > 5 AND (billingcity = 'New York' OR billingcity = 'Chicago')
+ORDER BY total;
 
 /*
 In SQLite, the OR operator allows you to combine multiple conditions in a WHERE clause to filter rows based on at least one condition being true.
@@ -498,13 +438,9 @@ SELECT
   billingaddress,
   billingcity,
   total
-FROM
-  invoices
-WHERE
-  billingcity = 'New York'
-  OR billingcity = 'Chicago'
-ORDER BY
-  billingcity;
+FROM invoices
+WHERE billingcity = 'New York' OR billingcity = 'Chicago'
+ORDER BY billingcity;
 
 /*
 The following statement uses the OR operator with the AND operator to retrieve the invoices with the billing city is either New York or Chicago and the Total is greater than 10:
@@ -513,16 +449,9 @@ SELECT
   billingaddress,
   billingcity,
   total
-FROM
-  invoices
-WHERE
-  (
-    billingcity = 'New York'
-    OR billingcity = 'Chicago'
-  )
-  AND total > 10
-ORDER BY
-  total;
+FROM invoices
+WHERE (billingcity = 'New York' OR billingcity = 'Chicago') AND total > 10
+ORDER BY total;
 
 /*
 The LIMIT clause is an optional part of the  SELECT statement. You use the LIMIT clause to constrain the number of rows returned by the query.
@@ -545,10 +474,8 @@ For example, to get the first 10 rows in the tracks table, you use the following
 SELECT
   trackid,
   name
-FROM
-  tracks
-LIMIT
-  10;
+FROM tracks
+LIMIT 10;
 
 /*
 If you want to get the first 10 rows starting from the 10th row of the result set, you use OFFSET keyword as the following:
@@ -572,12 +499,8 @@ For example, to get 10 rows starting from the 11th row in the tracks table, you 
 SELECT
   trackid,
   name
-FROM
-  tracks
-LIMIT
-  10
-OFFSET
-  10;
+FROM tracks
+LIMIT 10 OFFSET 10;
 
 /*
 You often find the uses of OFFSET in web applications for paginating result sets.
@@ -599,12 +522,9 @@ SELECT
   trackid,
   name,
   bytes
-FROM
-  tracks
-ORDER BY
-  bytes DESC
-LIMIT
-  10;
+FROM tracks
+ORDER BY bytes DESC
+LIMIT 10;
 
 /*
 To get the 5 shortest tracks, you sort the tracks by the length specified by milliseconds column using ORDER BY clause and get the first 5 rows using LIMIT clause.
@@ -613,12 +533,9 @@ SELECT
   trackid,
   name,
   milliseconds
-FROM
-  tracks
-ORDER BY
-  milliseconds ASC
-LIMIT
-  5;
+FROM tracks
+ORDER BY milliseconds ASC
+LIMIT 5;
 
 /*
 Getting the nth highest and the lowest value
@@ -634,14 +551,9 @@ SELECT
   trackid,
   name,
   milliseconds
-FROM
-  tracks
-ORDER BY
-  milliseconds DESC
-LIMIT
-  1
-OFFSET
-  1;
+FROM tracks
+ORDER BY milliseconds DESC
+LIMIT 1 OFFSET 1;
 
 /*
 The following statement gets the third smallest track on the tracks table.
@@ -650,14 +562,9 @@ SELECT
   trackid,
   name,
   bytes
-FROM
-  tracks
-ORDER BY
-  bytes
-LIMIT
-  1
-OFFSET
-  2;
+FROM tracks
+ORDER BY bytes
+LIMIT 1 OFFSET 2;
 
 /*
 
@@ -695,12 +602,9 @@ SELECT
   invoiceid,
   billingaddress,
   total
-FROM
-  invoices
-WHERE
-  total BETWEEN 14.91 AND 18.86
-ORDER BY
-  total;
+FROM invoices
+WHERE total BETWEEN 14.91 AND 18.86
+ORDER BY total;
 
 /*
 To find the invoices whose total are not between 1 and 20, you use the NOT BETWEEN operator as shown in the following query:
@@ -709,12 +613,9 @@ SELECT
   invoiceid,
   billingaddress,
   total
-FROM
-  invoices
-WHERE
-  total NOT BETWEEN 1 AND 20
-ORDER BY
-  total;
+FROM invoices
+WHERE total NOT BETWEEN 1 AND 20
+ORDER BY total;
 
 /*
 As clearly shown in the output, the result includes the invoices whose total is less than 1 and greater than 20.
@@ -726,12 +627,9 @@ SELECT
   billingaddress,
   invoicedate,
   total
-FROM
-  invoices
-WHERE
-  invoicedate BETWEEN '2010-01-01' AND '2010-01-31'
-ORDER BY
-  invoicedate;
+FROM invoices
+WHERE invoicedate BETWEEN '2010-01-01' AND '2010-01-31'
+ORDER BY invoicedate;
 
 /*
 The following statement finds invoices whose dates are not between January 03, 2009, and December 01, 2013:
@@ -741,38 +639,29 @@ SELECT
   billingaddress,
   DATE(invoicedate) AS invoicedate,
   total
-FROM
-  invoices
-WHERE
-  invoicedate NOT BETWEEN '2009-01-03' AND '2013-12-01'
-ORDER BY
-  invoicedate;
+FROM invoices
+WHERE invoicedate NOT BETWEEN '2009-01-03' AND '2013-12-01'
+ORDER BY invoicedate;
 
---noqa: disable=RF02
+-- noqa: disable=RF02
 WITH
   count AS (
     SELECT COUNT(*) AS cnt
-    FROM
-      tracks
+    FROM tracks
   )
 SELECT
   trackid,
   name,
   composer
-FROM
-  tracks
-ORDER BY
-  composer NULLS LAST
+FROM tracks
+ORDER BY composer NULLS LAST
 LIMIT
-  10
-OFFSET
-  (
+  10 OFFSET (
     SELECT cnt
-    FROM
-      count
+    FROM count
   ) - 10;
 
---noqa: enable=RF02
+-- noqa: enable=RF02
 /*
 The SQLite IN operator determines whether a value matches any value in a list or a subquery. The syntax of the IN operator is as follows:
 
@@ -790,12 +679,9 @@ SELECT
   trackid,
   name,
   mediatypeid
-FROM
-  tracks
-WHERE
-  mediatypeid IN (1, 2)
-ORDER BY
-  name ASC;
+FROM tracks
+WHERE mediatypeid IN (1, 2)
+ORDER BY name ASC;
 
 /*
 This query uses the OR operator instead of the IN operator to return the same result set as the above query:
@@ -804,13 +690,9 @@ SELECT
   trackid,
   name,
   mediatypeid
-FROM
-  tracks
-WHERE
-  mediatypeid = 1
-  OR mediatypeid = 2
-ORDER BY
-  name ASC;
+FROM tracks
+WHERE mediatypeid = 1 OR mediatypeid = 2
+ORDER BY name ASC;
 
 /*
 As you can see from the queries, using the IN operator is much shorter.
@@ -822,31 +704,26 @@ If you have a query that uses many OR operators, you can consider using the IN o
 The following query returns a list of album id of the artist id 12:
 */
 SELECT albumid
-FROM
-  albums
-WHERE
-  artistid = 12;
+FROM albums
+WHERE artistid = 12;
 
 /*
 To get the tracks that belong to the artist id 12, you can combine the IN operator with a subquery as follows:
 */
---noqa: disable=RF02
+-- noqa: disable=RF02
 SELECT
   trackid,
   name,
   albumid
-FROM
-  tracks
+FROM tracks
 WHERE
   albumid IN (
     SELECT albumid
-    FROM
-      albums
-    WHERE
-      artistid = 12
+    FROM albums
+    WHERE artistid = 12
   );
 
---noqa: enable=RF02
+-- noqa: enable=RF02
 /*
 First, the subquery returns a list of album ids that belong to the artist id 12.
 Then, the outer query return all tracks whose album id matches with the album id list returned by the subquery.
@@ -858,10 +735,8 @@ SELECT
   trackid,
   name,
   genreid
-FROM
-  tracks
-WHERE
-  genreid NOT IN (1, 2, 3);
+FROM tracks
+WHERE genreid NOT IN (1, 2, 3);
 
 /*
 Sometimes, you don’t know exactly the complete keyword that you want to query. For example, you may know that your most favorite song contains the word,elevator but you don’t know exactly the name.
@@ -905,10 +780,8 @@ To find the tracks whose names start with the Wild literal string, you use the p
 SELECT
   trackid,
   name
-FROM
-  tracks
-WHERE
-  name LIKE 'Wild%';
+FROM tracks
+WHERE name LIKE 'Wild%';
 
 /*
 
@@ -917,10 +790,8 @@ To find the tracks whose names end with Wild word, you use % wildcard at the beg
 SELECT
   trackid,
   name
-FROM
-  tracks
-WHERE
-  name LIKE '%Wild';
+FROM tracks
+WHERE name LIKE '%Wild';
 
 /*
 To find the tracks whose names contain the Wild literal string, you use % wildcard at the beginning and end of the pattern:
@@ -928,10 +799,8 @@ To find the tracks whose names contain the Wild literal string, you use % wildca
 SELECT
   trackid,
   name
-FROM
-  tracks
-WHERE
-  name LIKE '%Wild%';
+FROM tracks
+WHERE name LIKE '%Wild%';
 
 /*
 The following statement finds the tracks whose names contain: zero or more characters (%), followed by Br, followed by a character ( _), followed by wn, and followed by zero or more characters ( %).
@@ -939,10 +808,8 @@ The following statement finds the tracks whose names contain: zero or more chara
 SELECT
   trackid,
   name
-FROM
-  tracks
-WHERE
-  name LIKE '%Br_wn%';
+FROM tracks
+WHERE name LIKE '%Br_wn%';
 
 /*
 If the pattern that you want to match contains % or _, you must use an escape character in an optional ESCAPE clause as follows:
@@ -966,13 +833,15 @@ First, create a table t that has one column:
 */
 DROP TABLE IF EXISTS t;
 
-CREATE TABLE t (c TEXT);
+CREATE TABLE t (
+  c TEXT
+);
 
 /*
 Next, insert some rows into the table t:
 */
-INSERT INTO
-  t (c)
+INSERT INTO t
+  (c)
 VALUES
   ('10% increase'),
   ('10 times decrease'),
@@ -983,17 +852,14 @@ VALUES
 */
 SELECT
   *
-FROM
-  t;
+FROM t;
 
 /*
 Fourth, attempt to find the row whose value in the c column contains the 10% literal string:
 */
 SELECT c
-FROM
-  t
-WHERE
-  c LIKE '%10%%';
+FROM t
+WHERE c LIKE '%10%%';
 
 /*
 However, it returns rows whose values in the c column contains 10:
@@ -1003,10 +869,8 @@ However, it returns rows whose values in the c column contains 10:
 Fifth, to get the correct result, you use the ESCAPE clause as shown in the following query:
 */
 SELECT c
-FROM
-  t
-WHERE
-  c LIKE '%10\%%' ESCAPE '\';
+FROM t
+WHERE c LIKE '%10\%%' ESCAPE '\';
 
 /*
 The GLOB operator is similar to the LIKE operator. The GLOB operator determines whether a string matches a specific pattern.
@@ -1028,10 +892,8 @@ The following statement finds tracks whose names start with the string Man. The 
 SELECT
   trackid,
   name
-FROM
-  tracks
-WHERE
-  name GLOB 'Man*';
+FROM tracks
+WHERE name GLOB 'Man*';
 
 /*
 The following statement gets the tracks whose names end with Man. The pattern *Man matches any string that ends with Man.
@@ -1039,10 +901,8 @@ The following statement gets the tracks whose names end with Man. The pattern *M
 SELECT
   trackid,
   name
-FROM
-  tracks
-WHERE
-  name GLOB '*Man';
+FROM tracks
+WHERE name GLOB '*Man';
 
 /*
 The following query finds the tracks whose names start with any single character (?), followed by the string ere and then any number of character (*).
@@ -1050,10 +910,8 @@ The following query finds the tracks whose names start with any single character
 SELECT
   trackid,
   name
-FROM
-  tracks
-WHERE
-  name GLOB '?ere*';
+FROM tracks
+WHERE name GLOB '?ere*';
 
 /*
 To find the tracks whose names contain numbers, you can use the list wildcard [0-9] as follows:
@@ -1061,10 +919,8 @@ To find the tracks whose names contain numbers, you can use the list wildcard [0
 SELECT
   trackid,
   name
-FROM
-  tracks
-WHERE
-  name GLOB '*[1-9]*';
+FROM tracks
+WHERE name GLOB '*[1-9]*';
 
 /*
 Or to find the tracks whose name does not contain any number, you place the character ^ at the beginning of the list:
@@ -1072,10 +928,8 @@ Or to find the tracks whose name does not contain any number, you place the char
 SELECT
   trackid,
   name
-FROM
-  tracks
-WHERE
-  name GLOB '*[^1-9]*';
+FROM tracks
+WHERE name GLOB '*[^1-9]*';
 
 /*
 The following statement finds the tracks whose names end with a number.
@@ -1083,10 +937,8 @@ The following statement finds the tracks whose names end with a number.
 SELECT
   trackid,
   name
-FROM
-  tracks
-WHERE
-  name GLOB '*[1-9]';
+FROM tracks
+WHERE name GLOB '*[1-9]';
 
 /*
 NULL is special. It indicates that a piece of information is unknown or not applicable.
@@ -1108,10 +960,8 @@ The following statement attempts to find tracks whose composers are NULL:
 SELECT
   name,
   composer
-FROM
-  tracks
-WHERE
-  composer IS NULL;
+FROM tracks
+WHERE composer IS NULL;
 
 /*
 It returns an empty row without issuing any additional message.
@@ -1131,12 +981,9 @@ To find all tracks whose composers are unknown, you use the IS NULL operator as 
 SELECT
   name,
   composer
-FROM
-  tracks
-WHERE
-  composer IS NULL
-ORDER BY
-  name;
+FROM tracks
+WHERE composer IS NULL
+ORDER BY name;
 
 /*
 The NOT operator negates the IS NULL operator as follows:
@@ -1149,12 +996,9 @@ The following example finds tracks whose composers are not NULL:
 SELECT
   name,
   composer
-FROM
-  tracks
-WHERE
-  composer IS NOT NULL
-ORDER BY
-  name;
+FROM tracks
+WHERE composer IS NOT NULL
+ORDER BY name;
 
 /*
 In relational databases, data is often distributed in many related tables. A table is associated with another table using foreign keys.
@@ -1238,8 +1082,7 @@ FROM
   tracks
   INNER JOIN albums ON tracks.albumid = albums.albumid
   INNER JOIN artists ON albums.artistid = artists.artistid
-WHERE
-  artists.artistid = 10;
+WHERE artists.artistid = 10;
 
 /*
 Similar to the INNER JOIN clause, the LEFT JOIN clause is an optional clause of the SELECT statement. You use the LEFT JOIN clause to query data from multiple related tables.
@@ -1289,8 +1132,7 @@ SELECT
 FROM
   artists
   LEFT JOIN albums ON artists.artistid = albums.artistid
-ORDER BY
-  albums.albumid;
+ORDER BY albums.albumid;
 
 /*
 The following statement uses the LEFT JOIN clause with the WHERE clause.
@@ -1301,8 +1143,7 @@ SELECT
 FROM
   artists
   LEFT JOIN albums ON artists.artistid = albums.artistid
-WHERE
-  albums.albumid IS NULL;
+WHERE albums.albumid IS NULL;
 
 /*
 In SQLite, the RIGHT JOIN clause allows you to combine rows from two tables based on a related column between them.
@@ -1364,7 +1205,8 @@ CREATE TABLE emps (
   employee_id INTEGER PRIMARY KEY,
   employee_name TEXT NOT NULL,
   department_id INTEGER,
-  FOREIGN KEY (department_id) REFERENCES departments (department_id) ON DELETE CASCADE
+  FOREIGN KEY (department_id) REFERENCES departments (department_id)
+    ON DELETE CASCADE
 );
 
 /*
@@ -1372,14 +1214,14 @@ In these tables, the emps table has the department_id column that references the
 
 Second, insert rows into the departments and emps tables:
 */
-INSERT INTO
-  departments (department_name)
+INSERT INTO departments
+  (department_name)
 VALUES
   (' HR '),
   (' IT ');
 
-INSERT INTO
-  emps (employee_name, department_id)
+INSERT INTO emps
+  (employee_name, department_id)
 VALUES
   (' John ', 1),
   (' Jane ', 2),
@@ -1389,7 +1231,7 @@ VALUES
 Since both emps and departments tables
 have the department_id column, you can use the USING clause:
 */
---noqa:disable=CV08
+-- noqa:disable=CV08
 SELECT
   emps.employee_name,
   departments.department_name
@@ -1408,10 +1250,9 @@ SELECT
 FROM
   departments
   RIGHT JOIN emps ON departments.department_id = emps.department_id
-WHERE
-  departments.department_name IS NULL;
+WHERE departments.department_name IS NULL;
 
---noqa:enable=CV08
+-- noqa:enable=CV08
 /*
 If you use a LEFT JOIN, INNER JOIN, or CROSS JOIN without the ON or USING clause, SQLite produces a cartesian product of the involved tables. The number of rows in the cartesian product is the product of the number of rows in each table.
 
@@ -1450,12 +1291,16 @@ DROP TABLE IF EXISTS ranks;
 
 DROP TABLE IF EXISTS suits;
 
-CREATE TABLE ranks (rank TEXT NOT NULL);
+CREATE TABLE ranks (
+  rank TEXT NOT NULL
+);
 
-CREATE TABLE suits (suit TEXT NOT NULL);
+CREATE TABLE suits (
+  suit TEXT NOT NULL
+);
 
-INSERT INTO
-  ranks (rank)
+INSERT INTO ranks
+  (rank)
 VALUES
   (' 2 '),
   (' 3 '),
@@ -1471,8 +1316,8 @@ VALUES
   (' K '),
   (' A ');
 
-INSERT INTO
-  suits (suit)
+INSERT INTO suits
+  (suit)
 VALUES
   (' Clubs '),
   (' Diamonds '),
@@ -1488,8 +1333,7 @@ SELECT
 FROM
   ranks
   CROSS JOIN suits
-ORDER BY
-  suits.suit;
+ORDER BY suits.suit;
 
 /*
 In SQLite, a FULL OUTER JOIN clause allows you to combine rows from two tables based on a related column.
@@ -1564,8 +1408,8 @@ CREATE TABLE enrollments (
 /*
 Second, insert rows into these tables:
 */
-INSERT INTO
-  students (student_name)
+INSERT INTO students
+  (student_name)
 VALUES
   (' John '),
   (' Jane '),
@@ -1573,15 +1417,15 @@ VALUES
   (' Alice '),
   (' Bob ');
 
-INSERT INTO
-  courses (course_name)
+INSERT INTO courses
+  (course_name)
 VALUES
   (' Math '),
   (' Science '),
   (' History ');
 
-INSERT INTO
-  enrollments (student_id, course_id)
+INSERT INTO enrollments
+  (student_id, course_id)
 VALUES
   (1, 1),
   (2, 2),
@@ -1605,7 +1449,7 @@ The output shows that Alice and Bob do not enroll in any courses and no student 
 
 Since the tables share the same column names, you can use the USING syntax:
 */
---noqa: disable=ST11
+-- noqa: disable=ST11
 SELECT
   students.student_name,
   courses.course_name
@@ -1627,8 +1471,7 @@ FROM
   students
   FULL OUTER JOIN enrollments USING (student_id)
   FULL OUTER JOIN courses USING (course_id)
-WHERE
-  courses.course_name IS NULL;
+WHERE courses.course_name IS NULL;
 
 /*
 Finally, identify the courses that have not been enrolled in by any students:
@@ -1640,10 +1483,9 @@ FROM
   students
   FULL OUTER JOIN enrollments USING (student_id)
   FULL OUTER JOIN courses USING (course_id)
-WHERE
-  students.student_name IS NULL;
+WHERE students.student_name IS NULL;
 
---noqa: enable=ST11
+-- noqa: enable=ST11
 /*
 An artist can have zero or many albums while an album belongs to one artist.
 
@@ -1695,8 +1537,7 @@ SELECT
 FROM
   artists
   LEFT JOIN albums ON artists.artistid = albums.artistid
-ORDER BY
-  artists.name;
+ORDER BY artists.name;
 
 /*
 The LEFT JOIN clause selects data starting from the left table (artists) and matching rows in the right table (albums) based on the join condition (artists.ArtistId = albums.ArtistId) .
@@ -1713,8 +1554,7 @@ SELECT
 FROM
   artists
   LEFT JOIN albums USING (artistid)
-ORDER BY
-  artists.name;
+ORDER BY artists.name;
 
 /*
 If you want to find artists who don’t have any albums, you can add a WHERE clause as shown in the following query:
@@ -1725,10 +1565,8 @@ SELECT
 FROM
   artists
   LEFT JOIN albums ON artists.artistid = albums.artistid
-WHERE
-  albums.title IS NULL
-ORDER BY
-  artists.name;
+WHERE albums.title IS NULL
+ORDER BY artists.name;
 
 /*
 Generally, this type of query allows you to find rows that are available in the left table but don’t have corresponding rows in the right table.
@@ -1758,19 +1596,24 @@ DROP TABLE IF EXISTS calendars;
 
 DROP TABLE IF EXISTS products;
 
-CREATE TABLE products (product TEXT NOT NULL);
+CREATE TABLE products (
+  product TEXT NOT NULL
+);
 
-INSERT INTO
-  products (product)
+INSERT INTO products
+  (product)
 VALUES
   (' P1 '),
   (' P2 '),
   (' P3 ');
 
-CREATE TABLE calendars (y INT NOT NULL, m INT NOT NULL);
+CREATE TABLE calendars (
+  y INT NOT NULL,
+  m INT NOT NULL
+);
 
-INSERT INTO
-  calendars (y, m)
+INSERT INTO calendars
+  (y, m)
 VALUES
   (2019, 1),
   (2019, 2),
@@ -1788,14 +1631,14 @@ VALUES
 /*
 This query uses the CROSS JOIN clause to combine the products with the months:
 */
---noqa: disable=RF02
+-- noqa: disable=RF02
 SELECT
   *
 FROM
   products
   CROSS JOIN calendars;
 
---noqa: enable=RF02
+-- noqa: enable=RF02
 /*
 The self-join is a special kind of joins that allow you to join a table to itself using either LEFT JOIN or INNER JOIN clause. You use self-join to create a result set that joins the rows with the other rows within the same table.
 
@@ -1818,8 +1661,7 @@ SELECT
 FROM
   employees AS emps
   INNER JOIN employees AS mgrs ON emps.reportsto = mgrs.employeeid
-ORDER BY
-  manager;
+ORDER BY manager;
 
 /*
 The statement used the INNER JOIN clause to join the employees to itself. The employees table has two roles: employees and managers.
@@ -1835,20 +1677,18 @@ SELECT
 FROM
   employees AS emps
   LEFT JOIN employees AS mgrs ON emps.reportsto = mgrs.employeeid
-ORDER BY
-  manager;
+ORDER BY manager;
 
---noqa: disable=CV08
+-- noqa: disable=CV08
 SELECT
   mgrs.firstname || ' ' || mgrs.lastname AS employee,
   emps.firstname || ' ' || emps.lastname AS manager
 FROM
   employees AS emps
   RIGHT JOIN employees AS mgrs ON emps.employeeid = mgrs.reportsto
-ORDER BY
-  employee;
+ORDER BY employee;
 
---noqa: enable=CV08
+-- noqa: enable=CV08
 /*
 Andrew Adams is the CEO because he does not report anyone.
 
@@ -1859,13 +1699,13 @@ SELECT DISTINCT
   emps_1.firstname || ' ' || emps_1.lastname AS fullname
 FROM
   employees AS emps_1
-  INNER JOIN employees AS emps_2 ON emps_1.city = emps_2.city
-  AND (
-    emps_1.firstname != emps_2.firstname
-    AND emps_1.lastname != emps_2.lastname
-  )
-ORDER BY
-  emps_1.city;
+  INNER JOIN employees AS emps_2
+    ON emps_1.city = emps_2.city
+    AND (
+      emps_1.firstname != emps_2.firstname
+      AND emps_1.lastname != emps_2.lastname
+    )
+ORDER BY emps_1.city;
 
 /*
 The join condition has two expressions:
@@ -1878,10 +1718,9 @@ SELECT DISTINCT
   emps_1.firstname || ' ' || emps_1.lastname AS fullname
 FROM
   employees AS emps_1
-  INNER JOIN employees AS emps_2 ON emps_1.city = emps_2.city
-  AND emps_1.employeeid != emps_2.employeeid
-ORDER BY
-  emps_1.city;
+  INNER JOIN employees AS emps_2
+    ON emps_1.city = emps_2.city AND emps_1.employeeid != emps_2.employeeid
+ORDER BY emps_1.city;
 
 /*
 You could simply use employeeid instead.
@@ -1913,10 +1752,8 @@ The following statement returns the album id and the number of tracks per album.
 SELECT
   albumid,
   COUNT(trackid) AS no_of_tracks
-FROM
-  tracks
-GROUP BY
-  albumid;
+FROM tracks
+GROUP BY albumid;
 
 /*
 You can use the ORDER BY clause to sort the groups as follows:
@@ -1924,12 +1761,9 @@ You can use the ORDER BY clause to sort the groups as follows:
 SELECT
   albumid,
   COUNT(trackid) AS no_of_tracks
-FROM
-  tracks
-GROUP BY
-  albumid
-ORDER BY
-  no_of_tracks DESC;
+FROM tracks
+GROUP BY albumid
+ORDER BY no_of_tracks DESC;
 
 /*
 You can query data from multiple tables using the INNER JOIN clause, then use the GROUP BY clause to group rows into a set of summary rows.
@@ -1943,10 +1777,8 @@ SELECT
 FROM
   tracks
   INNER JOIN albums USING (albumid)
-GROUP BY
-  albums.albumid
-ORDER BY
-  no_of_tracks;
+GROUP BY albums.albumid
+ORDER BY no_of_tracks;
 
 /*
 To filter groups, you use the GROUP BY with HAVING clause. For example, to get the albums that have more than 15 tracks, you use the following statement:
@@ -1958,10 +1790,8 @@ SELECT
 FROM
   tracks
   INNER JOIN albums ON tracks.albumid = albums.albumid
-GROUP BY
-  tracks.albumid
-HAVING
-  no_of_tracks > 15;
+GROUP BY tracks.albumid
+HAVING no_of_tracks > 15;
 
 /*
 You can use the SUM function to calculate total per group. For example, to get total length and bytes for each album, you use the SUM function to calculate total milliseconds and bytes.
@@ -1970,10 +1800,8 @@ SELECT
   albumid,
   SUM(milliseconds) AS length,
   SUM(bytes) AS size
-FROM
-  tracks
-GROUP BY
-  albumid;
+FROM tracks
+GROUP BY albumid;
 
 /*
 The following statement returns the album id, album title, maximum length, minimum length, and the average length of tracks in the tracks table.
@@ -1987,8 +1815,7 @@ SELECT
 FROM
   tracks
   INNER JOIN albums USING (albumid)
-GROUP BY
-  tracks.albumid;
+GROUP BY tracks.albumid;
 
 /*
 SQLite allows you to group rows by multiple columns.
@@ -1999,11 +1826,8 @@ SELECT
   mediatypeid,
   genreid,
   COUNT(trackid) AS no_of_tracks
-FROM
-  tracks
-GROUP BY
-  mediatypeid,
-  genreid;
+FROM tracks
+GROUP BY mediatypeid, genreid;
 
 /*
 SQLite uses the combination of values of MediaTypeId and GenreId columns as a group e.g., (1,1) and (1,2). It then applies the COUNT function to return the number of tracks in each group.
@@ -2013,12 +1837,9 @@ SQLite uses the combination of values of MediaTypeId and GenreId columns as a gr
 SELECT
   STRFTIME(' % Y ', invoicedate) AS invoiceyear,
   COUNT(invoiceid) AS invoicecount
-FROM
-  invoices
-GROUP BY
-  STRFTIME(' % Y ', invoicedate)
-ORDER BY
-  invoiceyear;
+FROM invoices
+GROUP BY STRFTIME(' % Y ', invoicedate)
+ORDER BY invoiceyear;
 
 /*In this example:
 
@@ -2061,10 +1882,8 @@ To find the number of tracks for each album, you use GROUP BY clause as follows:
 SELECT
   albumid,
   COUNT(trackid) AS no_of_tracks
-FROM
-  tracks
-GROUP BY
-  albumid;
+FROM tracks
+GROUP BY albumid;
 
 /*
 
@@ -2074,12 +1893,9 @@ To find the numbers of tracks for the album with id 1, we add a HAVING clause to
 SELECT
   albumid,
   COUNT(trackid) AS no_of_tracks
-FROM
-  tracks
-GROUP BY
-  albumid
-HAVING
-  albumid = 1;
+FROM tracks
+GROUP BY albumid
+HAVING albumid = 1;
 
 /*
 We have referred to the AlbumId column in the HAVING clause.
@@ -2089,26 +1905,18 @@ To find albums that have the number of tracks between 18 and 20, you use the agg
 SELECT
   albumid,
   COUNT(trackid) AS no_of_tracks
-FROM
-  tracks
-GROUP BY
-  albumid
-HAVING
-  no_of_tracks BETWEEN 18 AND 20
-ORDER BY
-  albumid;
+FROM tracks
+GROUP BY albumid
+HAVING no_of_tracks BETWEEN 18 AND 20
+ORDER BY albumid;
 
 SELECT
   albumid,
   COUNT(trackid) AS no_of_tracks
-FROM
-  tracks
-GROUP BY
-  albumid
-HAVING
-  COUNT(albumid) BETWEEN 18 AND 20
-ORDER BY
-  albumid;
+FROM tracks
+GROUP BY albumid
+HAVING COUNT(albumid) BETWEEN 18 AND 20
+ORDER BY albumid;
 
 /*
 The following statement queries data from tracks and albums tables using inner join to find albums that have the total length greater than 60,000,000 milliseconds.
@@ -2120,18 +1928,14 @@ SELECT
 FROM
   tracks
   INNER JOIN albums USING (albumid)
-GROUP BY
-  albums.albumid
-HAVING
-  length > 60000000;
+GROUP BY albums.albumid
+HAVING length > 60000000;
 
 SELECT COUNT(*)
-FROM
-  tracks;
+FROM tracks;
 
 SELECT COUNT(*)
-FROM
-  albums;
+FROM albums;
 
 /*
 Sometimes, you need to combine the results of multiple queries into a single result set. To achieve this, you can use the UNION operator.
@@ -2162,10 +1966,12 @@ Suppose you have two tables t1 and t2 with the following structures:
 */
 DROP TABLE IF EXISTS t1;
 
-CREATE TABLE t1 (c1 INT);
+CREATE TABLE t1 (
+  c1 INT
+);
 
-INSERT INTO
-  t1 (c1)
+INSERT INTO t1
+  (c1)
 VALUES
   (1),
   (2),
@@ -2173,10 +1979,12 @@ VALUES
 
 DROP TABLE IF EXISTS t2;
 
-CREATE TABLE t2 (c2 INT);
+CREATE TABLE t2 (
+  c2 INT
+);
 
-INSERT INTO
-  t2 (c2)
+INSERT INTO t2
+  (c2)
 VALUES
   (2),
   (3),
@@ -2186,23 +1994,19 @@ VALUES
 The following statement combines the result sets of the t1 and t2 tables using the UNION operator:
 */
 SELECT c1
-FROM
-  t1
+FROM t1
 UNION
 SELECT c2
-FROM
-  t2;
+FROM t2;
 
 /*
 The following statement combines the result sets of t1 and t2 tables using the  UNION ALL operator:
 */
 SELECT c1
-FROM
-  t1
+FROM t1
 UNION ALL
 SELECT c2
-FROM
-  t2;
+FROM t2;
 
 /*
 This statement uses the UNION operator to combine the names of employees and customers into a single list:
@@ -2211,15 +2015,13 @@ SELECT
   firstname,
   lastname,
   ' Employee ' AS type
-FROM
-  employees
+FROM employees
 UNION
 SELECT
   firstname,
   lastname,
   ' Customer ' AS type
-FROM
-  customers;
+FROM customers;
 
 /*
 This example uses the UNION operator to combine the names of the employees and customers into a single list. In addition, it uses the ORDER BY clause to sort the name list by first name and last name.
@@ -2228,18 +2030,14 @@ SELECT
   firstname,
   lastname,
   ' Employee ' AS type
-FROM
-  employees
+FROM employees
 UNION
 SELECT
   firstname,
   lastname,
   ' Customer ' AS type
-FROM
-  customers
-ORDER BY
-  firstname,
-  lastname;
+FROM customers
+ORDER BY firstname, lastname;
 
 /*
 SQLite EXCEPT operator compares the result sets of two queries and returns distinct rows from the first query that are not output by the second query.
@@ -2260,12 +2058,10 @@ The following statements create two tables t1 and t2 and insert some data into b
 The following statement illustrates how to use the EXCEPT operator to compare result sets of two queries:
 */
 SELECT c1
-FROM
-  t1
+FROM t1
 EXCEPT
 SELECT c2
-FROM
-  t2;
+FROM t2;
 
 /*
 First, create new tables books, customers, and orders:
@@ -2302,50 +2098,25 @@ CREATE TABLE orders (
 /*
 Second, insert rows into these tables:
 */
-INSERT INTO
-  books (title, author, genre, price)
+INSERT INTO books
+  (title, author, genre, price)
 VALUES
-  (
-    ' TO KILL a Mockingbird ',
-    ' Harper Lee ',
-    ' Fiction ',
-    12.99
-  ),
-  (
-    ' 1984 ',
-    ' George Orwell ',
-    ' Science Fiction ',
-    10.99
-  ),
-  (
-    ' The Great Gatsby ',
-    ' F.Scott Fitzgerald ',
-    ' Classic ',
-    9.99
-  ),
-  (
-    ' Pride
-    AND Prejudice ',
-    ' Jane Austen ',
-    ' Romance ',
-    8.99
-  ),
-  (
-    ' The Catcher IN the Rye ',
-    ' J.D.Salinger ',
-    ' Fiction ',
-    11.99
-  );
+  (' TO KILL a Mockingbird ', ' Harper Lee ', ' Fiction ', 12.99),
+  (' 1984 ', ' George Orwell ', ' Science Fiction ', 10.99),
+  (' The Great Gatsby ', ' F.Scott Fitzgerald ', ' Classic ', 9.99),
+  (' Pride
+    AND Prejudice ', ' Jane Austen ', ' Romance ', 8.99),
+  (' The Catcher IN the Rye ', ' J.D.Salinger ', ' Fiction ', 11.99);
 
-INSERT INTO
-  custs (name, email)
+INSERT INTO custs
+  (name, email)
 VALUES
   (' Alice ', ' alice @gmail.com '),
   (' Bob ', ' bob @yahoo.com '),
   (' Charlie ', ' charlie @outlook.com ');
 
-INSERT INTO
-  orders (customer_id, book_id, order_date)
+INSERT INTO orders
+  (customer_id, book_id, order_date)
 VALUES
   (1, 1, ' 2024 -04 -25 '), -- Alice purchased ' TO KILL a Mockingbird '
   (1, 3, ' 2024 -04 -27 '), -- Alice purchased ' The Great Gatsby '
@@ -2360,8 +2131,7 @@ SELECT
   author,
   genre,
   price
-FROM
-  books
+FROM books
 EXCEPT
 SELECT
   books.title,
@@ -2398,12 +2168,10 @@ For the demonstration, we will create two tables t1 and t2 and insert some data 
 The following statement illustrates how to use the INTERSECT operator to compare result sets of two queries:
 */
 SELECT c1
-FROM
-  t1
+FROM t1
 INTERSECT
 SELECT c2
-FROM
-  t2;
+FROM t2;
 
 /*
 The following statement uses the INTERSECT operator to find customers who have invoices:
@@ -2412,8 +2180,7 @@ SELECT
   customerid,
   firstname,
   lastname
-FROM
-  customers
+FROM customers
 INTERSECT
 SELECT
   customers.customerid,
@@ -2422,8 +2189,7 @@ SELECT
 FROM
   invoices
   INNER JOIN customers USING (customerid)
-ORDER BY
-  customerid;
+ORDER BY customerid;
 
 /*
 How it works.
@@ -2460,20 +2226,17 @@ You can use a subquery in the SELECT, FROM, WHERE, and JOIN clauses.
 
 You can use a simple subquery as a search condition. For example, the following statement returns all the tracks in the album with the title  Let There Be Rock
 */
---noqa: disable=RF02
+-- noqa: disable=RF02
 SELECT
   trackid,
   name,
   albumid
-FROM
-  tracks
+FROM tracks
 WHERE
   albumid = (
     SELECT albumid
-    FROM
-      albums
-    WHERE
-      title = ' Let There Be Rock '
+    FROM albums
+    WHERE title = ' Let There Be Rock '
   );
 
 /*
@@ -2488,18 +2251,15 @@ SELECT
   customerid,
   firstname,
   lastname
-FROM
-  customers
+FROM customers
 WHERE
   supportrepid IN (
     SELECT employeeid
-    FROM
-      employees
-    WHERE
-      country = ' Canada '
+    FROM employees
+    WHERE country = ' Canada '
   );
 
---noqa: enable=RF02
+-- noqa: enable=RF02
 /*
 The subquery returns a list of ids of the employees who locate in Canada. The outer query uses the IN operator to find the customers who have the sales representative id in the list.
 */
@@ -2518,10 +2278,8 @@ SELECT AVG(album.size)
 FROM
   (
     SELECT SUM(bytes) AS size
-    FROM
-      tracks
-    GROUP BY
-      albumid
+    FROM tracks
+    GROUP BY albumid
   ) AS album;
 
 /*
@@ -2539,18 +2297,14 @@ The following query uses a correlated subquery to return the albums whose size i
 SELECT
   albumid,
   title
-FROM
-  albums
+FROM albums
 WHERE
   10000000 > (
     SELECT SUM(tracks.bytes)
-    FROM
-      tracks
-    WHERE
-      tracks.albumid = albums.albumid
+    FROM tracks
+    WHERE tracks.albumid = albums.albumid
   )
-ORDER BY
-  title;
+ORDER BY title;
 
 /*
 How the query works.
@@ -2566,15 +2320,11 @@ SELECT
   title,
   (
     SELECT COUNT(tracks.trackid)
-    FROM
-      tracks
-    WHERE
-      tracks.albumid = albums.albumid
+    FROM tracks
+    WHERE tracks.albumid = albums.albumid
   ) AS tracks_count
-FROM
-  albums
-ORDER BY
-  tracks_count DESC;
+FROM albums
+ORDER BY tracks_count DESC;
 
 /*
 The EXISTS operator is a logical operator that checks whether a subquery returns any row.
@@ -2598,39 +2348,29 @@ SELECT
   firstname,
   lastname,
   company
-FROM
-  customers
+FROM customers
 WHERE
   EXISTS (
     SELECT 1
-    FROM
-      invoices
-    WHERE
-      invoices.customerid = customers.customerid
+    FROM invoices
+    WHERE invoices.customerid = customers.customerid
   )
-ORDER BY
-  firstname,
-  lastname;
+ORDER BY firstname, lastname;
 
 SELECT
   customerid,
   firstname,
   lastname,
   company
-FROM
-  customers
+FROM customers
 WHERE
   EXISTS (
     SELECT
       invoices.*
-    FROM
-      invoices
-    WHERE
-      invoices.customerid = customers.customerid
+    FROM invoices
+    WHERE invoices.customerid = customers.customerid
   )
-ORDER BY
-  firstname,
-  lastname;
+ORDER BY firstname, lastname;
 
 /*
 In this example, for each customer, the EXISTS operator checks if the customer id exists in the invoices table.
@@ -2639,25 +2379,21 @@ If yes, the subquery returns one row with value 1 that causes the EXISTS operato
 In case the customer id does not exist in the Invoices table, the subquery returns no rows which causes the EXISTS operator to evaluate to false, hence the query does not include the customer in the result set.
 Notice that you can use the IN operator instead of EXISTS operator in this case to achieve the same result:
 */
---noqa: disable=RF02
+-- noqa: disable=RF02
 SELECT
   customerid,
   firstname,
   lastname,
   company
-FROM
-  customers
+FROM customers
 WHERE
   customerid IN (
     SELECT customerid
-    FROM
-      invoices
+    FROM invoices
   )
-ORDER BY
-  firstname,
-  lastname;
+ORDER BY firstname, lastname;
 
---noqa: enable=RF02
+-- noqa: enable=RF02
 /*
 Once the subquery returns the first row, the EXISTS operator stops searching because it can determine the result. On the other hand, the IN operator must scan all rows returned by the subquery to determine the result.
 
@@ -2667,20 +2403,16 @@ This query find all artists who do not have any album in the Albums table:
 */
 SELECT
   artists.*
-FROM
-  artists
+FROM artists
 WHERE
   NOT EXISTS (
     SELECT 1
-    FROM
-      albums
-    WHERE
-      albums.artistid = artists.artistid
+    FROM albums
+    WHERE albums.artistid = artists.artistid
   )
-ORDER BY
-  artists.name;
+ORDER BY artists.name;
 
---noqa: enable=RF02
+-- noqa: enable=RF02
 /*
 Common table expressions (CTE) are temporary result sets defined within the scope of a query. CTEs allow you to make your query more readable.
 
@@ -2726,17 +2458,13 @@ WITH
     SELECT
       trackid,
       name
-    FROM
-      tracks
-    ORDER BY
-      trackid
-    LIMIT
-      5
+    FROM tracks
+    ORDER BY trackid
+    LIMIT 5
   )
 SELECT
   *
-FROM
-  top_tracks;
+FROM top_tracks;
 
 /*
 
@@ -2755,19 +2483,14 @@ WITH
       customers
       INNER JOIN invoices ON customers.customerid = invoices.customerid
       INNER JOIN invoice_items ON invoices.invoiceid = invoice_items.invoiceid
-    GROUP BY
-      customers.customerid
+    GROUP BY customers.customerid
   )
 SELECT
   customer_name,
   total_sales
-FROM
-  customer_sales
-ORDER BY
-  total_sales DESC,
-  customer_name ASC
-LIMIT
-  5;
+FROM customer_sales
+ORDER BY total_sales DESC, customer_name ASC
+LIMIT 5;
 
 /*
 The SQLite CASE expression evaluates a list of conditions and returns an expression based on the result of the evaluation.
@@ -2810,11 +2533,8 @@ SELECT
     WHEN 'USA' THEN 'Domestic'
     ELSE 'Foreign'
   END AS customergroup
-FROM
-  customers
-ORDER BY
-  lastname,
-  firstname;
+FROM customers
+ORDER BY lastname, firstname;
 
 /*
 
@@ -2848,5 +2568,4 @@ SELECT
     AND milliseconds < 300000 THEN 'medium'
     ELSE 'long'
   END AS category
-FROM
-  tracks;
+FROM tracks;

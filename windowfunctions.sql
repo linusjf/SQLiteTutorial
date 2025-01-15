@@ -1,9 +1,11 @@
 DROP TABLE IF EXISTS t0;
 
-CREATE TABLE t0 (x INTEGER PRIMARY KEY, y TEXT);
+CREATE TABLE IF NOT EXISTS t0 (
+  x INTEGER PRIMARY KEY,
+  y TEXT
+);
 
-INSERT INTO
-  t0
+INSERT INTO t0
 VALUES
   (1, 'aaa'),
   (2, 'ccc'),
@@ -19,46 +21,45 @@ VALUES
 --   3 | bbb | 2
 --
 */
+-- noqa:disable=LT14
 SELECT
   x,
   y,
-  ROW_NUMBER() OVER (
-    ORDER BY
-      y
-  ) AS row_number
-FROM
-  t0
-ORDER BY
-  x;
+  ROW_NUMBER() OVER (ORDER BY y) AS row_number
+FROM t0
+ORDER BY x;
+
+-- noqa:enable=LT14
 
 SELECT
   x,
   y,
   ROW_NUMBER() OVER win1 AS `row`,
   RANK() OVER win2 AS `rank`
-FROM
-  t0
+FROM t0
 WINDOW
   win1 AS (
-    ORDER BY
-      y RANGE BETWEEN UNBOUNDED PRECEDING
-      AND CURRENT ROW
+    ORDER BY y
+    RANGE BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW
   ),
   win2 AS (
-    PARTITION BY
-      y
-    ORDER BY
-      x
+    PARTITION BY y
+    ORDER BY x
   )
-ORDER BY
-  x;
+ORDER BY x;
 
 DROP TABLE IF EXISTS t1;
 
-CREATE TABLE t1 (a INTEGER PRIMARY KEY, b, c);
+-- noqa:disable=all
+CREATE TABLE IF NOT EXISTS t1 (
+  a INTEGER PRIMARY KEY,
+  b,
+  c
+);
 
-INSERT INTO
-  t1
+-- noqa:enable=all
+
+INSERT INTO t1
 VALUES
   (1, 'A', 'one'),
   (2, 'B', 'two'),
@@ -71,7 +72,7 @@ VALUES
 -- The following SELECT statement returns:
 --
 --   a | b | group_concat
--------------------------
+-- -----------------------
 --   1 | A | A.B
 --   2 | B | A.B.C
 --   3 | C | B.C.D
@@ -84,28 +85,24 @@ SELECT
   a,
   b,
   GROUP_CONCAT(b, '.') OVER (
-    ORDER BY
-      a ROWS BETWEEN 1 PRECEDING
-      AND 1 FOLLOWING
+    ORDER BY a
+    ROWS BETWEEN 1 PRECEDING AND 1 FOLLOWING
   ) AS group_concat
-FROM
-  t1;
+FROM t1;
 
 SELECT
   a,
   c,
   GROUP_CONCAT(c, ',') OVER (
-    ORDER BY
-      a ROWS BETWEEN 2 PRECEDING
-      AND 1 FOLLOWING
+    ORDER BY a
+    ROWS BETWEEN 2 PRECEDING AND 1 FOLLOWING
   ) AS group_concat
-FROM
-  t1;
+FROM t1;
 
 -- The following SELECT statement returns:
 --
 --   c     | a | b | group_concat
----------------------------------
+-- -------------------------------
 --   one   | 1 | A | A.D.G
 --   one   | 4 | D | D.G
 --   one   | 7 | G | G
@@ -119,22 +116,17 @@ SELECT
   a,
   b,
   GROUP_CONCAT(b, '.') OVER (
-    PARTITION BY
-      c
-    ORDER BY
-      a RANGE BETWEEN CURRENT ROW
-      AND UNBOUNDED FOLLOWING
+    PARTITION BY c
+    ORDER BY a
+    RANGE BETWEEN CURRENT ROW AND UNBOUNDED FOLLOWING
   ) AS group_concat
-FROM
-  t1
-ORDER BY
-  c,
-  a;
+FROM t1
+ORDER BY c, a;
 
 -- The following SELECT statement returns:
 --
 --   c     | a | b | group_concat
----------------------------------
+-- -------------------------------
 --   one   | 1 | A | A.D.G
 --   two   | 2 | B | B.E
 --   three | 3 | C | C.F
@@ -148,21 +140,17 @@ SELECT
   a,
   b,
   GROUP_CONCAT(b, '.') OVER (
-    PARTITION BY
-      c
-    ORDER BY
-      a RANGE BETWEEN CURRENT ROW
-      AND UNBOUNDED FOLLOWING
+    PARTITION BY c
+    ORDER BY a
+    RANGE BETWEEN CURRENT ROW AND UNBOUNDED FOLLOWING
   ) AS group_concat
-FROM
-  t1
-ORDER BY
-  a;
+FROM t1
+ORDER BY a;
 
 -- The following SELECT statement returns:
 --
 --   a | b | c | group_concat
------------------------------
+-- ---------------------------
 --   1 | A | one   | A.D.G
 --   2 | B | two   | A.D.G.C.F.B.E
 --   3 | C | three | A.D.G.C.F
@@ -175,25 +163,18 @@ SELECT
   a,
   b,
   c,
-  GROUP_CONCAT(b, '.') OVER (
-    ORDER BY
-      c
-  ) AS group_concat
-FROM
-  t1
-ORDER BY
-  a;
+  GROUP_CONCAT(b, '.') OVER (ORDER BY c) AS group_concat
+FROM t1
+ORDER BY a;
 
 SELECT
   a,
   b,
   c,
   GROUP_CONCAT(b, '.') OVER (
-    ORDER BY
-      c GROUPS BETWEEN UNBOUNDED PRECEDING
-      AND UNBOUNDED FOLLOWING EXCLUDE GROUP
+    ORDER BY c
+    GROUPS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING
+    EXCLUDE GROUP
   ) AS group_concat
-FROM
-  t1
-ORDER BY
-  a;
+FROM t1
+ORDER BY a;

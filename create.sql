@@ -66,7 +66,10 @@ The email and phone are unique therefore we use the UNIQUE constraint for each c
 
 The following statement creates the groups table:
 */
-CREATE TABLE `groups` (group_id INTEGER PRIMARY KEY, name TEXT NOT NULL);
+CREATE TABLE `groups` (
+  group_id INTEGER PRIMARY KEY,
+  name TEXT NOT NULL
+);
 
 /*
 The groups table is quite simple with two columns: group_id and name. The group_id column is the primary key column.
@@ -77,10 +80,13 @@ CREATE TABLE contacts_groups (
   contact_id INTEGER,
   group_id INTEGER,
   PRIMARY KEY (contact_id, group_id),
-  FOREIGN KEY (contact_id) REFERENCES contacts (contact_id) ON DELETE CASCADE ON UPDATE NO ACTION,
-  FOREIGN KEY (group_id) REFERENCES `groups` (group_id) ON DELETE CASCADE ON UPDATE NO ACTION
+  FOREIGN KEY (contact_id) REFERENCES contacts (contact_id)
+    ON DELETE CASCADE
+    ON UPDATE NO ACTION,
+  FOREIGN KEY (group_id) REFERENCES `groups` (group_id)
+    ON DELETE CASCADE
+    ON UPDATE NO ACTION
 );
-
 /*
 The contact_groups table has a primary key that consists of two columns: contact_id and group_id.
 

@@ -30,17 +30,14 @@ SELECT
   lastname,
   title,
   email
-FROM
-  employees;
+FROM employees;
 
 /*
 Suppose, Jane got married and she wanted to change her last name to her husband’s last name i.e., Smith. In this case, you can update Jane’s last name using the following statement:
 */
 UPDATE employees
-SET
-  lastname = 'Smith'
-WHERE
-  employeeid = 3;
+SET lastname = 'Smith'
+WHERE employeeid = 3;
 
 /*
 The expression in the WHERE clause makes sure that we update Jane’s record only. We set the lastname column to a literal string 'Smith'.
@@ -53,10 +50,8 @@ SELECT
   lastname,
   title,
   email
-FROM
-  employees
-WHERE
-  employeeid = 3;
+FROM employees
+WHERE employeeid = 3;
 
 /*
 Suppose Park Margaret locates in Toronto and you want to change his address, city, and state information. You can use the UPDATE statement to update multiple columns as follows:
@@ -66,8 +61,7 @@ SET
   city = 'Toronto',
   state = 'ON',
   postalcode = 'M5P 2N7'
-WHERE
-  employeeid = 4;
+WHERE employeeid = 4;
 
 /*
 To verify the UPDATE, you use the following statement:
@@ -79,10 +73,8 @@ SELECT
   state,
   city,
   postalcode
-FROM
-  employees
-WHERE
-  employeeid = 4;
+FROM employees
+WHERE employeeid = 4;
 
 /*
 Let’s check the email addresses of employees in the employees table:
@@ -92,26 +84,20 @@ SELECT
   firstname,
   lastname,
   email
-FROM
-  employees;
+FROM employees;
 
 /*
 To update one row in the employees table, you use LIMIT 1 clause. To make sure that you update the first row of employees sorted by the first name, you add the ORDER BY firstname clause.
 
 So the following statement updates email of Andrew Adams:
 */
---noqa: disable=all
+-- noqa: disable=all
 UPDATE employees
-SET
-  email = LOWER(
-    firstname || '.' || lastname || '@chinookcorp.com'
-  )
-ORDER BY
-  firstname
-LIMIT
-  1;
+SET email = LOWER(firstname || '.' || lastname || '@chinookcorp.com')
+ORDER BY firstname
+LIMIT 1;
 
---noqa: enable=all
+-- noqa: enable=all
 /*
 UPDATE employees
 SET
@@ -127,24 +113,19 @@ SELECT
   firstname,
   lastname,
   email
-FROM
-  employees;
+FROM employees;
 
 /*
 To update all rows in the  employees table, you skip the WHERE clause. For example, the following UPDATE statement changes all email addresses of all employees to lowercase:
 */
 UPDATE employees
-SET
-  email = LOWER(
-    firstname || '.' || lastname || '@chinookcorp.com'
-  );
+SET email = LOWER(firstname || '.' || lastname || '@chinookcorp.com');
 
 SELECT
   employeeid,
   firstname,
   lastname,
   email
-FROM
-  employees;
+FROM employees;
 
 ROLLBACK;

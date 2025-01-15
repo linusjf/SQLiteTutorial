@@ -49,29 +49,27 @@ CREATE TABLE search_stats (
 /*
 Second, insert a row into the search_stats table:
 */
-INSERT INTO
-  search_stats (keyword)
+INSERT INTO search_stats
+  (keyword)
 VALUES
   ('SQLite');
 
 /*
 Third, insert a row into the search_stats table with the same keyword. If the keyword already exists in the table, increase the search_count by one:
 */
-INSERT INTO
-  search_stats (keyword)
+INSERT INTO search_stats
+  (keyword)
 VALUES
   ('SQLite')
 ON CONFLICT (keyword) DO UPDATE
-SET
-  search_count = search_count + 1;
+  SET search_count = search_count + 1;
 
 /*
 Fourth, retrieve data from the search_stats table:
 */
 SELECT
   *
-FROM
-  search_stats;
+FROM search_stats;
 
 /*
 Selective Update on Conflict
@@ -90,48 +88,35 @@ CREATE TABLE IF NOT EXISTS contacts (
 /*
 Next, insert a new row into the contacts table:
 */
-INSERT INTO
-  contacts (name, email, phone, effective_date)
+INSERT INTO contacts
+  (name, email, phone, effective_date)
 VALUES
-  (
-    'Jane Doe',
-    'jane@test.com',
-    '(408)-111-2222',
-    '2024-04-05'
-  );
+  ('Jane Doe', 'jane@test.com', '(408)-111-2222', '2024-04-05');
 
 /*
 Then, verify the insert:
 */
 SELECT
   *
-FROM
-  contacts;
+FROM contacts;
 
 /*
 After that, update the name, phone, and effective date if the email already exists and only update when the new effective date is later than the current effective date:
 */
-INSERT INTO
-  contacts (name, email, phone, effective_date)
+INSERT INTO contacts
+  (name, email, phone, effective_date)
 VALUES
-  (
-    'Jane Smith',
-    'jane@test.com',
-    '(408)-111-3333',
-    '2024-05-05'
-  )
+  ('Jane Smith', 'jane@test.com', '(408)-111-3333', '2024-05-05')
 ON CONFLICT (email) DO UPDATE
-SET
-  name = excluded.name,
-  phone = excluded.phone,
-  effective_date = excluded.effective_date
-WHERE
-  excluded.effective_date > contacts.effective_date;
+  SET
+    name = excluded.name,
+    phone = excluded.phone,
+    effective_date = excluded.effective_date
+  WHERE excluded.effective_date > contacts.effective_date;
 
 /*
 Finally, verify the update:
 */
 SELECT
   *
-FROM
-  contacts;
+FROM contacts;

@@ -33,13 +33,11 @@ CREATE TABLE artists_backup (
 );
 
 -- populate data from the artists table
-INSERT INTO
-  artists_backup
+INSERT INTO artists_backup
 SELECT
   artistid,
   name
-FROM
-  artists;
+FROM artists;
 
 /*
 The following statement returns all rows from the artists_backup table:
@@ -47,8 +45,7 @@ The following statement returns all rows from the artists_backup table:
 SELECT
   artistid,
   name
-FROM
-  artists_backup;
+FROM artists_backup;
 
 /*
 We have 280 rows in the artists_backup table.
@@ -56,8 +53,7 @@ We have 280 rows in the artists_backup table.
 To remove an artist with id 1, you use the following statement:
 */
 DELETE FROM artists_backup
-WHERE
-  artistid = 1;
+WHERE artistid = 1;
 
 /*
 Because we use artistid to identify the artist, the statement removed exactly 1 row.
@@ -65,8 +61,7 @@ Because we use artistid to identify the artist, the statement removed exactly 1 
 Suppose you want to delete artists whose names contain the word Santana:
 */
 DELETE FROM artists_backup
-WHERE
-  name LIKE '%Santana%';
+WHERE name LIKE '%Santana%';
 
 /*
 There are 9 rows whose values in the name column contain the word Santana therefore, these 9 rows were deleted.

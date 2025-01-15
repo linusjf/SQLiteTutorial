@@ -1,0 +1,19 @@
+{
+  "overrides": [
+    {
+      "files": [
+        "*.sql"
+      ],
+      "options": {
+        "parser": "sqlite"
+      }
+    }
+  ],
+  "plugins": [
+    "prettier-plugin-sql-cst"
+  ],
+  "sqlAcceptUnsupportedGrammar": true,
+  "sqlCanonicalSyntax": true,
+  "sqlKeywordCase": "upper",
+  "sqlParamTypes": []
+}

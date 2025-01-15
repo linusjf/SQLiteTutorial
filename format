@@ -10,5 +10,5 @@ if [[ -z "$*" ]]; then
 fi
 declare -i exitcode=0
 declare -a files=("$@")
-parallel sql-formatter --fix --language sqlite ::: "${files[@]}"
+parallel npx prettier --write ::: "${files[@]}"
 exit $(("$exitcode" + $?))

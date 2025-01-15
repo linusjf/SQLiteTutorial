@@ -16,13 +16,14 @@ The following example creates an FTS5 table named posts with two columns title a
 */
 DROP TABLE IF EXISTS posts;
 
-CREATE VIRTUAL TABLE posts USING fts5 (title, body);
+CREATE VIRTUAL TABLE posts
+USING fts5 (title, body);
 
 /*
 Similar to a normal table, you can insert data into the posts table as follows:
 */
-INSERT INTO
-  posts (title, body)
+INSERT INTO posts
+  (title, body)
 VALUES
   (
     'Learn SQlite FTS5',
@@ -32,18 +33,14 @@ VALUES
     'Advanced SQlite Full-text Search',
     'Show you some advanced techniques in SQLite full-text searching'
   ),
-  (
-    'SQLite Tutorial',
-    'Help you learn SQLite quickly and effectively'
-  );
+  ('SQLite Tutorial', 'Help you learn SQLite quickly and effectively');
 
 /*
 And query data against it:
 */
 SELECT
   *
-FROM
-  posts;
+FROM posts;
 
 /*
 You can execute a full-text query against an FTS5 table using one of these three ways.
@@ -52,28 +49,23 @@ First, use a MATCH operator in the WHERE clause of the SELECT statement. For exa
 */
 SELECT
   *
-FROM
-  posts
-WHERE
-  posts MATCH 'fts5';
+FROM posts
+WHERE posts MATCH 'fts5';
 
 /*
 Second, use an equal (=) operator in the WHERE clause of the SELECT statement. The following statement returns the same result as the statement above:
 */
 SELECT
   *
-FROM
-  posts
-WHERE
-  posts = 'fts5';
+FROM posts
+WHERE posts = 'fts5';
 
 /*
 Third, use a tabled-value function syntax. In this way, you use the search term as the first table argument:
 */
 SELECT
   *
-FROM
-  POSTS('fts5');
+FROM POSTS('fts5');
 
 /*
 By default, FTS5 is case-independent. It treats the
@@ -83,12 +75,9 @@ To sort the search results from the most to least relevant, you use the ORDER BY
 */
 SELECT
   *
-FROM
-  posts
-WHERE
-  posts MATCH 'text'
-ORDER BY
-  rank;
+FROM posts
+WHERE posts MATCH 'text'
+ORDER BY rank;
 
 /*
 A full-text search query is made up of phrases, where each phrase is an ordered list of one or more tokens. You can use the “+” operator to concatenate two phrases as the following example:
@@ -101,10 +90,8 @@ The following query returns all documents that match the search term Learn SQLit
 */
 SELECT
   *
-FROM
-  posts
-WHERE
-  posts MATCH 'learn SQLite';
+FROM posts
+WHERE posts MATCH 'learn SQLite';
 
 /*
 Prefix searches
@@ -112,10 +99,8 @@ You can use the asterisk (*) as a prefix token. When a phrase contains the aster
 */
 SELECT
   *
-FROM
-  posts
-WHERE
-  posts = 'search*';
+FROM posts
+WHERE posts = 'search*';
 
 /*
 Boolean operators
@@ -128,10 +113,8 @@ For example, to get the documents that match the learn phrase but doesn’t matc
 */
 SELECT
   *
-FROM
-  posts
-WHERE
-  posts MATCH 'learn NOT text';
+FROM posts
+WHERE posts MATCH 'learn NOT text';
 
 /*
 SQLite full-text search - NOT operator
@@ -139,10 +122,8 @@ To search for documents that match either phrase learn or text, you use the OR o
 */
 SELECT
   *
-FROM
-  posts
-WHERE
-  posts MATCH 'learn OR text';
+FROM posts
+WHERE posts MATCH 'learn OR text';
 
 /*
 SQLite full-text search - OR operator
@@ -150,10 +131,8 @@ To find the documents that match both SQLite and searching, you use the AND oper
 */
 SELECT
   *
-FROM
-  posts
-WHERE
-  posts MATCH 'sqlite AND searching';
+FROM posts
+WHERE posts MATCH 'sqlite AND searching';
 
 /*
 SQLite full-text search - AND operator
@@ -161,10 +140,8 @@ To change the operator precedence, you use parenthesis to group expressions. For
 */
 SELECT
   *
-FROM
-  posts
-WHERE
-  posts MATCH 'search AND sqlite OR help';
+FROM posts
+WHERE posts MATCH 'search AND sqlite OR help';
 
 /*
 SQLite full-text search - Combine Logical Operators
@@ -172,10 +149,8 @@ The statement returns documents that match search and sqlite or help. To find th
 */
 SELECT
   *
-FROM
-  posts
-WHERE
-  posts MATCH 'search AND (sqlite OR help)';
+FROM posts
+WHERE posts MATCH 'search AND (sqlite OR help)';
 
 /*
 Built-in auxiliary functions
@@ -189,9 +164,6 @@ For example, the following query uses the highlight() function to decorate the s
 SELECT
   HIGHLIGHT(posts, 0, '<b>', '</b>') AS title,
   HIGHLIGHT(posts, 1, '<b>', '</b>') AS body
-FROM
-  posts
-WHERE
-  posts MATCH 'SQLite'
-ORDER BY
-  rank;
+FROM posts
+WHERE posts MATCH 'SQLite'
+ORDER BY rank;

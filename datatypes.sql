@@ -50,7 +50,7 @@ SELECT
   TYPEOF(100) AS int_type,
   TYPEOF(10.0) AS real_type,
   TYPEOF('100') AS text_type,
-  TYPEOF(X'1000') AS blob_type, --noqa
+  TYPEOF(X'1000') AS blob_type, -- noqa
   TYPEOF(NULL) AS null_type;
 
 /*
@@ -58,14 +58,17 @@ First, create a new table named test_datatypes for testing.
 */
 DROP TABLE IF EXISTS test_datatypes;
 
---noqa:disable=all
-CREATE TABLE test_datatypes (id INTEGER PRIMARY KEY, val);
+-- noqa:disable=all
+CREATE TABLE test_datatypes (
+  id INTEGER PRIMARY KEY,
+  val
+);
 
 /*
 Second, insert data into the test_datatypes table.
 */
-INSERT INTO
-  test_datatypes (val)
+INSERT INTO test_datatypes
+  (val)
 VALUES
   (1),
   (2),
@@ -74,11 +77,11 @@ VALUES
   ('A'),
   ('B'),
   (NULL),
-  (x'0010'), --noqa
+  (x'0010'), -- noqa
   (x'0011');
 
---noqa
---noqa:enable=all
+-- noqa
+-- noqa:enable=all
 /*
 Third, use the typeof() function to get the data type of each value stored in the val column.
 */
@@ -86,8 +89,7 @@ SELECT
   id,
   val,
   TYPEOF(val)
-FROM
-  test_datatypes;
+FROM test_datatypes;
 
 /*
 You may ask how SQLite sorts data in a column with different storage classes like val column above.
@@ -118,11 +120,8 @@ SELECT
   id,
   val,
   TYPEOF(val)
-FROM
-  test_datatypes
-ORDER BY
-  val;
-
+FROM test_datatypes
+ORDER BY val;
 /*
 
 Other important concepts related to SQLite data types are manifest typing and type affinity:
