@@ -167,6 +167,20 @@ SELECT
 FROM t1
 ORDER BY a;
 
+-- The following SELECT statement returns:
+--
+-- +---+---+-------+--------------+
+-- | a | b |   c   | group_concat |
+-- +---+---+-------+--------------+
+-- | 1 | A | one   | C.F.B.E      |
+-- | 2 | B | two   | A.D.G.C.F    |
+-- | 3 | C | three | A.D.G.B.E    |
+-- | 4 | D | one   | C.F.B.E      |
+-- | 5 | E | two   | A.D.G.C.F    |
+-- | 6 | F | three | A.D.G.B.E    |
+-- | 7 | G | one   | C.F.B.E      |
+-- +---+---+-------+--------------+
+
 SELECT
   a,
   b,
@@ -178,3 +192,81 @@ SELECT
   ) AS group_concat
 FROM t1
 ORDER BY a;
+
+-- The following SELECT statement returns:
+--
+-- +---+---+-------+--------------+
+-- | a | b |   c   | group_concat |
+-- +---+---+-------+--------------+
+-- | 1 | A | one   | A.C.F.B.E    |
+-- | 2 | B | two   | A.D.G.C.F.B  |
+-- | 3 | C | three | A.D.G.C.B.E  |
+-- | 4 | D | one   | D.C.F.B.E    |
+-- | 5 | E | two   | A.D.G.C.F.E  |
+-- | 6 | F | three | A.D.G.F.B.E  |
+-- | 7 | G | one   | G.C.F.B.E    |
+-- +---+---+-------+--------------+
+
+SELECT
+  a,
+  b,
+  c,
+  GROUP_CONCAT(b, '.') OVER (
+    ORDER BY c
+    GROUPS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING
+    EXCLUDE TIES
+  ) AS group_concat
+FROM t1
+ORDER BY a;
+
+-- The following SELECT statement returns:
+--
+-- -- +---+---+-------+--------------+
+-- | a | b |   c   | group_concat |
+-- +---+---+-------+--------------+
+-- | 1 | A | one   | D.G.C.F.B.E  |
+-- | 2 | B | two   | A.D.G.C.F.E  |
+-- | 3 | C | three | A.D.G.F.B.E  |
+-- | 4 | D | one   | A.G.C.F.B.E  |
+-- | 5 | E | two   | A.D.G.C.F.B  |
+-- | 6 | F | three | A.D.G.C.B.E  |
+-- | 7 | G | one   | A.D.C.F.B.E  |
+-- +---+---+-------+--------------+
+
+SELECT
+  a,
+  b,
+  c,
+  GROUP_CONCAT(b, '.') OVER (
+    ORDER BY c
+    GROUPS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING
+    EXCLUDE CURRENT ROW
+  ) AS group_concat
+FROM t1
+ORDER BY a;
+
+/*
+In the following example, the window frame for each row consists of all rows from the current row to the end of the set, where rows are sorted according to "ORDER BY a".
+*/
+-- The following SELECT statement returns:
+--
+--   c     | a | b | group_concat
+-- -------------------------------
+--   one   | 1 | A | A.D.G.C.F.B.E
+--   one   | 4 | D | D.G.C.F.B.E
+--   one   | 7 | G | G.C.F.B.E
+--   three | 3 | C | C.F.B.E
+--   three | 6 | F | F.B.E
+--   two   | 2 | B | B.E
+--   two   | 5 | E | E
+--
+SELECT
+  c,
+  a,
+  b,
+  group_concat(b, '.') OVER (
+    ORDER BY c, a
+    ROWS BETWEEN CURRENT ROW AND UNBOUNDED FOLLOWING
+  ) AS group_concat
+FROM t1
+ORDER BY c, a;
