@@ -17,7 +17,7 @@ The following example creates an FTS5 table named posts with two columns title a
 DROP TABLE IF EXISTS posts;
 
 CREATE VIRTUAL TABLE posts
-USING fts5 (title, body);
+USING fts5(title, body);
 
 /*
 Similar to a normal table, you can insert data into the posts table as follows:
