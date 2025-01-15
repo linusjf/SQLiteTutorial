@@ -15,6 +15,9 @@ parallel sqlfluff fix --dialect sqlite ::: "${files[@]}"
 exitcode=$(("$exitcode" + $?))
 if [[ $exitcode != 0 ]]; then
   parallel sqlfluff lint --dialect sqlite ::: "${files[@]}" &> lint.out
-  exitcode=$(("$exitcode" + $?))
+  exitcode=$?
+  if [[ $exitcode != 0 ]]; then
+    echo "Errors found. Check lint.out"
+  fi
 fi
 exit "$exitcode"

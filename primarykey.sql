@@ -153,4 +153,4 @@ PRAGMA foreign_keys = ON;
 /*
 If you use SQLite GUI tool, you can use the following statement to show the table’s information.
 */
-PRAGMA table_info(CITIES);
+PRAGMA table_info('cities');

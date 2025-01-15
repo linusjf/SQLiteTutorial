@@ -22,9 +22,9 @@ CREATE TABLE supplier_groups (
   group_name TEXT NOT NULL
 );
 
-PRAGMA table_info(SUPPLIERS);
+PRAGMA table_info('suppliers');
 
-PRAGMA foreign_key_list(SUPPLIERS);
+PRAGMA foreign_key_list('suppliers');
 
 /*
 Assuming that each supplier belongs to one and only one supplier group. And each supplier group may have zero or many suppliers. The relationship between supplier_groups and suppliers tables is one-to-many. In other words, for each row in the suppliers table, there is a corresponding row in the supplier_groups table.
@@ -46,9 +46,9 @@ CREATE TABLE suppliers (
   FOREIGN KEY (group_id) REFERENCES supplier_groups (group_id)
 );
 
-PRAGMA table_info(SUPPLIERS);
+PRAGMA table_info('suppliers');
 
-PRAGMA foreign_key_list(SUPPLIERS);
+PRAGMA foreign_key_list('suppliers');
 
 /*
 The supplier_groups table is called a parent table, which is the table that a foreign key references. The suppliers table is known as a child table, which is the table to which the foreign key constraint applies.
@@ -86,7 +86,7 @@ INSERT INTO suppliers
 VALUES
   ('ABC Inc.', 4);
 
-PRAGMA foreign_key_list(SUPPLIERS);
+PRAGMA foreign_key_list('suppliers');
 
 /*
 SQLite checked the foreign key constraint, rejected the change, and issued the following error message:
