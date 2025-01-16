@@ -444,3 +444,11 @@ WINDOW
     PARTITION BY a
     ORDER BY c
   );
+
+SELECT
+  group_concat(b, '.') OVER (
+    PARTITION BY a
+    ORDER BY c
+    ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW
+  ) AS grp_concat
+FROM t1;
