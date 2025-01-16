@@ -429,3 +429,18 @@ WINDOW
     ORDER BY b
     ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW
   );
+/*
+Window Chaining
+Window chaining is a shorthand that allows one window to be defined in terms of another. Specifically, the shorthand allows the new window to implicitly copy the PARTITION BY and optionally ORDER BY clauses of the base window. For example, in the following:
+*/
+SELECT
+  group_concat(b, '.') OVER (
+    win
+    ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW
+  ) AS grp_concat
+FROM t1
+WINDOW
+  win AS (
+    PARTITION BY a
+    ORDER BY c
+  );
