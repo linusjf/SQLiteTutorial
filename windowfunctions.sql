@@ -244,6 +244,48 @@ SELECT
   ) AS group_concat
 FROM t1
 ORDER BY a;
+/*
+The following example demonstrates the effect of the various forms of the EXCLUDE clause:
+*/
+/*
+-- The following SELECT statement returns:
+--
+--   c    | a | b | no_others     | current_row | grp       | ties
+--  one   | 1 | A | A.D.G         | D.G         |           | A
+--  one   | 4 | D | A.D.G         | A.G         |           | D
+--  one   | 7 | G | A.D.G         | A.D         |           | G
+--  three | 3 | C | A.D.G.C.F     | A.D.G.F     | A.D.G     | A.D.G.C
+--  three | 6 | F | A.D.G.C.F     | A.D.G.C     | A.D.G     | A.D.G.F
+--  two   | 2 | B | A.D.G.C.F.B.E | A.D.G.C.F.E | A.D.G.C.F | A.D.G.C.F.B
+--  two   | 5 | E | A.D.G.C.F.B.E | A.D.G.C.F.B | A.D.G.C.F | A.D.G.C.F.E
+--
+*/
+SELECT
+  c,
+  a,
+  b,
+  group_concat(b, '.') OVER (
+    ORDER BY c
+    GROUPS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW
+    EXCLUDE NO OTHERS
+  ) AS no_others,
+  group_concat(b, '.') OVER (
+    ORDER BY c
+    GROUPS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW
+    EXCLUDE CURRENT ROW
+  ) AS current_row,
+  group_concat(b, '.') OVER (
+    ORDER BY c
+    GROUPS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW
+    EXCLUDE GROUP
+  ) AS grp,
+  group_concat(b, '.') OVER (
+    ORDER BY c
+    GROUPS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW
+    EXCLUDE TIES
+  ) AS `ties`
+FROM t1
+ORDER BY c, a;
 
 /*
 In the following example, the window frame for each row consists of all rows from the current row to the end of the set, where rows are sorted according to "ORDER BY a".
@@ -270,3 +312,67 @@ SELECT
   ) AS group_concat
 FROM t1
 ORDER BY c, a;
+
+/*
+If a FILTER clause is provided, then only rows for which the expr is true are included in the window frame. The aggregate window still returns a value for every row, but those for which the FILTER expression evaluates to other than true are not included in the window frame for any row. For example:
+*/
+-- The following SELECT statement returns:
+--
+--   c     | a | b | group_concat
+-- -------------------------------
+--   one   | 1 | A | A
+--   two   | 2 | B | A
+--   three | 3 | C | A.C
+--   one   | 4 | D | A.C.D
+--   two   | 5 | E | A.C.D
+--   three | 6 | F | A.C.D.F
+--   one   | 7 | G | A.C.D.F.G
+--
+SELECT
+  c,
+  a,
+  b,
+  group_concat(b, '.')
+    FILTER (WHERE c != 'two')
+    OVER (ORDER BY a) AS group_concat
+FROM t1
+ORDER BY a;
+
+DROP TABLE IF EXISTS t2;
+CREATE TABLE t2 (
+  a,
+  b
+);
+INSERT INTO t2
+VALUES
+  ('a', 'one'),
+  ('a', 'two'),
+  ('a', 'three'),
+  ('b', 'four'),
+  ('c', 'five'),
+  ('c', 'six');
+
+/*
+The following example illustrates the behaviour of the five ranking functions - row_number(), rank(), dense_rank(), percent_rank() and cume_dist().
+
+-- The following SELECT statement returns:
+--
+--   a | row_number | rank | dense_rank | percent_rank | cume_dist
+------------------------------------------------------------------
+--   a |          1 |    1 |          1 |          0.0 |       0.5
+--   a |          2 |    1 |          1 |          0.0 |       0.5
+--   a |          3 |    1 |          1 |          0.0 |       0.5
+--   b |          4 |    4 |          2 |          0.6 |       0.66
+--   c |          5 |    5 |          3 |          0.8 |       1.0
+--   c |          6 |    5 |          3 |          0.8 |       1.0
+--
+*/
+SELECT
+  a AS a,
+  row_number() OVER win AS row_number,
+  rank() OVER win AS rank,
+  dense_rank() OVER win AS dense_rank,
+  percent_rank() OVER win AS percent_rank,
+  round(cume_dist() OVER win, 2) AS cume_dist
+FROM t2
+WINDOW win AS (ORDER BY a);
