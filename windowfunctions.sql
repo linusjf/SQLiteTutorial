@@ -376,3 +376,56 @@ SELECT
   round(cume_dist() OVER win, 2) AS cume_dist
 FROM t2
 WINDOW win AS (ORDER BY a);
+
+/*
+The example below uses ntile() to divide the six rows into two groups (the ntile(2) call) and into four groups (the ntile(4) call). For ntile(2), there are three rows assigned to each group. For ntile(4), there are two groups of two and two groups of one. The larger groups of two appear first.
+
+-- The following SELECT statement returns:
+--
+--   a | b     | ntile_2 | ntile_4
+----------------------------------
+--   a | one   |       1 |       1
+--   a | two   |       1 |       1
+--   a | three |       1 |       2
+--   b | four  |       2 |       2
+--   c | five  |       2 |       3
+--   c | six   |       2 |       4
+--
+*/
+SELECT
+  a AS a,
+  b AS b,
+  ntile(2) OVER win AS ntile_2,
+  ntile(4) OVER win AS ntile_4
+FROM t2
+WINDOW win AS (ORDER BY a);
+
+/*
+ The next example demonstrates lag(), lead(), first_value(), last_value() and nth_value(). The frame-spec is ignored by both lag() and lead(), but respected by first_value(), last_value() and nth_value().
+
+-- The following SELECT statement returns:
+--
+--   b | lead | lag  | first_value | last_value | nth_value_3
+-------------------------------------------------------------
+--   A | C    | NULL | A           | A          | NULL
+--   B | D    | A    | A           | B          | NULL
+--   C | E    | B    | A           | C          | C
+--   D | F    | C    | A           | D          | C
+--   E | G    | D    | A           | E          | C
+--   F | n/a  | E    | A           | F          | C
+--   G | n/a  | F    | A           | G          | C
+--
+*/
+SELECT
+  b AS b,
+  lead(b, 2, 'n/a') OVER win AS lead,
+  lag(b) OVER win AS lag,
+  first_value(b) OVER win AS first_value,
+  last_value(b) OVER win AS last_value,
+  nth_value(b, 3) OVER win AS nth_value_3
+FROM t1
+WINDOW
+  win AS (
+    ORDER BY b
+    ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW
+  );
