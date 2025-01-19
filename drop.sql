@@ -81,7 +81,7 @@ Update the address_id in the people table to NULL values.
 Enable the foreign key constraints.
 See the following statements:
 */
-PRAGMA foreign_keys = off;
+PRAGMA foreign_keys = OFF;
 
 DROP TABLE addresses;
 

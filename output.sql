@@ -88,7 +88,7 @@ SQLite does not support ALTER TABLE DROP COLUMN statement. To drop a column, you
 
 The following script creates two tables users and favorites, and insert data into these tables:
 */
-PRAGMA foreign_keys = off;
+PRAGMA foreign_keys = OFF;
 
 DROP TABLE IF EXISTS users;
 
@@ -144,7 +144,7 @@ FROM
 Suppose, you want to drop the column phone of the users table.
 First, disable the foreign key constraint check:
 */
-PRAGMA foreign_keys = off;
+PRAGMA foreign_keys = OFF;
 
 /*
 Second, start a new transaction:
