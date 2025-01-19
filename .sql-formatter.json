@@ -1,0 +1,13 @@
+{
+  "dataTypeCase": "upper",
+  "denseOperators": false,
+  "dialect": "sqlite",
+  "functionCase": "upper",
+  "identifierCase": "lower",
+  "keywordCase": "upper",
+  "language": "sqlite",
+  "linesBetweenQueries": 1,
+  "newlineBeforeSemicolon": false,
+  "tabWidth": 2,
+  "useTabs": false
+}

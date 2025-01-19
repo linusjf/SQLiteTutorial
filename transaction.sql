@@ -58,13 +58,13 @@ CREATE TABLE account_changes (
 /*
 Second, insert some sample data into the accounts table.
 */
-INSERT INTO accounts
-  (account_no, balance)
+INSERT INTO
+  accounts (account_no, balance)
 VALUES
   (100, 20100);
 
-INSERT INTO accounts
-  (account_no, balance)
+INSERT INTO
+  accounts (account_no, balance)
 VALUES
   (200, 10100);
 
@@ -73,7 +73,8 @@ Third, query data from the accounts table:
 */
 SELECT
   *
-FROM accounts;
+FROM
+  accounts;
 
 /*
 Fourth, transfer 1000 from account 100 to 200, and log the changes to the table account_changes in a single transaction.
@@ -81,20 +82,24 @@ Fourth, transfer 1000 from account 100 to 200, and log the changes to the table 
 BEGIN TRANSACTION;
 
 UPDATE accounts
-SET balance = balance - 1000
-WHERE account_no = 100;
+SET
+  balance = balance - 1000
+WHERE
+  account_no = 100;
 
 UPDATE accounts
-SET balance = balance + 1000
-WHERE account_no = 200;
+SET
+  balance = balance + 1000
+WHERE
+  account_no = 200;
 
-INSERT INTO account_changes
-  (account_no, flag, amount, changed_at)
+INSERT INTO
+  account_changes (account_no, flag, amount, changed_at)
 VALUES
   (100, '-', 1000, DATETIME('now'));
 
-INSERT INTO account_changes
-  (account_no, flag, amount, changed_at)
+INSERT INTO
+  account_changes (account_no, flag, amount, changed_at)
 VALUES
   (200, '+', 1000, DATETIME('now'));
 
@@ -105,7 +110,8 @@ Fifth, query data from the accounts table:
 */
 SELECT
   *
-FROM accounts;
+FROM
+  accounts;
 
 /*
 As you can see, balances have been updated successfully.
@@ -114,7 +120,8 @@ Sixth, query the contents of the account_changes table:
 */
 SELECT
   *
-FROM account_changes;
+FROM
+  account_changes;
 
 /*
 Let’s take another example of rolling back a transaction.
@@ -124,11 +131,13 @@ First, attempt to deduct 20,000 from account 100:
 BEGIN TRANSACTION;
 
 UPDATE accounts
-SET balance = balance - 20000
-WHERE account_no = 100;
+SET
+  balance = balance - 20000
+WHERE
+  account_no = 100;
 
-INSERT INTO account_changes
-  (account_no, flag, amount, changed_at)
+INSERT INTO
+  account_changes (account_no, flag, amount, changed_at)
 VALUES
   (100, '-', 20000, DATETIME('now'));
 
@@ -140,7 +149,8 @@ However, the log has been saved to the account_changes table:
 */
 SELECT
   *
-FROM account_changes;
+FROM
+  account_changes;
 
 /*
 Second, roll back the transaction by using the ROLLBACK statement:
@@ -152,4 +162,5 @@ Finally, query data from the account_changes table, you will see that the change
 */
 SELECT
   *
-FROM account_changes;
+FROM
+  account_changes;

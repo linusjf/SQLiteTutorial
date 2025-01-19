@@ -29,8 +29,8 @@ CREATE TABLE IF NOT EXISTS positions (
 /*
 Second, insert some rows into the positions table.
 */
-INSERT INTO positions
-  (title, min_salary)
+INSERT INTO
+  positions (title, min_salary)
 VALUES
   ('DBA', 120000),
   ('Developer', 100000),
@@ -41,7 +41,8 @@ Third, verify the insert using the following SELECT statement.
 */
 SELECT
   *
-FROM positions;
+FROM
+  positions;
 
 /*
 The following statement creates a unique index on the title column of the positions table to ensure that it doesn’t have any duplicate position title:
@@ -53,8 +54,8 @@ Suppose, you want to add a position into the positions table if it does not exis
 
 The following REPLACE statement inserts a new row into the positions table because the position title Full Stack Developer is not in the positions table.
 */
-REPLACE INTO positions
-  (title, min_salary)
+REPLACE INTO
+  positions (title, min_salary)
 VALUES
   ('Full Stack Developer', 140000);
 
@@ -65,13 +66,14 @@ SELECT
   id,
   title,
   min_salary
-FROM positions;
+FROM
+  positions;
 
 /*
 See the following statement.
 */
-REPLACE INTO positions
-  (title, min_salary)
+REPLACE INTO
+  positions (title, min_salary)
 VALUES
   ('DBA', 170000);
 
@@ -86,17 +88,19 @@ SELECT
   id,
   title,
   min_salary
-FROM positions;
+FROM
+  positions;
 
 /*
 Notice that the REPLACE statement means INSERT or REPLACE, not INSERT or UPDATE.
 
 See the following statement.
 */
-REPLACE INTO positions
-  (id, min_salary)
+REPLACE INTO
+  positions (id, min_salary)
 VALUES
   (2, 110000);
+
 /*
 What the statement tried to do is to update the min_salary for the position with id 2, which is the developer.
 

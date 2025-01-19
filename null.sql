@@ -34,10 +34,11 @@ The name column is also declared with a NOT NULL constraint, so it will accept o
 
 The following statement attempt to insert a NULL into the name column of the suppliers table:
 */
-INSERT INTO suppliers
-  (name)
+INSERT INTO
+  suppliers (name)
 VALUES
   (NULL);
+
 /*
 The statement fails due to the NOT NULL constraint violation. Here is the error message:
 

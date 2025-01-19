@@ -42,16 +42,16 @@ CREATE TABLE contacts (
 /*
 The following example inserts a new row into the contacts table:
 */
-INSERT INTO contacts
-  (first_name, last_name, email)
+INSERT INTO
+  contacts (first_name, last_name, email)
 VALUES
   ('John', 'Doe', 'john.doe@gmail.com');
 
 /*
 If you attempt to insert a new contact with the same email, you will get an error message:
 */
-INSERT INTO contacts
-  (first_name, last_name, email)
+INSERT INTO
+  contacts (first_name, last_name, email)
 VALUES
   ('Johnny', 'Doe', 'john.doe@gmail.com');
 
@@ -76,24 +76,24 @@ CREATE TABLE shapes (
 /*
 The following statement inserts a new row into the shapes table:
 */
-INSERT INTO shapes
-  (background_color, foreground_color)
+INSERT INTO
+  shapes (background_color, foreground_color)
 VALUES
   ('red', 'green');
 
 /*
 The following statement works because of no duplication violation in both background_color and foreground_color columns:
 */
-INSERT INTO shapes
-  (background_color, foreground_color)
+INSERT INTO
+  shapes (background_color, foreground_color)
 VALUES
   ('red', 'blue');
 
 /*
 However, the following statement causes an error due to the duplicates in both background_color and foreground_color columns:
 */
-INSERT INTO shapes
-  (background_color, foreground_color)
+INSERT INTO
+  shapes (background_color, foreground_color)
 VALUES
   ('red', 'green');
 
@@ -108,16 +108,13 @@ The following statement creates a new table named lists whose email column has a
 */
 DROP TABLE IF EXISTS lists;
 
-CREATE TABLE lists (
-  list_id INTEGER PRIMARY KEY,
-  email TEXT UNIQUE
-);
+CREATE TABLE lists (list_id INTEGER PRIMARY KEY, email TEXT UNIQUE);
 
 /*
 The following statement inserts multiple NULL values into the email column of the lists table:
 */
-INSERT INTO lists
-  (email)
+INSERT INTO
+  lists (email)
 VALUES
   (NULL),
   (NULL);
@@ -127,7 +124,9 @@ Let’s query data from the lists table:
 */
 SELECT
   *
-FROM lists;
+FROM
+  lists;
+
 /*
 Here is the output:
 

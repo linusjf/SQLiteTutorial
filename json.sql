@@ -22,8 +22,8 @@ details column uses the TEXT data type to store JSON data.
 Inserting JSON data into the database
 The following INSERT statement inserts JSON data into details columns of the products table:
 */
-INSERT INTO products
-  (name, details)
+INSERT INTO
+  products (name, details)
 VALUES
   (
     'iPhone 13',
@@ -67,7 +67,8 @@ Here’s the contents of the products table:
 */
 SELECT
   *
-FROM products;
+FROM
+  products;
 
 /*
 To extract a value from JSON data, you use the json_extract() function:
@@ -80,15 +81,19 @@ The following statement uses the json_extract() function to extract the price fr
 SELECT
   name,
   JSON_EXTRACT(details, '$.price') AS price
-FROM products;
+FROM
+  products;
 
 /*
 Using the json_extract() function in the WHERE clause
 The following statement retrieves the products with the category 'Electronics'. It compares the value extracted from the JSON data in the details column and compares it with the string 'Electronics':
 */
-SELECT name
-FROM products
-WHERE JSON_EXTRACT(details, '$.category') = 'Electronics';
+SELECT
+  name
+FROM
+  products
+WHERE
+  JSON_EXTRACT(details, '$.category') = 'Electronics';
 
 /*
 Inserting a JSON value
@@ -100,16 +105,20 @@ The json_insert() function inserts the value into the json using the specified p
 For example, the following statement inserts the stock attribute with the value 10 into the JSON document with id 1:
 */
 UPDATE products
-SET details = JSON_INSERT(details, '$.stock', 10)
-WHERE id = 1;
+SET
+  details = JSON_INSERT(details, '$.stock', 10)
+WHERE
+  id = 1;
 
 /*
 Verify the insert:
 */
 SELECT
   *
-FROM products
-WHERE id = 1;
+FROM
+  products
+WHERE
+  id = 1;
 
 /*
 Updating a JSON value
@@ -122,16 +131,20 @@ The json_replace() function replaces the value specified by a path in the json d
 For example:
 */
 UPDATE products
-SET details = JSON_REPLACE(details, '$.stock', 0)
-WHERE id = 1;
+SET
+  details = JSON_REPLACE(details, '$.stock', 0)
+WHERE
+  id = 1;
 
 /*
 Verify the update:
 */
 SELECT
   *
-FROM products
-WHERE id = 1;
+FROM
+  products
+WHERE
+  id = 1;
 
 /*
 Deleting a JSON value
@@ -142,24 +155,31 @@ Code language: SQL (Structured Query Language) (sql)
 For example:
 */
 UPDATE products
-SET details = JSON_REMOVE(details, '$.stock')
-WHERE id = 1;
+SET
+  details = JSON_REMOVE(details, '$.stock')
+WHERE
+  id = 1;
 
 /*
 Verify the delete:
 */
 SELECT
   *
-FROM products
-WHERE id = 1;
+FROM
+  products
+WHERE
+  id = 1;
 
 /*
 Aggregating data into a JSON array
 To aggregate values into a JSON array, you use the json_group_array() function. For example, the following statement aggregates the product names with the shoe category into a JSON array:
 */
-SELECT JSON_GROUP_ARRAY(name)
-FROM products
-WHERE JSON_EXTRACT(details, '$.category') = 'Shoes';
+SELECT
+  JSON_GROUP_ARRAY(name)
+FROM
+  products
+WHERE
+  JSON_EXTRACT(details, '$.category') = 'Shoes';
 
 /*
 Aggregating data into a JSON object
@@ -168,6 +188,9 @@ To aggregate values into a JSON object, you use the json_group_object() function
 json_group_object(name, value)
 For example, the following statement uses the json_group_object to aggregate product names and their ids in the Shoes category into a JSON object:
 */
-SELECT JSON_GROUP_OBJECT(name, id)
-FROM products
-WHERE JSON_EXTRACT(details, '$.category') = 'Shoes';
+SELECT
+  JSON_GROUP_OBJECT(name, id)
+FROM
+  products
+WHERE
+  JSON_EXTRACT(details, '$.category') = 'Shoes';

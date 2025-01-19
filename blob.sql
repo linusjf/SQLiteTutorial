@@ -14,6 +14,7 @@ CREATE TABLE documents (
   title VARCHAR(255) NOT NULL,
   data BLOB NOT NULL
 );
+
 /*
 In the documents table, the data column has the data type of BLOB. Therefore, you can store binary data in it.
 

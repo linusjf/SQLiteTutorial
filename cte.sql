@@ -44,13 +44,17 @@ WITH
     SELECT
       trackid,
       name
-    FROM tracks
-    ORDER BY trackid
-    LIMIT 5
+    FROM
+      tracks
+    ORDER BY
+      trackid
+    LIMIT
+      5
   )
 SELECT
   *
-FROM top_tracks;
+FROM
+  top_tracks;
 
 /*
 The following example uses a CTE to find the top 5 customers by total sales from the invoices and invoice_items tables:
@@ -68,11 +72,16 @@ WITH
       customers
       INNER JOIN invoices ON customers.customerid = invoices.customerid
       INNER JOIN invoice_items ON invoices.invoiceid = invoice_items.invoiceid
-    GROUP BY customers.customerid
+    GROUP BY
+      customers.customerid
   )
 SELECT
   customer_name,
   total_sales
-FROM customer_sales
-ORDER BY total_sales DESC, customer_name ASC
-LIMIT 5;
+FROM
+  customer_sales
+ORDER BY
+  total_sales DESC,
+  customer_name ASC
+LIMIT
+  5;

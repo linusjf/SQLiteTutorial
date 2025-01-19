@@ -1,11 +1,9 @@
 DROP TABLE IF EXISTS t0;
 
-CREATE TABLE IF NOT EXISTS t0 (
-  x INTEGER PRIMARY KEY,
-  y TEXT
-);
+CREATE TABLE IF NOT EXISTS t0 (x INTEGER PRIMARY KEY, y TEXT);
 
-INSERT INTO t0
+INSERT INTO
+  t0
 VALUES
   (1, 'aaa'),
   (2, 'ccc'),
@@ -25,41 +23,46 @@ VALUES
 SELECT
   x,
   y,
-  ROW_NUMBER() OVER (ORDER BY y) AS row_number
-FROM t0
-ORDER BY x;
+  ROW_NUMBER() OVER (
+    ORDER BY
+      y
+  ) AS row_number
+FROM
+  t0
+ORDER BY
+  x;
 
 -- noqa:enable=LT14
-
 SELECT
   x,
   y,
   ROW_NUMBER() OVER win1 AS `row`,
   RANK() OVER win2 AS `rank`
-FROM t0
+FROM
+  t0
 WINDOW
   win1 AS (
-    ORDER BY y
-    RANGE BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW
+    ORDER BY
+      y RANGE BETWEEN UNBOUNDED PRECEDING
+      AND CURRENT ROW
   ),
   win2 AS (
-    PARTITION BY y
-    ORDER BY x
+    PARTITION BY
+      y
+    ORDER BY
+      x
   )
-ORDER BY x;
+ORDER BY
+  x;
 
 DROP TABLE IF EXISTS t1;
 
 -- noqa:disable=all
-CREATE TABLE IF NOT EXISTS t1 (
-  a INTEGER PRIMARY KEY,
-  b,
-  c
-);
+CREATE TABLE IF NOT EXISTS t1 (a INTEGER PRIMARY KEY, b, c);
 
 -- noqa:enable=all
-
-INSERT INTO t1
+INSERT INTO
+  t1
 VALUES
   (1, 'A', 'one'),
   (2, 'B', 'two'),
@@ -85,19 +88,23 @@ SELECT
   a,
   b,
   GROUP_CONCAT(b, '.') OVER (
-    ORDER BY a
-    ROWS BETWEEN 1 PRECEDING AND 1 FOLLOWING
+    ORDER BY
+      a ROWS BETWEEN 1 PRECEDING
+      AND 1 FOLLOWING
   ) AS group_concat
-FROM t1;
+FROM
+  t1;
 
 SELECT
   a,
   c,
   GROUP_CONCAT(c, ',') OVER (
-    ORDER BY a
-    ROWS BETWEEN 2 PRECEDING AND 1 FOLLOWING
+    ORDER BY
+      a ROWS BETWEEN 2 PRECEDING
+      AND 1 FOLLOWING
   ) AS group_concat
-FROM t1;
+FROM
+  t1;
 
 -- The following SELECT statement returns:
 --
@@ -116,12 +123,17 @@ SELECT
   a,
   b,
   GROUP_CONCAT(b, '.') OVER (
-    PARTITION BY c
-    ORDER BY a
-    RANGE BETWEEN CURRENT ROW AND UNBOUNDED FOLLOWING
+    PARTITION BY
+      c
+    ORDER BY
+      a RANGE BETWEEN CURRENT ROW
+      AND UNBOUNDED FOLLOWING
   ) AS group_concat
-FROM t1
-ORDER BY c, a;
+FROM
+  t1
+ORDER BY
+  c,
+  a;
 
 -- The following SELECT statement returns:
 --
@@ -140,12 +152,16 @@ SELECT
   a,
   b,
   GROUP_CONCAT(b, '.') OVER (
-    PARTITION BY c
-    ORDER BY a
-    RANGE BETWEEN CURRENT ROW AND UNBOUNDED FOLLOWING
+    PARTITION BY
+      c
+    ORDER BY
+      a RANGE BETWEEN CURRENT ROW
+      AND UNBOUNDED FOLLOWING
   ) AS group_concat
-FROM t1
-ORDER BY a;
+FROM
+  t1
+ORDER BY
+  a;
 
 -- The following SELECT statement returns:
 --
@@ -163,9 +179,14 @@ SELECT
   a,
   b,
   c,
-  GROUP_CONCAT(b, '.') OVER (ORDER BY c) AS group_concat
-FROM t1
-ORDER BY a;
+  GROUP_CONCAT(b, '.') OVER (
+    ORDER BY
+      c
+  ) AS group_concat
+FROM
+  t1
+ORDER BY
+  a;
 
 -- The following SELECT statement returns:
 --
@@ -180,18 +201,19 @@ ORDER BY a;
 -- | 6 | F | three | A.D.G.B.E    |
 -- | 7 | G | one   | C.F.B.E      |
 -- +---+---+-------+--------------+
-
 SELECT
   a,
   b,
   c,
   GROUP_CONCAT(b, '.') OVER (
-    ORDER BY c
-    GROUPS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING
-    EXCLUDE GROUP
+    ORDER BY
+      c GROUPS BETWEEN UNBOUNDED PRECEDING
+      AND UNBOUNDED FOLLOWING EXCLUDE GROUP
   ) AS group_concat
-FROM t1
-ORDER BY a;
+FROM
+  t1
+ORDER BY
+  a;
 
 -- The following SELECT statement returns:
 --
@@ -206,18 +228,19 @@ ORDER BY a;
 -- | 6 | F | three | A.D.G.F.B.E  |
 -- | 7 | G | one   | G.C.F.B.E    |
 -- +---+---+-------+--------------+
-
 SELECT
   a,
   b,
   c,
   GROUP_CONCAT(b, '.') OVER (
-    ORDER BY c
-    GROUPS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING
-    EXCLUDE TIES
+    ORDER BY
+      c GROUPS BETWEEN UNBOUNDED PRECEDING
+      AND UNBOUNDED FOLLOWING EXCLUDE TIES
   ) AS group_concat
-FROM t1
-ORDER BY a;
+FROM
+  t1
+ORDER BY
+  a;
 
 -- The following SELECT statement returns:
 --
@@ -232,18 +255,20 @@ ORDER BY a;
 -- | 6 | F | three | A.D.G.C.B.E  |
 -- | 7 | G | one   | A.D.C.F.B.E  |
 -- +---+---+-------+--------------+
-
 SELECT
   a,
   b,
   c,
   GROUP_CONCAT(b, '.') OVER (
-    ORDER BY c
-    GROUPS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING
-    EXCLUDE CURRENT ROW
+    ORDER BY
+      c GROUPS BETWEEN UNBOUNDED PRECEDING
+      AND UNBOUNDED FOLLOWING EXCLUDE CURRENT ROW
   ) AS group_concat
-FROM t1
-ORDER BY a;
+FROM
+  t1
+ORDER BY
+  a;
+
 /*
 The following example demonstrates the effect of the various forms of the EXCLUDE clause:
 */
@@ -264,28 +289,31 @@ SELECT
   c,
   a,
   b,
-  group_concat(b, '.') OVER (
-    ORDER BY c
-    GROUPS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW
-    EXCLUDE NO OTHERS
+  GROUP_CONCAT(b, '.') OVER (
+    ORDER BY
+      c GROUPS BETWEEN UNBOUNDED PRECEDING
+      AND CURRENT ROW EXCLUDE NO OTHERS
   ) AS no_others,
-  group_concat(b, '.') OVER (
-    ORDER BY c
-    GROUPS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW
-    EXCLUDE CURRENT ROW
+  GROUP_CONCAT(b, '.') OVER (
+    ORDER BY
+      c GROUPS BETWEEN UNBOUNDED PRECEDING
+      AND CURRENT ROW EXCLUDE CURRENT ROW
   ) AS current_row,
-  group_concat(b, '.') OVER (
-    ORDER BY c
-    GROUPS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW
-    EXCLUDE GROUP
+  GROUP_CONCAT(b, '.') OVER (
+    ORDER BY
+      c GROUPS BETWEEN UNBOUNDED PRECEDING
+      AND CURRENT ROW EXCLUDE GROUP
   ) AS grp,
-  group_concat(b, '.') OVER (
-    ORDER BY c
-    GROUPS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW
-    EXCLUDE TIES
+  GROUP_CONCAT(b, '.') OVER (
+    ORDER BY
+      c GROUPS BETWEEN UNBOUNDED PRECEDING
+      AND CURRENT ROW EXCLUDE TIES
   ) AS `ties`
-FROM t1
-ORDER BY c, a;
+FROM
+  t1
+ORDER BY
+  c,
+  a;
 
 /*
 In the following example, the window frame for each row consists of all rows from the current row to the end of the set, where rows are sorted according to "ORDER BY a".
@@ -306,12 +334,17 @@ SELECT
   c,
   a,
   b,
-  group_concat(b, '.') OVER (
-    ORDER BY c, a
-    ROWS BETWEEN CURRENT ROW AND UNBOUNDED FOLLOWING
+  GROUP_CONCAT(b, '.') OVER (
+    ORDER BY
+      c,
+      a ROWS BETWEEN CURRENT ROW
+      AND UNBOUNDED FOLLOWING
   ) AS group_concat
-FROM t1
-ORDER BY c, a;
+FROM
+  t1
+ORDER BY
+  c,
+  a;
 
 /*
 If a FILTER clause is provided, then only rows for which the expr is true are included in the window frame. The aggregate window still returns a value for every row, but those for which the FILTER expression evaluates to other than true are not included in the window frame for any row. For example:
@@ -332,18 +365,24 @@ SELECT
   c,
   a,
   b,
-  group_concat(b, '.')
-    FILTER (WHERE c != 'two')
-    OVER (ORDER BY a) AS group_concat
-FROM t1
-ORDER BY a;
+  GROUP_CONCAT(b, '.') FILTER (
+    WHERE
+      c != 'two'
+  ) OVER (
+    ORDER BY
+      a
+  ) AS group_concat
+FROM
+  t1
+ORDER BY
+  a;
 
 DROP TABLE IF EXISTS t2;
-CREATE TABLE t2 (
-  a,
-  b
-);
-INSERT INTO t2
+
+CREATE TABLE t2 (a, b);
+
+INSERT INTO
+  t2
 VALUES
   ('a', 'one'),
   ('a', 'two'),
@@ -369,13 +408,18 @@ The following example illustrates the behaviour of the five ranking functions - 
 */
 SELECT
   a AS a,
-  row_number() OVER win AS row_number,
-  rank() OVER win AS rank,
-  dense_rank() OVER win AS dense_rank,
-  percent_rank() OVER win AS percent_rank,
-  round(cume_dist() OVER win, 2) AS cume_dist
-FROM t2
-WINDOW win AS (ORDER BY a);
+  ROW_NUMBER() OVER win AS row_number,
+  RANK() OVER win AS rank,
+  DENSE_RANK() OVER win AS dense_rank,
+  PERCENT_RANK() OVER win AS percent_rank,
+  ROUND(CUME_DIST() OVER win, 2) AS cume_dist
+FROM
+  t2
+WINDOW
+  win AS (
+    ORDER BY
+      a
+  );
 
 /*
 The example below uses ntile() to divide the six rows into two groups (the ntile(2) call) and into four groups (the ntile(4) call). For ntile(2), there are three rows assigned to each group. For ntile(4), there are two groups of two and two groups of one. The larger groups of two appear first.
@@ -395,13 +439,18 @@ The example below uses ntile() to divide the six rows into two groups (the ntile
 SELECT
   a AS a,
   b AS b,
-  ntile(2) OVER win AS ntile_2,
-  ntile(4) OVER win AS ntile_4
-FROM t2
-WINDOW win AS (ORDER BY a);
+  NTILE(2) OVER win AS ntile_2,
+  NTILE(4) OVER win AS ntile_4
+FROM
+  t2
+WINDOW
+  win AS (
+    ORDER BY
+      a
+  );
 
 /*
- The next example demonstrates lag(), lead(), first_value(), last_value() and nth_value(). The frame-spec is ignored by both lag() and lead(), but respected by first_value(), last_value() and nth_value().
+The next example demonstrates lag(), lead(), first_value(), last_value() and nth_value(). The frame-spec is ignored by both lag() and lead(), but respected by first_value(), last_value() and nth_value().
 
 -- The following SELECT statement returns:
 --
@@ -418,37 +467,46 @@ WINDOW win AS (ORDER BY a);
 */
 SELECT
   b AS b,
-  lead(b, 2, 'n/a') OVER win AS lead,
-  lag(b) OVER win AS lag,
-  first_value(b) OVER win AS first_value,
-  last_value(b) OVER win AS last_value,
-  nth_value(b, 3) OVER win AS nth_value_3
-FROM t1
+  LEAD(b, 2, 'n/a') OVER win AS lead,
+  LAG(b) OVER win AS lag,
+  FIRST_VALUE(b) OVER win AS first_value,
+  LAST_VALUE(b) OVER win AS last_value,
+  NTH_VALUE(b, 3) OVER win AS nth_value_3
+FROM
+  t1
 WINDOW
   win AS (
-    ORDER BY b
-    ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW
+    ORDER BY
+      b ROWS BETWEEN UNBOUNDED PRECEDING
+      AND CURRENT ROW
   );
+
 /*
 Window Chaining
 Window chaining is a shorthand that allows one window to be defined in terms of another. Specifically, the shorthand allows the new window to implicitly copy the PARTITION BY and optionally ORDER BY clauses of the base window. For example, in the following:
 */
 SELECT
-  group_concat(b, '.') OVER (
-    win
-    ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW
+  GROUP_CONCAT(b, '.') OVER (
+    win ROWS BETWEEN UNBOUNDED PRECEDING
+    AND CURRENT ROW
   ) AS grp_concat
-FROM t1
+FROM
+  t1
 WINDOW
   win AS (
-    PARTITION BY a
-    ORDER BY c
+    PARTITION BY
+      a
+    ORDER BY
+      c
   );
 
 SELECT
-  group_concat(b, '.') OVER (
-    PARTITION BY a
-    ORDER BY c
-    ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW
+  GROUP_CONCAT(b, '.') OVER (
+    PARTITION BY
+      a
+    ORDER BY
+      c ROWS BETWEEN UNBOUNDED PRECEDING
+      AND CURRENT ROW
   ) AS grp_concat
-FROM t1;
+FROM
+  t1;

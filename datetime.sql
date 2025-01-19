@@ -12,10 +12,7 @@ First, create a new table named datetime_text for demonstration.
 */
 DROP TABLE IF EXISTS datetime_text;
 
-CREATE TABLE datetime_text (
-  d1 TEXT,
-  d2 TEXT
-);
+CREATE TABLE datetime_text (d1 TEXT, d2 TEXT);
 
 /*
 The table contains two column d1 and d2 with TEXT datatype.
@@ -24,18 +21,20 @@ To insert date and time values into the datetime_text table, you use the DATETIM
 
 For example, to get the current UTC date and time value, you pass the now literal string to the function as follows:
 */
-SELECT DATETIME('now');
+SELECT
+  DATETIME('now');
 
 /*
 To get the local time, you pass an additional argument  localtime.
 */
-SELECT DATETIME('now', 'localtime');
+SELECT
+  DATETIME('now', 'localtime');
 
 /*
 Second, insert the date and time values into the datetime_text table as follows:
 */
-INSERT INTO datetime_text
-  (d1, d2)
+INSERT INTO
+  datetime_text (d1, d2)
 VALUES
   (DATETIME('now'), DATETIME('now', 'localtime'));
 
@@ -47,7 +46,8 @@ SELECT
   TYPEOF(d1) AS d1_type,
   d2,
   TYPEOF(d2) AS d2_type
-FROM datetime_text;
+FROM
+  datetime_text;
 
 /*
 Using REAL storage class to store SQLite date and time values
@@ -59,15 +59,13 @@ First, create a new table named datetime_real.
 */
 DROP TABLE IF EXISTS datetime_real;
 
-CREATE TABLE datetime_real (
-  d1 REAL
-);
+CREATE TABLE datetime_real (d1 REAL);
 
 /*
 Second, insert the “current” date and time value into the datetime_real table.
 */
-INSERT INTO datetime_real
-  (d1)
+INSERT INTO
+  datetime_real (d1)
 VALUES
   (JULIANDAY('now'));
 
@@ -76,8 +74,10 @@ We used the  julianday() function to convert the current date and time to the Ju
 
 Third, query data from the datetime_real table.
 */
-SELECT d1
-FROM datetime_real;
+SELECT
+  d1
+FROM
+  datetime_real;
 
 /*
 SQLite Date Using REAL data type
@@ -88,7 +88,8 @@ Fortunately, you can use the built-in date() and time() functions to format a da
 SELECT
   DATE(d1) AS date_value,
   TIME(d1) AS time_value
-FROM datetime_real;
+FROM
+  datetime_real;
 
 /*
 
@@ -101,28 +102,30 @@ First, create a table that has one column whose data type is INTEGER to store th
 */
 DROP TABLE IF EXISTS datetime_int;
 
-CREATE TABLE datetime_int (
-  d1 INT
-);
+CREATE TABLE datetime_int (d1 INT);
 
 /*
 Second, insert the current date and time value into the datetime_int table.
 */
-INSERT INTO datetime_int
-  (d1)
+INSERT INTO
+  datetime_int (d1)
 VALUES
   (STRFTIME('%s', 'now'));
 
 /*
 Third, query data from the datetime_int table.
 */
-SELECT d1
-FROM datetime_int;
+SELECT
+  d1
+FROM
+  datetime_int;
 
 /*
 It’s an integer.
 
 To format the result, you can use the built-in datetime() function as follows:
 */
-SELECT DATETIME(d1, 'unixepoch')
-FROM datetime_int;
+SELECT
+  DATETIME(d1, 'unixepoch')
+FROM
+  datetime_int;

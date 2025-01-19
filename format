@@ -2,7 +2,7 @@
 require() {
   hash "$@" || exit 127
 }
-require npx parallel
+require npx parallel sql-formatter
 if [[ -z "$*" ]]; then
   echo "Usage: "
   echo "$0 <list of files>"
@@ -11,4 +11,5 @@ fi
 declare -i exitcode=0
 declare -a files=("$@")
 parallel npx prettier --write ::: "${files[@]}"
+parallel ./formatfile ::: "${files[@]}"
 exit $(("$exitcode" + $?))

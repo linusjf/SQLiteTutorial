@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+echo "formatting $1"
+sql-formatter -l sqlite --fix "$1"

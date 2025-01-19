@@ -55,79 +55,90 @@ CREATE TABLE books (
   id INTEGER PRIMARY KEY,
   title TEXT NOT NULL,
   isbn TEXT NOT NULL,
-  release_date DATE
+  release_date date
 );
 
 /*
 Returning inserted rows
 First, insert a new row into the books table and return the inserted row:
 */
-INSERT INTO books
-  (title, isbn, release_date)
+INSERT INTO
+  books (title, isbn, release_date)
 VALUES
-  ('The Catcher in the Rye', '9780316769488', '1951-07-16')
-RETURNING *;
+  (
+    'The Catcher in the Rye',
+    '9780316769488',
+    '1951-07-16'
+  ) RETURNING *;
 
 /*
 In this example, the RETURNING clause returns all columns of the inserted row because of the asterisk.
 
 Second, insert a new row into the books table and return the inserted book id:
 */
-INSERT INTO books
-  (title, isbn, release_date)
+INSERT INTO
+  books (title, isbn, release_date)
 VALUES
-  ('The Great Gatsby', '9780743273565', '1925-04-10')
-RETURNING id;
+  ('The Great Gatsby', '9780743273565', '1925-04-10') RETURNING id;
 
 /*
 In this example, the RETURN clause returns the id of the inserted book.
 
 Third, insert a new row into the books table and return the book id and release year:
 */
-INSERT INTO books
-  (title, isbn, release_date)
+INSERT INTO
+  books (title, isbn, release_date)
 VALUES
-  ('The Great Gatsby', '9780743273565', '1925-04-10')
-RETURNING id AS book_id, STRFTIME('%Y', release_date) AS year;
+  ('The Great Gatsby', '9780743273565', '1925-04-10') RETURNING id AS book_id,
+  STRFTIME('%Y', release_date) AS year;
 
 /*
 Fourth, insert two rows and return the inserted rows:
 */
-INSERT INTO books
-  (title, isbn, release_date)
+INSERT INTO
+  books (title, isbn, release_date)
 VALUES
-  ('Pride and Prejudice', '9780141439518', '1813-01-28'),
-  ('The Lord of the Rings', '9780618640157', '1954-07-29')
-RETURNING *;
+  (
+    'Pride and Prejudice',
+    '9780141439518',
+    '1813-01-28'
+  ),
+  (
+    'The Lord of the Rings',
+    '9780618640157',
+    '1954-07-29'
+  ) RETURNING *;
 
 /*
 Returning updated rows
 First, use the UPDATE statement uses the RETURNING clause to update the ISBN of the book with id 1 and return the updated row:
 */
 UPDATE books
-SET isbn = '0141439512'
-WHERE id = 1
-RETURNING *;
+SET
+  isbn = '0141439512'
+WHERE
+  id = 1 RETURNING *;
 
 /*
 Second, use the UPDATE statement uses the RETURNING clause to change the book title to uppercase and return the updated rows:
 */
 UPDATE books
-SET title = UPPER(title)
-RETURNING *;
+SET
+  title = UPPER(title) RETURNING *;
 
 /*
 3) Returning deleted rows
 First, delete a book with id 1 and return the deleted row:
 */
 DELETE FROM books
-WHERE id = 1
-RETURNING *;
+WHERE
+  id = 1 RETURNING *;
 
 /*
 Second, delete all rows from the books table and return multiple deleted rows:
 */
 DELETE FROM books RETURNING *;
+
 /*
 Here are some restrictions when using the RETURNING clause:
 

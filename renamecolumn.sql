@@ -14,6 +14,7 @@ Let’s take an example of using the ALTER TABLE RENAME COLUMN statement.
 First, create a new table called Locations:
 */
 DROP TABLE IF EXISTS locations;
+
 CREATE TABLE locations (
   locationid INTEGER PRIMARY KEY,
   address TEXT NOT NULL,
@@ -21,22 +22,31 @@ CREATE TABLE locations (
   state TEXT NOT NULL,
   country TEXT NOT NULL
 );
+
 /*
 Second, insert a new row into the Locations table by using the INSERT statement:
 */
-INSERT INTO locations (address, city, state, country)
-VALUES ('3960 North 1st Street', 'San Jose', 'CA', 'USA');
+INSERT INTO
+  locations (address, city, state, country)
+VALUES
+  ('3960 North 1st Street', 'San Jose', 'CA', 'USA');
+
 /*
 Third, rename the column Address to Street by using the ALTER TABLE RENAME COLUMN statement:
 */
 ALTER TABLE locations
 RENAME COLUMN address TO street;
+
 /*
 Fourth, query data from the Locations table:
 */
 SELECT
-*
-FROM locations;
---noqa: disable=all
+  *
+FROM
+  locations;
+
+/* sql-formatter-disable */
+-- noqa: disable=all
 .schema locations
 --noqa: enable=all
+;

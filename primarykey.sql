@@ -65,12 +65,8 @@ CREATE TABLE IF NOT EXISTS country_languages (
   country_id INTEGER NOT NULL,
   language_id INTEGER NOT NULL,
   PRIMARY KEY (country_id, language_id),
-  FOREIGN KEY (country_id) REFERENCES countries (country_id)
-    ON DELETE CASCADE
-    ON UPDATE NO ACTION,
-  FOREIGN KEY (language_id) REFERENCES languages (language_id)
-    ON DELETE CASCADE
-    ON UPDATE NO ACTION
+  FOREIGN KEY (country_id) REFERENCES countries (country_id) ON DELETE CASCADE ON UPDATE NO ACTION,
+  FOREIGN KEY (language_id) REFERENCES languages (language_id) ON DELETE CASCADE ON UPDATE NO ACTION
 );
 
 /*
@@ -114,20 +110,17 @@ Let’s create a table name cities without a primary key.
 */
 DROP TABLE IF EXISTS cities;
 
-CREATE TABLE IF NOT EXISTS cities (
-  id INTEGER NOT NULL,
-  name TEXT NOT NULL
-);
+CREATE TABLE IF NOT EXISTS cities (id INTEGER NOT NULL, name TEXT NOT NULL);
 
-INSERT INTO cities
-  (id, name)
+INSERT INTO
+  cities (id, name)
 VALUES
   (1, 'San Jose');
 
 /*
 In order to add the primary key to the cities table, you perform the following steps:
 */
-PRAGMA foreign_keys = OFF;
+PRAGMA foreign_keys = off;
 
 BEGIN TRANSACTION;
 
@@ -139,10 +132,12 @@ CREATE TABLE cities (
   name TEXT NOT NULL
 );
 
-INSERT INTO cities
+INSERT INTO
+  cities
 SELECT
   *
-FROM old_cities;
+FROM
+  old_cities;
 
 DROP TABLE old_cities;
 
@@ -153,4 +148,4 @@ PRAGMA foreign_keys = ON;
 /*
 If you use SQLite GUI tool, you can use the following statement to show the table’s information.
 */
-PRAGMA table_info('cities');
+PRAGMA table_info ('cities');
