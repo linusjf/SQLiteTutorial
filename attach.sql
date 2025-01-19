@@ -33,15 +33,16 @@ Fourth, use the .database command to display all databases in the current databa
 /* sql-formatter-enable */
 DROP TABLE IF EXISTS contacts.people;
 
-CREATE TABLE contacts.people (first_name TEXT, last_name TEXT);
+CREATE TABLE contacts.people (
+  first_name TEXT,
+  last_name TEXT
+);
 
-INSERT INTO
-  contacts.people
+INSERT INTO contacts.people
 SELECT
   firstname,
   lastname
-FROM
-  customers;
+FROM customers;
 
 /*
 Notice that we referred to the people table in the contacts database using the contacts.people naming convention.
@@ -50,5 +51,4 @@ Finally, query data from the people table in the contacts database.
 */
 SELECT
   *
-FROM
-  contacts.people;
+FROM contacts.people;

@@ -48,15 +48,15 @@ CREATE TABLE sales_performances (
 /*
 Then, insert some rows into these tables:
 */
-INSERT INTO
-  sales_employees (name, salary)
+INSERT INTO sales_employees
+  (name, salary)
 VALUES
   ('John Doe', 3000.0),
   ('Jane Smith', 3200.0),
   ('Michael Johnson', 2800.0);
 
-INSERT INTO
-  sales_performances (sales_employee_id, score)
+INSERT INTO sales_performances
+  (sales_employee_id, score)
 VALUES
   (1, 3),
   (2, 4),
@@ -66,24 +66,20 @@ VALUES
 After that, increase the salary of sales employees based on their performance scores:
 */
 UPDATE sales_employees
-SET
-  salary = CASE sales_performances.score
-    WHEN 1 THEN salary * 1.02 -- 2% increase for score 1
-    WHEN 2 THEN salary * 1.04 -- 4% increase for score 2
-    WHEN 3 THEN salary * 1.06 -- 6% increase for score 3
-    WHEN 4 THEN salary * 1.08 -- 8% increase for score 4
-    WHEN 5 THEN salary * 1.10 -- 10% increase for score 5
-  END
-FROM
-  sales_performances
-WHERE
-  sales_employees.id = sales_performances.sales_employee_id;
+SET salary = CASE sales_performances.score
+  WHEN 1 THEN salary * 1.02 -- 2% increase for score 1
+  WHEN 2 THEN salary * 1.04 -- 4% increase for score 2
+  WHEN 3 THEN salary * 1.06 -- 6% increase for score 3
+  WHEN 4 THEN salary * 1.08 -- 8% increase for score 4
+  WHEN 5 THEN salary * 1.10 -- 10% increase for score 5
+END
+FROM sales_performances
+WHERE sales_employees.id = sales_performances.sales_employee_id;
 
 /*Finally, verify the update:*/
 SELECT
   *
-FROM
-  sales_employees;
+FROM sales_employees;
 
 /*
 First, create a table called inventory that stores the inventory:
@@ -112,8 +108,8 @@ CREATE TABLE sales (
 /*
 Third, insert rows into the inventory table:
 */
-INSERT INTO
-  inventory (item_id, item_name, quantity)
+INSERT INTO inventory
+  (item_id, item_name, quantity)
 VALUES
   (1, 'Item A', 100),
   (2, 'Item B', 150),
@@ -122,8 +118,8 @@ VALUES
 /*
 Fourth, insert rows into the sales table:
 */
-INSERT INTO
-  sales (item_id, quantity_sold)
+INSERT INTO sales
+  (item_id, quantity_sold)
 VALUES
   (1, 20),
   (1, 30),
@@ -134,25 +130,20 @@ VALUES
 Fifth, update the inventory table based on the aggregated daily sales from the sales table:
 */
 UPDATE inventory
-SET
-  quantity = quantity - daily.qty
+SET quantity = quantity - daily.qty
 FROM
   (
     SELECT
       SUM(quantity_sold) AS qty,
       item_id
-    FROM
-      sales
-    GROUP BY
-      item_id
+    FROM sales
+    GROUP BY item_id
   ) AS daily
-WHERE
-  inventory.item_id = daily.item_id;
+WHERE inventory.item_id = daily.item_id;
 
 /*
 Finally, verify the update by querying data from the inventory table:
 */
 SELECT
   *
-FROM
-  inventory;
+FROM inventory;

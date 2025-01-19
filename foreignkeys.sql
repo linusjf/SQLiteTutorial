@@ -22,9 +22,9 @@ CREATE TABLE supplier_groups (
   group_name TEXT NOT NULL
 );
 
-PRAGMA table_info ('suppliers');
+PRAGMA table_info('suppliers');
 
-PRAGMA foreign_key_list ('suppliers');
+PRAGMA foreign_key_list('suppliers');
 
 /*
 Assuming that each supplier belongs to one and only one supplier group. And each supplier group may have zero or many suppliers. The relationship between supplier_groups and suppliers tables is one-to-many. In other words, for each row in the suppliers table, there is a corresponding row in the supplier_groups table.
@@ -46,9 +46,9 @@ CREATE TABLE suppliers (
   FOREIGN KEY (group_id) REFERENCES supplier_groups (group_id)
 );
 
-PRAGMA table_info ('suppliers');
+PRAGMA table_info('suppliers');
 
-PRAGMA foreign_key_list ('suppliers');
+PRAGMA foreign_key_list('suppliers');
 
 /*
 The supplier_groups table is called a parent table, which is the table that a foreign key references. The suppliers table is known as a child table, which is the table to which the foreign key constraint applies.
@@ -60,8 +60,8 @@ The group_id column in the suppliers table is called the child key. Generally, t
 /*
 First, insert three rows into the supplier_groups table.
 */
-INSERT INTO
-  supplier_groups (group_name)
+INSERT INTO supplier_groups
+  (group_name)
 VALUES
   ('Domestic'),
   ('Global'),
@@ -71,8 +71,8 @@ VALUES
 SQLite Foreign Key - Supplier Groups
 Second, insert a new supplier into the suppliers table with the supplier group that exists in the supplier_groups table.
 */
-INSERT INTO
-  suppliers (supplier_name, group_id)
+INSERT INTO suppliers
+  (supplier_name, group_id)
 VALUES
   ('HP', 2);
 
@@ -81,25 +81,23 @@ This statement works perfectly fine.
 
 Third, attempt to insert a new supplier into the suppliers table with the supplier group that does not exist in the supplier_groups table.
 */
-INSERT INTO
-  suppliers (supplier_name, group_id)
+INSERT INTO suppliers
+  (supplier_name, group_id)
 VALUES
   ('ABC Inc.', 4);
 
-PRAGMA foreign_key_list ('suppliers');
+PRAGMA foreign_key_list('suppliers');
 
 /*
 SQLite checked the foreign key constraint, rejected the change, and issued the following error message:
 */
 SELECT
   *
-FROM
-  suppliers;
+FROM suppliers;
 
 SELECT
   *
-FROM
-  supplier_groups;
+FROM supplier_groups;
 
 /*
 SQLite foreign key constraint actions
@@ -132,19 +130,21 @@ CREATE TABLE suppliers (
   supplier_id INTEGER PRIMARY KEY,
   supplier_name TEXT NOT NULL,
   group_id INTEGER,
-  FOREIGN KEY (group_id) REFERENCES supplier_groups (group_id) ON UPDATE SET NULL ON DELETE SET NULL
+  FOREIGN KEY (group_id) REFERENCES supplier_groups (group_id)
+    ON UPDATE SET NULL
+    ON DELETE SET NULL
 );
 
 /*
 Second, insert some rows into the suppliers table:
 */
-INSERT INTO
-  suppliers (supplier_name, group_id)
+INSERT INTO suppliers
+  (supplier_name, group_id)
 VALUES
   ('XYZ Corp', 3);
 
-INSERT INTO
-  suppliers (supplier_name, group_id)
+INSERT INTO suppliers
+  (supplier_name, group_id)
 VALUES
   ('ABC Corp', 3);
 
@@ -152,16 +152,14 @@ VALUES
 Third, delete the supplier group id 3 from the supplier_groups table:
 */
 DELETE FROM supplier_groups
-WHERE
-  group_id = 3;
+WHERE group_id = 3;
 
 /*
 Fourth, query data from the suppliers table.
 */
 SELECT
   *
-FROM
-  suppliers;
+FROM suppliers;
 
 /*
 
@@ -183,14 +181,16 @@ CREATE TABLE suppliers (
   supplier_id INTEGER PRIMARY KEY,
   supplier_name TEXT NOT NULL,
   group_id INTEGER,
-  FOREIGN KEY (group_id) REFERENCES supplier_groups (group_id) ON UPDATE RESTRICT ON DELETE RESTRICT
+  FOREIGN KEY (group_id) REFERENCES supplier_groups (group_id)
+    ON UPDATE RESTRICT
+    ON DELETE RESTRICT
 );
 
 /*
 Second, insert a row into the table suppliers with the group_id 1.
 */
-INSERT INTO
-  suppliers (supplier_name, group_id)
+INSERT INTO suppliers
+  (supplier_name, group_id)
 VALUES
   ('XYZ Corp', 1);
 
@@ -198,8 +198,7 @@ VALUES
 Third, delete the supplier group with id 1 from the supplier_groups table:
 */
 DELETE FROM supplier_groups
-WHERE
-  group_id = 1;
+WHERE group_id = 1;
 
 /*
 SQLite issued the following error:
@@ -208,15 +207,13 @@ SQLite issued the following error:
 To fix it, you must first delete all rows from the suppliers table which has group_id 1:
 */
 DELETE FROM suppliers
-WHERE
-  group_id = 1;
+WHERE group_id = 1;
 
 /*
 Then, you can delete the supplier group 1 from the supplier_groups table:
 */
 DELETE FROM supplier_groups
-WHERE
-  group_id = 1;
+WHERE group_id = 1;
 
 /*
 
@@ -228,8 +225,8 @@ The CASCADE action propagates the changes from the parent table to the child tab
 
 First, insert the supplier groups into the supplier_groups table:
 */
-INSERT INTO
-  supplier_groups (group_name)
+INSERT INTO supplier_groups
+  (group_name)
 VALUES
   ('Domestic'),
   ('Global'),
@@ -237,8 +234,7 @@ VALUES
 
 SELECT
   *
-FROM
-  supplier_groups;
+FROM supplier_groups;
 
 /*
 Second, drop and create the table suppliers with the CASCADE action in the foreign key group_id :
@@ -249,19 +245,21 @@ CREATE TABLE suppliers (
   supplier_id INTEGER PRIMARY KEY,
   supplier_name TEXT NOT NULL,
   group_id INTEGER,
-  FOREIGN KEY (group_id) REFERENCES supplier_groups (group_id) ON UPDATE CASCADE ON DELETE CASCADE
+  FOREIGN KEY (group_id) REFERENCES supplier_groups (group_id)
+    ON UPDATE CASCADE
+    ON DELETE CASCADE
 );
 
 /*
 Third, insert some suppliers into the table suppliers:
 */
-INSERT INTO
-  suppliers (supplier_name, group_id)
+INSERT INTO suppliers
+  (supplier_name, group_id)
 VALUES
   ('XYZ Corp', 3);
 
-INSERT INTO
-  suppliers (supplier_name, group_id)
+INSERT INTO suppliers
+  (supplier_name, group_id)
 VALUES
   ('ABC Corp', 2);
 
@@ -269,18 +267,15 @@ VALUES
 Fourth, update group_id of the Domestic supplier group to 100:
 */
 UPDATE supplier_groups
-SET
-  group_id = 100
-WHERE
-  group_name = 'Domestic';
+SET group_id = 100
+WHERE group_name = 'Domestic';
 
 /*
 Fifth, query data from the table suppliers:
 */
 SELECT
   *
-FROM
-  suppliers;
+FROM suppliers;
 
 /*
 you can see the value in the group_id column of the XYZ Corp in the table suppliers changed from 1 to 100 when we updated the group_id in the suplier_groups table. This is the result of ON UPDATE CASCADE action.
@@ -288,17 +283,14 @@ you can see the value in the group_id column of the XYZ Corp in the table suppli
 Sixth, delete supplier group id 2 from the supplier_groups table:
 */
 DELETE FROM supplier_groups
-WHERE
-  group_id = 2;
+WHERE group_id = 2;
 
 /*
 Seventh, query data from the table suppliers :
 */
 SELECT
   *
-FROM
-  suppliers;
-
+FROM suppliers;
 /*
 The supplier id 2 whose group_id is 2 was deleted when the supplier group id 2 was removed from the supplier_groups table. This is the effect of the ON DELETE CASCADE action.
 */

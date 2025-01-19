@@ -19,8 +19,8 @@ Third, add a comma-separated list of values after the VALUES keyword. If you omi
 /*
 The following statement insert a new row into the artists table:
 */
-INSERT INTO
-  artists (name)
+INSERT INTO artists
+  (name)
 VALUES
   ('Bud Powell');
 
@@ -32,12 +32,9 @@ You can verify the insert operation by using the following SELECT statement:
 SELECT
   artistid,
   name
-FROM
-  artists
-ORDER BY
-  artistid DESC
-LIMIT
-  1;
+FROM artists
+ORDER BY artistid DESC
+LIMIT 1;
 
 /*
 
@@ -51,8 +48,8 @@ Each value list following the VALUES clause is a row that will be inserted into 
 
 The following example inserts three rows into the artists table:
 */
-INSERT INTO
-  artists (name)
+INSERT INTO artists
+  (name)
 VALUES
   ('Buddy Rich'),
   ('Candido'),
@@ -67,12 +64,9 @@ You can verify the result using the following statement:
 SELECT
   artistid,
   name
-FROM
-  artists
-ORDER BY
-  artistid DESC
-LIMIT
-  3;
+FROM artists
+ORDER BY artistid DESC
+LIMIT 3;
 
 /*
 When you create a new table using the CREATE TABLE statement, you can specify default values for columns, or a NULL if a default value is not specified.
@@ -81,9 +75,8 @@ The third form of the INSERT statement is INSERT DEFAULT VALUES, which inserts a
 
 For example, the following statement inserts a new row into the artists table using INSERT DEFAULT VALUES:
 */
-INSERT INTO
-  artists DEFAULT
-VALUES;
+INSERT INTO artists
+DEFAULT VALUES;
 
 /*
 To verify the insert, you use the following statement:
@@ -91,10 +84,8 @@ To verify the insert, you use the following statement:
 SELECT
   artistid,
   name
-FROM
-  artists
-ORDER BY
-  artistid DESC;
+FROM artists
+ORDER BY artistid DESC;
 
 /*
 
@@ -115,13 +106,11 @@ CREATE TABLE artists_backup (
 /*
 To insert data into the artists_backup table with the data from the artists table, you use the INSERT INTO SELECT statement as follows:
 */
-INSERT INTO
-  artists_backup
+INSERT INTO artists_backup
 SELECT
   artistid,
   name
-FROM
-  artists;
+FROM artists;
 
 /*
 
@@ -129,5 +118,4 @@ If you query data from the artists_backup table, you will see all data in the ar
 */
 SELECT
   *
-FROM
-  artists_backup;
+FROM artists_backup;

@@ -10,6 +10,12 @@ if [[ -z "$*" ]]; then
 fi
 declare -i exitcode=0
 declare -a files=("$@")
-parallel npx prettier --write ::: "${files[@]}"
+echo "Formatting with sql-formatter"
 parallel ./formatfile ::: "${files[@]}"
-exit $(("$exitcode" + $?))
+exitcode=$?
+if [[ "$exitcode" -eq 0 ]]; then
+  echo "Formatting with prettier"
+  parallel npx prettier --write ::: "${files[@]}"
+  exitcode=$?
+fi
+exit "$exitcode"

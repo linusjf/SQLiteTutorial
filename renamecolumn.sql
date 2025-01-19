@@ -26,8 +26,8 @@ CREATE TABLE locations (
 /*
 Second, insert a new row into the Locations table by using the INSERT statement:
 */
-INSERT INTO
-  locations (address, city, state, country)
+INSERT INTO locations
+  (address, city, state, country)
 VALUES
   ('3960 North 1st Street', 'San Jose', 'CA', 'USA');
 
@@ -42,8 +42,7 @@ Fourth, query data from the Locations table:
 */
 SELECT
   *
-FROM
-  locations;
+FROM locations;
 
 /* sql-formatter-disable */
 -- noqa: disable=all

@@ -59,13 +59,16 @@ First, create a new table named test_datatypes for testing.
 DROP TABLE IF EXISTS test_datatypes;
 
 -- noqa:disable=all
-CREATE TABLE test_datatypes (id INTEGER PRIMARY KEY, val);
+CREATE TABLE test_datatypes (
+  id INTEGER PRIMARY KEY,
+  val
+);
 
 /*
 Second, insert data into the test_datatypes table.
 */
-INSERT INTO
-  test_datatypes (val)
+INSERT INTO test_datatypes
+  (val)
 VALUES
   (1),
   (2),
@@ -86,8 +89,7 @@ SELECT
   id,
   val,
   TYPEOF(val)
-FROM
-  test_datatypes;
+FROM test_datatypes;
 
 /*
 You may ask how SQLite sorts data in a column with different storage classes like val column above.
@@ -118,11 +120,8 @@ SELECT
   id,
   val,
   TYPEOF(val)
-FROM
-  test_datatypes
-ORDER BY
-  val;
-
+FROM test_datatypes
+ORDER BY val;
 /*
 
 Other important concepts related to SQLite data types are manifest typing and type affinity:

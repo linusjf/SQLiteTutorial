@@ -43,19 +43,13 @@ CREATE TABLE IF NOT EXISTS addresses (
 /*
 Second, insert an address and a person into the addresses and people tables.
 */
-INSERT INTO
-  addresses (house_no, street, city, postal_code, country)
+INSERT INTO addresses
+  (house_no, street, city, postal_code, country)
 VALUES
-  (
-    '3960',
-    'North 1st Street',
-    'San Jose ',
-    '95134',
-    'USA '
-  );
+  ('3960', 'North 1st Street', 'San Jose ', '95134', 'USA ');
 
-INSERT INTO
-  people (first_name, last_name, address_id)
+INSERT INTO people
+  (first_name, last_name, address_id)
 VALUES
   ('John', 'Doe', 1);
 
@@ -86,16 +80,13 @@ PRAGMA foreign_keys = OFF;
 DROP TABLE addresses;
 
 UPDATE people
-SET
-  address_id = NULL;
+SET address_id = NULL;
 
 SELECT
   *
-FROM
-  people;
+FROM people;
 
 PRAGMA foreign_keys = ON;
-
 /*
 The addresses table is removed and values of the address_id column are updated to NULL values.
 */

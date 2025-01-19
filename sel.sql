@@ -12,8 +12,7 @@ SELECT
   name,
   composer,
   unitprice
-FROM
-  tracks;
+FROM tracks;
 
 -- test
 SELECT
@@ -26,5 +25,4 @@ SELECT
   milliseconds,
   bytes,
   unitprice
-FROM
-  tracks;
+FROM tracks;

@@ -1,9 +1,6 @@
 SELECT
   albumid,
   title
-FROM
-  albums
-ORDER BY
-  title
-LIMIT
-  10;
+FROM albums
+ORDER BY title
+LIMIT 10;

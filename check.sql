@@ -49,8 +49,8 @@ This CHECK constraint ensures that the values in the phone column must be at lea
 
 If you attempt to execute the following statement, you will get a constraint violation error:
 */
-INSERT INTO
-  contacts (first_name, last_name, phone)
+INSERT INTO contacts
+  (first_name, last_name, phone)
 VALUES
   ('John', 'Doe', '408123456');
 
@@ -62,8 +62,8 @@ The reason was that the phone number that you attempted to insert just has 9 cha
 
 The following statement should work because the value in the phone column has 13 characters, which satisfies the expression in the CHECK constraint:
 */
-INSERT INTO
-  contacts (first_name, last_name, phone)
+INSERT INTO contacts
+  (first_name, last_name, phone)
 VALUES
   ('John', 'Doe', '(408)-123-456');
 
@@ -78,11 +78,7 @@ CREATE TABLE products (
   product_name TEXT NOT NULL,
   list_price DECIMAL(10, 2) NOT NULL,
   discount DECIMAL(10, 2) NOT NULL DEFAULT 0,
-  CHECK (
-    list_price >= discount
-    AND discount >= 0
-    AND list_price >= 0
-  )
+  CHECK (list_price >= discount AND discount >= 0 AND list_price >= 0)
 );
 
 /*
@@ -112,19 +108,18 @@ The CHECK constraint ensures that list price is always greater or equal to disco
 
 The following statement violates the CHECK constraint because the discount is higher than the list price.
 */
-INSERT INTO
-  products (product_name, list_price, discount)
+INSERT INTO products
+  (product_name, list_price, discount)
 VALUES
   ('New Product', 900, 1000);
 
 /*
 The following statement also violates the CHECK constraint because the discount is negative:
 */
-INSERT INTO
-  products (product_name, list_price, discount)
+INSERT INTO products
+  (product_name, list_price, discount)
 VALUES
   ('New XFactor', 1000, -10);
-
 /*
 Adding CHECK constraints to an existing table
 As of version 3.25.2, SQLite does not support adding a CHECK constraint to an existing table.

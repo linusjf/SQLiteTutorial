@@ -31,14 +31,10 @@ CREATE TABLE devices (
   serial INTEGER NOT NULL UNIQUE
 );
 
-INSERT INTO
-  devices (name, model, serial)
+INSERT INTO devices
+  (name, model, serial)
 VALUES
-  (
-    'HP ZBook 17 G3 Mobile Workstation',
-    'ZBook',
-    'SN-2015'
-  );
+  ('HP ZBook 17 G3 Mobile Workstation', 'ZBook', 'SN-2015');
 
 /*
 Second, use the ALTER TABLE RENAME TO statement to change the devices table to equipment table as follows:
@@ -53,8 +49,7 @@ SELECT
   name,
   model,
   serial
-FROM
-  equipment;
+FROM equipment;
 
 /*
 Using SQLite ALTER TABLE to add a new column to a table
@@ -109,18 +104,13 @@ CREATE TABLE favorites (
   FOREIGN KEY (playlistid) REFERENCES playlists (playlistid)
 );
 
-INSERT INTO
-  users (firstname, lastname, email, phone)
+INSERT INTO users
+  (firstname, lastname, email, phone)
 VALUES
-  (
-    'John',
-    'Doe',
-    'john.doe@example.com',
-    '408-234-3456'
-  );
+  ('John', 'Doe', 'john.doe@example.com', '408-234-3456');
 
-INSERT INTO
-  favorites (userid, playlistid)
+INSERT INTO favorites
+  (userid, playlistid)
 VALUES
   (1, 1);
 
@@ -129,16 +119,14 @@ The following statement returns data from the users table:
 */
 SELECT
   *
-FROM
-  users;
+FROM users;
 
 /*
 And the following statement returns the data from the favorites table:
 */
 SELECT
   *
-FROM
-  favorites;
+FROM favorites;
 
 /*
 Suppose, you want to drop the column phone of the users table.
@@ -166,15 +154,14 @@ CREATE TABLE IF NOT EXISTS persons (
 /*
 Fourth, copy data from the users to persons table:
 */
-INSERT INTO
-  persons (userid, firstname, lastname, email)
+INSERT INTO persons
+  (userid, firstname, lastname, email)
 SELECT
   userid,
   firstname,
   lastname,
   email
-FROM
-  users;
+FROM users;
 
 /*
 Fifth, drop the users table:
@@ -202,5 +189,4 @@ Here is the users table after dropping the phone column:
 */
 SELECT
   *
-FROM
-  users;
+FROM users;

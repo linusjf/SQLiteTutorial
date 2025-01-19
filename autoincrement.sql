@@ -6,13 +6,16 @@ Let’s see the following example.
 
 First, create a new table named people that has two columns: first_name,  and last_name:
 */
-CREATE TABLE people (first_name TEXT NOT NULL, last_name TEXT NOT NULL);
+CREATE TABLE people (
+  first_name TEXT NOT NULL,
+  last_name TEXT NOT NULL
+);
 
 /*
 Second, insert a row into the people table using the following INSERT statement:
 */
-INSERT INTO
-  people (first_name, last_name)
+INSERT INTO people
+  (first_name, last_name)
 VALUES
   ('John', 'Doe');
 
@@ -23,8 +26,7 @@ SELECT
   rowid,
   first_name,
   last_name
-FROM
-  people;
+FROM people;
 
 /*
 SQLite AUTOINCREMENT
@@ -57,8 +59,8 @@ Let’s take a test on it.
 
 First, insert a row with the maximum value into the people table.
 */
-INSERT INTO
-  people (person_id, first_name, last_name)
+INSERT INTO people
+  (person_id, first_name, last_name)
 VALUES
   (9223372036854775807, 'Johnathan', 'Smith');
 
@@ -66,8 +68,8 @@ VALUES
 SQLite maximum rowid value
 Second, insert another row without specifying a value for the person_id column:
 */
-INSERT INTO
-  people (first_name, last_name)
+INSERT INTO people
+  (first_name, last_name)
 VALUES
   ('William', 'Gate');
 
@@ -81,28 +83,30 @@ First, create a new table named t1 that has one column:
 */
 DROP TABLE IF EXISTS t1;
 
-CREATE TABLE t1 (c TEXT);
+CREATE TABLE t1 (
+  c TEXT
+);
 
 /*
 Second, insert some rows into the t1 table:
 */
-INSERT INTO
-  t1 (c)
+INSERT INTO t1
+  (c)
 VALUES
   ('A');
 
-INSERT INTO
-  t1 (c)
+INSERT INTO t1
+  (c)
 VALUES
   ('B');
 
-INSERT INTO
-  t1 (c)
+INSERT INTO t1
+  (c)
 VALUES
   ('C');
 
-INSERT INTO
-  t1 (c)
+INSERT INTO t1
+  (c)
 VALUES
   ('D');
 
@@ -112,8 +116,7 @@ Third, query data from the t1 table:
 SELECT
   rowid,
   c
-FROM
-  t1;
+FROM t1;
 
 /*
 Fourth, delete all rows of the t1 table:
@@ -123,18 +126,18 @@ DELETE FROM t1;
 /*
 Fifth, insert some rows into the t1 table:
 */
-INSERT INTO
-  t1 (c)
+INSERT INTO t1
+  (c)
 VALUES
   ('E');
 
-INSERT INTO
-  t1 (c)
+INSERT INTO t1
+  (c)
 VALUES
   ('F');
 
-INSERT INTO
-  t1 (c)
+INSERT INTO t1
+  (c)
 VALUES
   ('G');
 
@@ -144,8 +147,7 @@ Finally, query data from the t1 table:
 SELECT
   rowid,
   c
-FROM
-  t1;
+FROM t1;
 
 /*
 As you can see, the rowid 1, 2 and 3 have been reused for the new rows.
@@ -172,19 +174,18 @@ CREATE TABLE people (
 /*
 Second, insert a row with the maximum rowid value into the people table.
 */
-INSERT INTO
-  people (person_id, first_name, last_name)
+INSERT INTO people
+  (person_id, first_name, last_name)
 VALUES
   (9223372036854775807, 'Johnathan', 'Smith');
 
 /*
 Third, insert another row into the people table.
 */
-INSERT INTO
-  people (first_name, last_name)
+INSERT INTO people
+  (first_name, last_name)
 VALUES
   ('John', 'Smith');
-
 /*
 This time, SQLite issued an error message because the person_id column did not reuse the number like a rowid column.
 
