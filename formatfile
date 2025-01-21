@@ -1,3 +1,9 @@
 #!/usr/bin/env bash
-echo "formatting $1"
+# shellcheck disable=SC2155
+echo -n "$1 "
+declare -i start="$(date +%s%3N)"
 sql-formatter -l sqlite --fix "$1"
+declare -i exitcode=$?
+declare -i end="$(($(date +%s%3N) - start))"
+echo "$end""ms"
+exit $exitcode
