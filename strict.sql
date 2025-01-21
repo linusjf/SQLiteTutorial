@@ -111,6 +111,82 @@ Eighth, query data from products table again:
 SELECT
   *
 FROM products;
+
 /*
 In this example, SQLite uses the next integer in the sequence and inserts it into the id column.
 */
+/*
+Converting data in strict tables
+The following example demonstrates how SQLite attempts to convert input data into column data for insertion.
+
+First, attempt to insert a new row into the products table but the price is a text ‘4.99‘:
+*/
+INSERT INTO products
+  (name, price)
+VALUES
+  ('D', '4.49');
+
+/*
+SQLite will convert the text ‘4.49‘ into a real number and insert it into the price column.
+
+Second, retrieve data from the products table:
+*/
+SELECT
+  *
+FROM products;
+
+/*
+Third, attempt to insert a new row into the products table but the price is a text ‘O.99‘ with the first character is O, not zero:
+*/
+INSERT INTO products
+  (name, price)
+VALUES
+  ('E', 'O.99');
+
+/*
+In this case, SQLite cannot convert the ‘O.99‘ into a real number, therefore, it issues the following error and aborts the insert:
+
+Error: cannot store TEXT value in REAL column products.price
+*/
+/*
+
+Strict table vs ordinary table with ANY type
+In a strict table, SQLite preserves the input data and does not carry any conversion. For example:
+*/
+DROP TABLE IF EXISTS t1;
+
+CREATE TABLE t1 (
+  c ANY
+)
+STRICT;
+
+INSERT INTO t1
+  (c)
+VALUES
+  ('0001');
+
+SELECT
+  c,
+  TYPEOF(c) AS type_c
+FROM t1;
+
+/*
+In this example, SQLite inserts the string ‘0001’ into the c column of the t table without any conversion.
+
+However, in the ordinary table, SQLite attempts to convert a string that looks like a number into a numeric value and store it rather than the original string. For example:
+*/
+DROP TABLE IF EXISTS t2;
+
+CREATE TABLE t2 (
+  c ANY
+);
+
+INSERT INTO t2
+  (c)
+VALUES
+  ('0001');
+
+SELECT
+  c,
+  TYPEOF(c) AS type_c
+FROM t2;
