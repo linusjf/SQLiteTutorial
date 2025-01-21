@@ -26,6 +26,8 @@ The PRAGMA integrity_check and PRAGMA quick_check commands verify the type of th
 Basic SQLite strict table example
 First, create a strict table called products to store the product data:
 */
+DROP TABLE IF EXISTS products;
+
 CREATE TABLE products (
   id INT PRIMARY KEY,
   name TEXT NOT NULL,
