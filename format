@@ -13,12 +13,16 @@ NC='\033[0m' # No Color
 declare -i exitcode=0
 # only format changed files
 readarray -t changedfiles < <(git status -s "$@" | awk -F ' ' '{print $2}')
-echo -e "${RED}Formatting with sql-formatter${NC}"
-parallel ./formatfile ::: "${changedfiles[@]}"
-exitcode=$?
-if [[ "$exitcode" -eq 0 ]]; then
-  echo -e "${RED}Formatting with prettier${NC}"
-  parallel npx prettier --write ::: "${changedfiles[@]}"
+if ((${#changedfiles[@]})); then
+  echo -e "${RED}Formatting with sql-formatter${NC}"
+  parallel ./formatfile ::: "${changedfiles[@]}"
   exitcode=$?
+  if [[ "$exitcode" -eq 0 ]]; then
+    echo -e "${RED}Formatting with prettier${NC}"
+    parallel npx prettier --write ::: "${changedfiles[@]}"
+    exitcode=$?
+  fi
+else
+  echo "No files updated since."
 fi
 exit "$exitcode"

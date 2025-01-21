@@ -12,13 +12,17 @@ rm -f lint.out
 declare -i exitcode=0
 # only lint changed files
 readarray -t changedfiles < <(git status -s "$@" | awk -F ' ' '{print $2}')
-parallel sqlfluff fix --dialect sqlite ::: "${changedfiles[@]}"
-exitcode=$(("$exitcode" + $?))
-if [[ $exitcode != 0 ]]; then
-  parallel sqlfluff lint --dialect sqlite ::: "${changedfiles[@]}" &> lint.out
-  exitcode=$?
+if ((${#changedfiles[@]})); then
+  parallel sqlfluff fix --dialect sqlite ::: "${changedfiles[@]}"
+  exitcode=$(("$exitcode" + $?))
   if [[ $exitcode != 0 ]]; then
-    echo "Errors found. Check lint.out"
+    parallel sqlfluff lint --dialect sqlite ::: "${changedfiles[@]}" &> lint.out
+    exitcode=$?
+    if [[ $exitcode != 0 ]]; then
+      echo "Errors found. Check lint.out"
+    fi
   fi
+else
+  echo "No files updated since."
 fi
 exit "$exitcode"
