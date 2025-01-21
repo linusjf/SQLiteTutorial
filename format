@@ -2,7 +2,7 @@
 require() {
   hash "$@" || exit 127
 }
-require npx parallel sql-formatter
+require npx parallel sql-formatter awk git
 if [[ -z "$*" ]]; then
   echo "Usage: "
   echo "$0 <list of files>"
@@ -11,13 +11,14 @@ fi
 RED='\033[0;31m'
 NC='\033[0m' # No Color
 declare -i exitcode=0
-declare -a files=("$@")
+# only format changed files
+readarray -t changedfiles < <(git status -s "$@" | awk -F ' ' '{print $2}')
 echo -e "${RED}Formatting with sql-formatter${NC}"
-parallel ./formatfile ::: "${files[@]}"
+parallel ./formatfile ::: "${changedfiles[@]}"
 exitcode=$?
 if [[ "$exitcode" -eq 0 ]]; then
   echo -e "${RED}Formatting with prettier${NC}"
-  parallel npx prettier --write ::: "${files[@]}"
+  parallel npx prettier --write ::: "${changedfiles[@]}"
   exitcode=$?
 fi
 exit "$exitcode"

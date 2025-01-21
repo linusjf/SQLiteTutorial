@@ -24,12 +24,14 @@ To insert date and time values into the datetime_text table, you use the DATETIM
 
 For example, to get the current UTC date and time value, you pass the now literal string to the function as follows:
 */
-SELECT DATETIME('now');
+SELECT
+  DATETIME('now');
 
 /*
 To get the local time, you pass an additional argument  localtime.
 */
-SELECT DATETIME('now', 'localtime');
+SELECT
+  DATETIME('now', 'localtime');
 
 /*
 Second, insert the date and time values into the datetime_text table as follows:
@@ -76,7 +78,8 @@ We used the  julianday() function to convert the current date and time to the Ju
 
 Third, query data from the datetime_real table.
 */
-SELECT d1
+SELECT
+  d1
 FROM datetime_real;
 
 /*
@@ -116,7 +119,8 @@ VALUES
 /*
 Third, query data from the datetime_int table.
 */
-SELECT d1
+SELECT
+  d1
 FROM datetime_int;
 
 /*
@@ -124,5 +128,6 @@ It’s an integer.
 
 To format the result, you can use the built-in datetime() function as follows:
 */
-SELECT DATETIME(d1, 'unixepoch')
+SELECT
+  DATETIME(d1, 'unixepoch')
 FROM datetime_int;

@@ -9,7 +9,8 @@ GROUP BY column
 HAVING group_filter; */
 PRAGMA foreign_keys = ON;
 
-SELECT 1 + 1;
+SELECT
+  1 + 1;
 
 SELECT
   10 / 5 AS div,
@@ -166,7 +167,8 @@ FROM tracks
 ORDER BY composer NULLS LAST
 LIMIT
   10 OFFSET (
-    SELECT COUNT(*)
+    SELECT
+      COUNT(*)
     FROM tracks
   ) - 10;
 
@@ -199,14 +201,16 @@ For example, if a customer has a phone number with a NULL value, it means we don
 /*
 Suppose you want to know the cities where the customers are located, you can use the SELECT statement to get data from the city column of the customers table as follows:
 */
-SELECT city
+SELECT
+  city
 FROM customers
 ORDER BY city;
 
 /*
 It returns 59 rows. There are a few duplicate rows such as Berlin London, and Mountain View To remove these duplicate rows, you use the DISTINCT clause as follows:
 */
-SELECT DISTINCT city
+SELECT DISTINCT
+  city
 FROM customers
 ORDER BY city;
 
@@ -233,7 +237,8 @@ ORDER BY country;
 /*
 This statement returns the names of companies of customers from the customers table.
 */
-SELECT company
+SELECT
+  company
 FROM customers;
 
 /*
@@ -244,7 +249,8 @@ Now, if you apply the DISTINCT clause to the statement, it will keep only one ro
 /*
 See the following statement:
 */
-SELECT DISTINCT company
+SELECT DISTINCT
+  company
 FROM customers;
 
 /*
@@ -646,7 +652,8 @@ ORDER BY invoicedate;
 -- noqa: disable=RF02
 WITH
   count AS (
-    SELECT COUNT(*) AS cnt
+    SELECT
+      COUNT(*) AS cnt
     FROM tracks
   )
 SELECT
@@ -657,7 +664,8 @@ FROM tracks
 ORDER BY composer NULLS LAST
 LIMIT
   10 OFFSET (
-    SELECT cnt
+    SELECT
+      cnt
     FROM count
   ) - 10;
 
@@ -703,7 +711,8 @@ If you have a query that uses many OR operators, you can consider using the IN o
 /*
 The following query returns a list of album id of the artist id 12:
 */
-SELECT albumid
+SELECT
+  albumid
 FROM albums
 WHERE artistid = 12;
 
@@ -718,7 +727,8 @@ SELECT
 FROM tracks
 WHERE
   albumid IN (
-    SELECT albumid
+    SELECT
+      albumid
     FROM albums
     WHERE artistid = 12
   );
@@ -857,7 +867,8 @@ FROM t;
 /*
 Fourth, attempt to find the row whose value in the c column contains the 10% literal string:
 */
-SELECT c
+SELECT
+  c
 FROM t
 WHERE c LIKE '%10%%';
 
@@ -868,7 +879,8 @@ However, it returns rows whose values in the c column contains 10:
 /*
 Fifth, to get the correct result, you use the ESCAPE clause as shown in the following query:
 */
-SELECT c
+SELECT
+  c
 FROM t
 WHERE c LIKE '%10\%%' ESCAPE '\';
 
@@ -1931,10 +1943,12 @@ FROM
 GROUP BY albums.albumid
 HAVING length > 60000000;
 
-SELECT COUNT(*)
+SELECT
+  COUNT(*)
 FROM tracks;
 
-SELECT COUNT(*)
+SELECT
+  COUNT(*)
 FROM albums;
 
 /*
@@ -1993,19 +2007,23 @@ VALUES
 /*
 The following statement combines the result sets of the t1 and t2 tables using the UNION operator:
 */
-SELECT c1
+SELECT
+  c1
 FROM t1
 UNION
-SELECT c2
+SELECT
+  c2
 FROM t2;
 
 /*
 The following statement combines the result sets of t1 and t2 tables using the  UNION ALL operator:
 */
-SELECT c1
+SELECT
+  c1
 FROM t1
 UNION ALL
-SELECT c2
+SELECT
+  c2
 FROM t2;
 
 /*
@@ -2057,10 +2075,12 @@ The following statements create two tables t1 and t2 and insert some data into b
 
 The following statement illustrates how to use the EXCEPT operator to compare result sets of two queries:
 */
-SELECT c1
+SELECT
+  c1
 FROM t1
 EXCEPT
-SELECT c2
+SELECT
+  c2
 FROM t2;
 
 /*
@@ -2167,10 +2187,12 @@ For the demonstration, we will create two tables t1 and t2 and insert some data 
 
 The following statement illustrates how to use the INTERSECT operator to compare result sets of two queries:
 */
-SELECT c1
+SELECT
+  c1
 FROM t1
 INTERSECT
-SELECT c2
+SELECT
+  c2
 FROM t2;
 
 /*
@@ -2234,7 +2256,8 @@ SELECT
 FROM tracks
 WHERE
   albumid = (
-    SELECT albumid
+    SELECT
+      albumid
     FROM albums
     WHERE title = ' Let There Be Rock '
   );
@@ -2254,7 +2277,8 @@ SELECT
 FROM customers
 WHERE
   supportrepid IN (
-    SELECT employeeid
+    SELECT
+      employeeid
     FROM employees
     WHERE country = ' Canada '
   );
@@ -2274,10 +2298,12 @@ This query is not valid.
 
 To fix it, you can use a subquery in the FROM clause as follows:
 */
-SELECT AVG(album.size)
+SELECT
+  AVG(album.size)
 FROM
   (
-    SELECT SUM(bytes) AS size
+    SELECT
+      SUM(bytes) AS size
     FROM tracks
     GROUP BY albumid
   ) AS album;
@@ -2300,7 +2326,8 @@ SELECT
 FROM albums
 WHERE
   10000000 > (
-    SELECT SUM(tracks.bytes)
+    SELECT
+      SUM(tracks.bytes)
     FROM tracks
     WHERE tracks.albumid = albums.albumid
   )
@@ -2319,7 +2346,8 @@ SELECT
   albumid,
   title,
   (
-    SELECT COUNT(tracks.trackid)
+    SELECT
+      COUNT(tracks.trackid)
     FROM tracks
     WHERE tracks.albumid = albums.albumid
   ) AS tracks_count
@@ -2351,7 +2379,8 @@ SELECT
 FROM customers
 WHERE
   EXISTS (
-    SELECT 1
+    SELECT
+      1
     FROM invoices
     WHERE invoices.customerid = customers.customerid
   )
@@ -2388,7 +2417,8 @@ SELECT
 FROM customers
 WHERE
   customerid IN (
-    SELECT customerid
+    SELECT
+      customerid
     FROM invoices
   )
 ORDER BY firstname, lastname;
@@ -2406,7 +2436,8 @@ SELECT
 FROM artists
 WHERE
   NOT EXISTS (
-    SELECT 1
+    SELECT
+      1
     FROM albums
     WHERE albums.artistid = artists.artistid
   )

@@ -2,7 +2,7 @@
 require() {
   hash "$@" || exit 127
 }
-require sqlfluff parallel
+require sqlfluff parallel git awk
 if [[ -z "$*" ]]; then
   echo "Usage: "
   echo "$0 <list of files>"
@@ -10,11 +10,12 @@ if [[ -z "$*" ]]; then
 fi
 rm -f lint.out
 declare -i exitcode=0
-declare -a files=("$@")
-parallel sqlfluff fix --dialect sqlite ::: "${files[@]}"
+# only lint changed files
+readarray -t changedfiles < <(git status -s "$@" | awk -F ' ' '{print $2}')
+parallel sqlfluff fix --dialect sqlite ::: "${changedfiles[@]}"
 exitcode=$(("$exitcode" + $?))
 if [[ $exitcode != 0 ]]; then
-  parallel sqlfluff lint --dialect sqlite ::: "${files[@]}" &> lint.out
+  parallel sqlfluff lint --dialect sqlite ::: "${changedfiles[@]}" &> lint.out
   exitcode=$?
   if [[ $exitcode != 0 ]]; then
     echo "Errors found. Check lint.out"

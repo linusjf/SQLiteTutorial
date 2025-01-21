@@ -1,5 +1,6 @@
 -- test
-SELECT 1 + 1;
+SELECT
+  1 + 1;
 
 -- - test
 SELECT
