@@ -28,5 +28,4 @@ For example, the following command exports the data from the tracks table to a C
 If you have a file named query.sql that contains the script to query data, you can execute the statements in the file and export data to a CSV file.
 
 >sqlite3 -header -csv c:/sqlite/chinook.db < query.sql > data.csv
-
 */
