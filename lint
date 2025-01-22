@@ -9,13 +9,17 @@ if [[ -z "$*" ]]; then
   exit 1
 fi
 rm -f lint.out
+RED='\033[0;31m'
+NC='\033[0m' # No Color
 declare -i exitcode=0
 # only lint changed files
 readarray -t changedfiles < <(git status -s "$@" | awk -F ' ' '{print $2}')
 if ((${#changedfiles[@]})); then
+  echo -e "${RED}Fixing auto-fixable violations${NC}"
   parallel sqlfluff fix --warn-unused-ignores --dialect sqlite ::: "${changedfiles[@]}" 1> /dev/null
   exitcode=$(("$exitcode" + $?))
   if [[ $exitcode != 0 ]]; then
+    echo -e "${RED}Identifying non-fixable violations${NC}"
     parallel sqlfluff lint --warn-unused-ignores --dialect sqlite ::: "${changedfiles[@]}" &> lint.out
     exitcode=$?
     if [[ $exitcode != 0 ]]; then
