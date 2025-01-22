@@ -7,3 +7,4 @@ node_modules/**
 chinook*.sql
 data.sql
 albums.sql
+data.csv
