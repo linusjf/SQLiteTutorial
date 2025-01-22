@@ -4,3 +4,6 @@ stored_image.jpg
 my.db
 node_modules/**
 *backup.db
+chinook*.sql
+data.sql
+albums.sql
