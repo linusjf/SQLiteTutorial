@@ -32,6 +32,8 @@ In this example, the JSON string does not have the closing brace. Therefore, the
 3) Using SQLite json_error_position() function with table data
 First, create a table called user_profiles:
 */
+DROP TABLE IF EXISTS user_profiles;
+
 CREATE TABLE user_profiles (
   id INTEGER PRIMARY KEY,
   profile_data JSON NOT NULL
